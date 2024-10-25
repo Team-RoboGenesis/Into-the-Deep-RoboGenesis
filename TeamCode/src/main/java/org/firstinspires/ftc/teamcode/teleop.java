@@ -44,11 +44,10 @@ public class teleop extends OpMode {
             mainIntake.setPosition(0.1);
         } else if (gamepad1.x) {
             mainIntake.setPosition(0.2);
-
-
-
+        } else if (gamepad1.a) {
+            setServoPos(0.5);
+        } else if (gamepad1.y) {
+            setServoPos(0);
         }
-        setServoPos(0.5);
-
     }
 }
