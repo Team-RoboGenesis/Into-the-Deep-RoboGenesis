@@ -13,6 +13,8 @@ public class teleop extends OpMode {
     public DcMotor backLeftWheel = null;
     public DcMotor backRightWheel = null;
     public Servo mainIntake = null;
+    public Servo rightPivot = null;
+    public Servo leftPivot = null;
 
     @Override
     public void init() {
@@ -23,7 +25,11 @@ public class teleop extends OpMode {
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
 
     }
+    public void setServoPos(double position) {
+        rightPivot.setPosition(position);
+        leftPivot.setPosition(position);
 
+    }
     @Override
     public void loop() {
         double y = -gamepad1.left_stick_y; // Remember, Y stick is reversed!
@@ -38,7 +44,11 @@ public class teleop extends OpMode {
             mainIntake.setPosition(0.1);
         } else if (gamepad1.x) {
             mainIntake.setPosition(0.2);
+
+
+
         }
+        setServoPos(0.5);
 
     }
 }
