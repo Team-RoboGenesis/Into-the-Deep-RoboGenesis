@@ -27,6 +27,7 @@ public class teleop extends OpMode {
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
         rightPivot = hardwareMap.get(Servo.class,"rightPivot");
+        leftPivot = hardwareMap.get(Servo.class, "leftpivot");
 
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
 
