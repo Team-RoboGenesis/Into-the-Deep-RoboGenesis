@@ -27,7 +27,7 @@ public class teleop extends OpMode {
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
         rightPivot = hardwareMap.get(Servo.class,"rightPivot");
-        leftPivot = hardwareMap.get(Servo.class, "leftpivot");
+        leftPivot = hardwareMap.get(Servo.class, "leftPivot");
 
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -48,13 +48,13 @@ public class teleop extends OpMode {
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
         if (gamepad1.b) {
-            mainIntake.setPosition(0.1);
+            mainIntake.setPosition(0.3);
         } else if (gamepad1.x) {
-            mainIntake.setPosition(0.2);
+            mainIntake.setPosition(0.7);
         } else if (gamepad1.a) {
             setServoPos(0.5);
         } else if (gamepad1.y) {
-            setServoPos(0);
+            setServoPos(0.1);
         }
     }
 }
