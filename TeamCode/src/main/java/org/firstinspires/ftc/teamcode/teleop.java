@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -16,6 +17,8 @@ public class teleop extends OpMode {
     public Servo rightPivot = null;
     public Servo leftPivot = null;
 
+
+
     @Override
     public void init() {
         frontLeftWheel = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -23,6 +26,9 @@ public class teleop extends OpMode {
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
+        rightPivot = hardwareMap.get(Servo.class,"rightPivot");
+
+        backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
     public void setServoPos(double position) {
