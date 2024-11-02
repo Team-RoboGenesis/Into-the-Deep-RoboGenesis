@@ -15,8 +15,8 @@ public class teleop extends OpMode {
     public DcMotor backLeftWheel = null;
     public DcMotor backRightWheel = null;
     public Servo mainIntake = null;
-    public DcMotor rightPivot = null;
-    public DcMotor leftPivot = null;
+    public Servo rightPivot = null;
+    public Servo leftPivot = null;
     public DcMotor intakeArm = null;
     public Servo jointServo = null;
 
@@ -27,17 +27,14 @@ public class teleop extends OpMode {
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-        rightPivot = hardwareMap.get(DcMotor.class,"rightPivot");
-        leftPivot = hardwareMap.get(DcMotor.class, "leftPivot");
+        rightPivot = hardwareMap.get(Servo.class,"rightPivot");
+        leftPivot = hardwareMap.get(Servo.class, "leftPivot");
         intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         jointServo = hardwareMap.get(Servo.class, "joint");
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
-    public void setServoPower(double power) { //it's kind of useless
-        rightPivot.setPower(power);
-        leftPivot.setPower(power);
-    }
+
     @Override
     public void loop() {
         double y = -gamepad1.left_stick_y; // Remember, Y stick is reversed!
@@ -53,11 +50,11 @@ public class teleop extends OpMode {
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
         intakeArm.setPower(user2y);
-        rightPivot.setPower(pivotDown);
-        leftPivot.setPower(pivotDown);
-        rightPivot.setPower(pivotUp);
-        leftPivot.setPower(pivotUp);
-        jointServo.setPosition(user2ry);
+        rightPivot.setPosition(pivotDown);
+        leftPivot.setPosition(pivotDown);
+        rightPivot.setPosition(pivotUp);
+        leftPivot.setPosition(pivotUp);
+        //jointServo.setPosition(user2ry);
 
         if (gamepad2.left_bumper) {
             mainIntake.setPosition(0.2);
