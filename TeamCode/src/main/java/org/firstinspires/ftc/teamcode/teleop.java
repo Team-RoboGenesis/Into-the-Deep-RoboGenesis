@@ -18,7 +18,7 @@ public class teleop extends OpMode {
     public Servo rightPivot = null;
     public Servo leftPivot = null;
     public DcMotor intakeArm = null;
-    public Servo jointServo = null;
+    //public Servo jointServo = null;
 
     @Override
     public void init() {
@@ -30,11 +30,16 @@ public class teleop extends OpMode {
         rightPivot = hardwareMap.get(Servo.class,"rightPivot");
         leftPivot = hardwareMap.get(Servo.class, "leftPivot");
         intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
-        jointServo = hardwareMap.get(Servo.class, "joint");
+        //jointServo = hardwareMap.get(Servo.class, "joint");
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
+    public void setServoPos(double position) {
+    rightPivot.setPosition(position);
+    leftPivot.setPosition(position);
 
+
+    }
     @Override
     public void loop() {
         double y = -gamepad1.left_stick_y; // Remember, Y stick is reversed!
@@ -49,17 +54,20 @@ public class teleop extends OpMode {
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
-        intakeArm.setPower(user2y);
-        rightPivot.setPosition(pivotDown);
-        leftPivot.setPosition(pivotDown);
-        rightPivot.setPosition(pivotUp);
-        leftPivot.setPosition(pivotUp);
-        //jointServo.setPosition(user2ry);
+        //intakeArm.setPower(user2y);
 
+
+        //jointServo.setPosition(user2ry);
         if (gamepad2.left_bumper) {
-            mainIntake.setPosition(0.2);
-        } else if (gamepad2.right_bumper) {
-            mainIntake.setPosition(0.7);
+            //mainIntake.setPosition(0.2);
+        } else if (gamepad1.right_bumper) {
+            //mainIntake.setPosition(0.7);
+        } else if (gamepad1.a) {
+            setServoPos(0.5);
+        } else if (gamepad1.y) {
+            setServoPos(0.6);
         }
+
+
     }
 }
