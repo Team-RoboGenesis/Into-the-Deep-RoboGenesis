@@ -18,6 +18,7 @@ public class teleop extends OpMode {
     public Servo rightPivot = null;
     public Servo leftPivot = null;
     public DcMotor intakeArm = null;
+
     //public Servo jointServo = null;
 
     @Override
@@ -54,7 +55,7 @@ public class teleop extends OpMode {
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
-        //intakeArm.setPower(user2y);
+        //intakeArm.setPower(user2y/2);
 
 
         //jointServo.setPosition(user2ry);

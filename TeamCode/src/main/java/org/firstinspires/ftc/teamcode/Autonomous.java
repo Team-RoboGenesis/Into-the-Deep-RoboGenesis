@@ -17,7 +17,7 @@ public class Autonomous extends OpMode {
     public DcMotor intakeArm = null;
     @Override
     public void init() {
-        intakeArm = hardwareMap.get(DcMotor.class,"sigma");
+        intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         frontLeftWheel = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRightWheel = hardwareMap.get(DcMotor.class, "frontRight");
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
@@ -36,8 +36,9 @@ public class Autonomous extends OpMode {
     rightPivot.setPosition(position);
 
     }
+
     public void loop() {
-    setServoPos(0.5);
-    setServoPos(0.1);
+        setServoPos(0.5);
+        setServoPos(0.1);
     }
 }
