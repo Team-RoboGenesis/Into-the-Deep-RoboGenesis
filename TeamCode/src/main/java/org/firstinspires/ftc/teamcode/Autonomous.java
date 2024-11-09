@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name = "Autonomous (sigma)")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name = "Autonomous")
 public class Autonomous extends OpMode {
     public DcMotor frontLeftWheel   = null;
     public DcMotor frontRightWheel  = null;
