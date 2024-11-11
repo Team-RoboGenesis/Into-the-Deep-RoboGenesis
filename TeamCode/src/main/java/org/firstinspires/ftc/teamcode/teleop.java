@@ -32,39 +32,79 @@ public class teleop extends OpMode {
         leftPivot = hardwareMap.get(Servo.class, "leftPivot");
         intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
+
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        slides.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.setTargetPosition(0);
+        intakeArm.setTargetPosition(0);
+        slides.setPower(0.75);
+        intakeArm.setPower(0.75);
+        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
     public void setServoPos(double position) {
-    rightPivot.setPosition(position);
-    leftPivot.setPosition(position);
-
-
+        rightPivot.setPosition(position);
+        leftPivot.setPosition(position);
     }
+    public void setSlidePos(int position) {
+        if (position<0) {
+            slides.setTargetPosition(0);
+        } else if (position>1500) {
+            slides.setTargetPosition(1500);
+        } else {
+            slides.setTargetPosition(position);
+        }
+    }
+    public void setArmPos(int position) {
+        if (position<0) {
+            intakeArm.setTargetPosition(0);
+        } else if (position>2713){
+            intakeArm.setTargetPosition(2713);
+        } else {
+            intakeArm.setTargetPosition(position);
+        }
+    }
+
     @Override
     public void loop() {
-        double y = -gamepad1.left_stick_y; // Remember, Y stick is reversed!
-        double x = gamepad1.left_stick_x;
-        double rx = gamepad1.right_stick_x;
-        double user2y = -gamepad2.left_stick_y;
-        double slidesOutIn = gamepad2.right_stick_y;
+        double y = gamepad1.left_stick_y; // Remember, Y stick is reversed!
+        double x = -gamepad1.left_stick_x;
+        double rx = -gamepad1.right_stick_x;
+        int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*100));
+        int armPos = (int) (intakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
+
+
+
 
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
-        intakeArm.setPower(user2y/3);
-        slides.setPower(slidesOutIn/2);
+        setSlidePos(slidesPos);
+        setArmPos(armPos);
 
+        telemetry.addData("armAngle", intakeArm.getCurrentPosition());
+        telemetry.addData("slides", slides.getCurrentPosition());
+        telemetry.update();
 
-        if (gamepad1.left_bumper) {
-            mainIntake.setPosition(0.2);
-        } else if (gamepad1.right_bumper) {
+        if (gamepad2.left_bumper) {
+            mainIntake.setPosition(0.35);
+        } else if (gamepad2.right_bumper) {
             mainIntake.setPosition(0.7);
-        } else if (gamepad1.a) {
+        } else if (gamepad2.a) {
+            setServoPos(0.8);
+        } else if (gamepad2.y) {
+            setServoPos(0.2);
+        } else if (gamepad2.b) {
             setServoPos(0.5);
-        } else if (gamepad1.y) {
-            setServoPos(0.6);
+            //intakeArm.setTargetPosition(500);
+        } else if (gamepad2.x) {
         }
 
 
