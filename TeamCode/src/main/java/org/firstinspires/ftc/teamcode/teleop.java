@@ -15,11 +15,11 @@ public class teleop extends OpMode {
     public DcMotor backLeftWheel = null;
     public DcMotor backRightWheel = null;
     public Servo mainIntake = null;
-    public Servo rightPivot = null;
-    public Servo leftPivot = null;
+    //public Servo rightPivot = null;
+    //public Servo leftPivot = null;
     public DcMotor intakeArm = null;
     public DcMotor slides = null;
-
+    public Servo temporaryPivot = null;
 
     @Override
     public void init() {
@@ -28,10 +28,11 @@ public class teleop extends OpMode {
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-        rightPivot = hardwareMap.get(Servo.class,"rightPivot");
-        leftPivot = hardwareMap.get(Servo.class, "leftPivot");
+        //rightPivot = hardwareMap.get(Servo.class,"rightPivot");
+        //leftPivot = hardwareMap.get(Servo.class, "leftPivot");
         intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
+        temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
 
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -43,20 +44,20 @@ public class teleop extends OpMode {
         slides.setTargetPosition(0);
         intakeArm.setTargetPosition(0);
         slides.setPower(0.75);
-        intakeArm.setPower(0.75);
+        intakeArm.setPower(1);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
     public void setServoPos(double position) {
-        rightPivot.setPosition(position);
-        leftPivot.setPosition(position);
+        //rightPivot.setPosition(position);
+        //leftPivot.setPosition(position);
     }
     public void setSlidePos(int position) {
-        if (position<0) {
+        if (position>0) {
             slides.setTargetPosition(0);
-        } else if (position>1500) {
-            slides.setTargetPosition(1500);
+        } else if (position<-1500) {
+            slides.setTargetPosition(-1500);
         } else {
             slides.setTargetPosition(position);
         }
@@ -73,10 +74,10 @@ public class teleop extends OpMode {
 
     @Override
     public void loop() {
-        double y = gamepad1.left_stick_y; // Remember, Y stick is reversed!
-        double x = -gamepad1.left_stick_x;
-        double rx = -gamepad1.right_stick_x;
-        int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*100));
+        double y = gamepad1.left_stick_y/1.5; // Remember, Y stick is reversed!
+        double x = -gamepad1.left_stick_x/1.5;
+        double rx = -gamepad1.right_stick_x/1.5;
+        int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
         int armPos = (int) (intakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
 
 
@@ -92,19 +93,25 @@ public class teleop extends OpMode {
         telemetry.addData("armAngle", intakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
         telemetry.update();
-
+//make claw open wider and close tighter
         if (gamepad2.left_bumper) {
-            mainIntake.setPosition(0.35);
+            mainIntake.setPosition(0.1);
         } else if (gamepad2.right_bumper) {
-            mainIntake.setPosition(0.7);
+            mainIntake.setPosition(0.75);
         } else if (gamepad2.a) {
-            setServoPos(0.8);
+     //       setServoPos(0.8);
+            temporaryPivot.setPosition(0.1);
         } else if (gamepad2.y) {
-            setServoPos(0.2);
+     //       setServoPos(0.2);
+            temporaryPivot.setPosition(0.75);
         } else if (gamepad2.b) {
-            setServoPos(0.5);
-            //intakeArm.setTargetPosition(500);
+      //      setServoPos(0.5);
+            temporaryPivot.setPosition(0.4);
         } else if (gamepad2.x) {
+            temporaryPivot.setPosition(1);
+//            setServoPos(0.2);
+//            setSlidePos(1000);
+//            setArmPos(1400);
         }
 
 
