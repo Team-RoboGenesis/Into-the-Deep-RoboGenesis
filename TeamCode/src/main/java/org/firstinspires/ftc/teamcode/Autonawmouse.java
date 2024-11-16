@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import dalvik.system.DelegateLastClassLoader;
 
 @Autonomous(name = "AutonomousRight")
-public class Autonawmouse extends LinearOpMode {
+public class Autonawmouse extends OpMode {
     public DcMotor frontLeftWheel;
     public DcMotor frontRightWheel;
     public DcMotor backLeftWheel;
@@ -23,8 +24,11 @@ public class Autonawmouse extends LinearOpMode {
     public Servo temporaryPivot;
     ElapsedTime timer = new ElapsedTime();
 
+
+   private double startTime;
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void init() {
+        startTime = getRuntime();
         frontLeftWheel = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRightWheel = hardwareMap.get(DcMotor.class, "frontRight");
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
@@ -48,6 +52,27 @@ public class Autonawmouse extends LinearOpMode {
         intakeArm.setPower(1);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightWheel.setTargetPosition(0);
+        frontLeftWheel.setTargetPosition(0);
+        frontRightWheel.setPower(0.75);
+        frontLeftWheel.setPower(0.5);
+        backRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightWheel.setTargetPosition(0);
+        backLeftWheel.setTargetPosition(0);
+        backRightWheel.setPower(0.75);
+        backLeftWheel.setPower(0.5);
+        backRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
     }
 
@@ -59,21 +84,29 @@ public class Autonawmouse extends LinearOpMode {
         } else {
             slides.setTargetPosition(position);
         }
+    }
 
-
-    waitForStart();
-
-        if (isStopRequested()) {
+    /**
+     *
+     */
+    @Override
+    public void loop() {
+        if (getRuntime() - startTime > 30) {
+            requestOpModeStop();
             return;
         }
-        timer.reset();
-        while (timer.time() <= 2) {
             mainIntake.setPosition(0.1);
-            intakeArm.setTargetPosition(1500);
-            frontLeftWheel.setPower(-0.5);
-            frontRightWheel.setPower(-0.5);
-            backLeftWheel.setPower(0.5);
-            backRightWheel.setPower(0.5);
-        }
+            intakeArm.setTargetPosition(200);
+            frontLeftWheel.setTargetPosition(-500);
+            frontRightWheel.setTargetPosition(-500);
+            backLeftWheel.setTargetPosition(-500);
+            backRightWheel.setTargetPosition(-500);
+
+
     }
+    //opposite of init
+    public void stop() {
+
+    }
+
 }
