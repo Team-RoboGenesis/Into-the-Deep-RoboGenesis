@@ -91,16 +91,26 @@ public class Autonawmouse extends OpMode {
      */
     @Override
     public void loop() {
+
+        telemetry.addData("slides", slides.getCurrentPosition());
+        telemetry.addData("backLeftWheel", backLeftWheel.getCurrentPosition());
+        telemetry.addData("backRightWheel", backRightWheel.getCurrentPosition());
+        telemetry.addData("frontLeftWheel", frontLeftWheel.getCurrentPosition());
+        telemetry.addData("frontRightWheel", frontRightWheel.getCurrentPosition());
+        telemetry.update();
+
         if (getRuntime() - startTime > 30) {
             requestOpModeStop();
             return;
         }
+        if (timer.time()<= 2) {
             mainIntake.setPosition(0.1);
             intakeArm.setTargetPosition(200);
-            frontLeftWheel.setTargetPosition(-500);
-            frontRightWheel.setTargetPosition(-500);
-            backLeftWheel.setTargetPosition(-500);
-            backRightWheel.setTargetPosition(-500);
+        }
+        frontLeftWheel.setTargetPosition(200);
+        frontRightWheel.setTargetPosition(-200);
+        backLeftWheel.setTargetPosition(200);
+        backRightWheel.setTargetPosition(-200);
 
 
     }
