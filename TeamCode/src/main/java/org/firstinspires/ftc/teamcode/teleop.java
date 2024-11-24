@@ -74,9 +74,9 @@ public class teleop extends OpMode {
 
     @Override
     public void loop() {
-        double y = gamepad1.left_stick_y/1.5; // Remember, Y stick is reversed!
-        double x = -gamepad1.left_stick_x/1.5;
-        double rx = -gamepad1.right_stick_x/1.5;
+        double y = gamepad1.left_stick_y/1.35; // Remember, Y stick is reversed!
+        double x = -gamepad1.left_stick_x/1.35;
+        double rx = -gamepad1.right_stick_x/1.35;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
         int armPos = (int) (intakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
 

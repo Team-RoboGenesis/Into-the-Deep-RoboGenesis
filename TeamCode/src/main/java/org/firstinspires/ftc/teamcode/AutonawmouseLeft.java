@@ -49,25 +49,6 @@ public class AutonawmouseLeft extends OpMode {
         intakeArm.setPower(1);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightWheel.setTargetPosition(0);
-        frontLeftWheel.setTargetPosition(0);
-        frontRightWheel.setPower(0.5);
-        frontLeftWheel.setPower(0.5);
-        backRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightWheel.setTargetPosition(0);
-        backLeftWheel.setTargetPosition(0);
-        backRightWheel.setPower(0.5);
-        backLeftWheel.setPower(0.5);
-        backRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void setSlidePos(int position) {

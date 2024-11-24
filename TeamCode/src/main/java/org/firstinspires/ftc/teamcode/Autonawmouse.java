@@ -12,16 +12,16 @@ import dalvik.system.DelegateLastClassLoader;
 
 @Autonomous(name = "AutonomousRight")
 public class Autonawmouse extends OpMode {
-    public DcMotor frontLeftWheel;
-    public DcMotor frontRightWheel;
-    public DcMotor backLeftWheel;
-    public DcMotor backRightWheel;
-    public Servo mainIntake;
+    public DcMotor frontLeftWheel = null;
+    public DcMotor frontRightWheel = null;
+    public DcMotor backLeftWheel = null;
+    public DcMotor backRightWheel = null;
+    public Servo mainIntake = null;
     //public Servo rightPivot = null;
     //public Servo leftPivot = null;
-    public DcMotor intakeArm;
-    public DcMotor slides;
-    public Servo temporaryPivot;
+    public DcMotor intakeArm = null;
+    public DcMotor slides = null;
+    public Servo temporaryPivot = null;
     ElapsedTime timer = new ElapsedTime();
 
 
@@ -40,7 +40,7 @@ public class Autonawmouse extends OpMode {
         slides = hardwareMap.get(DcMotor.class, "slides");
         temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
 
-        backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightWheel.setDirection(DcMotor.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -52,27 +52,26 @@ public class Autonawmouse extends OpMode {
         intakeArm.setPower(1);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightWheel.setTargetPosition(0);
-        frontLeftWheel.setTargetPosition(0);
-        frontRightWheel.setPower(0.75);
-        frontLeftWheel.setPower(0.5);
-        backRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightWheel.setTargetPosition(0);
+        backRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeftWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftWheel.setTargetPosition(0);
-        backRightWheel.setPower(0.75);
-        backLeftWheel.setPower(0.5);
-        backRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightWheel.setTargetPosition(0);
+        frontLeftWheel.setTargetPosition(0);
+        frontRightWheel.setTargetPosition(0);
+        backLeftWheel.setPower(0.1);
+        backRightWheel.setPower(0.1);
+        frontLeftWheel.setPower(0.1);
+        frontRightWheel.setPower(0.1);
         backLeftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        backRightWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
@@ -103,16 +102,21 @@ public class Autonawmouse extends OpMode {
             requestOpModeStop();
             return;
         }
-        if (timer.time()<= 2) {
+        if (timer.time()>= 28.5) {
             mainIntake.setPosition(0.1);
             intakeArm.setTargetPosition(200);
+            frontRightWheel.setTargetPosition(200);
+            frontLeftWheel.setTargetPosition(200);
+            backRightWheel.setTargetPosition(200);
+            backLeftWheel.setTargetPosition(200);
+        } else if (timer.time()<= 1.5) {
+            mainIntake.setPosition(0.1);
+            intakeArm.setTargetPosition(200);
+            frontRightWheel.setTargetPosition(200);
+            frontLeftWheel.setTargetPosition(200);
+            backRightWheel.setTargetPosition(200);
+            backLeftWheel.setTargetPosition(200);
         }
-        frontLeftWheel.setTargetPosition(200);
-        frontRightWheel.setTargetPosition(-200);
-        backLeftWheel.setTargetPosition(200);
-        backRightWheel.setTargetPosition(-200);
-
-
     }
     //opposite of init
     public void stop() {
