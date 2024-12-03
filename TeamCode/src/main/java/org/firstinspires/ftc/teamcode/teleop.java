@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @TeleOp(name = "teleop")
 public class teleop extends OpMode {
@@ -21,6 +22,12 @@ public class teleop extends OpMode {
     public DcMotor slides = null;
     public Servo temporaryPivot = null;
 
+    public DcMotor odometryLeft;
+    public DcMotor odometryRight;
+    public DcMotor odometryPerp;
+
+
+
     @Override
     public void init() {
         frontLeftWheel = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -33,6 +40,10 @@ public class teleop extends OpMode {
         intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
         temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
+
+        odometryLeft = frontRightWheel;
+        odometryPerp = frontLeftWheel;
+        odometryRight = backLeftWheel;
 
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -80,9 +91,6 @@ public class teleop extends OpMode {
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
         int armPos = (int) (intakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
 
-
-
-
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
@@ -92,26 +100,25 @@ public class teleop extends OpMode {
 
         telemetry.addData("armAngle", intakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
+        telemetry.addData("rightDeadWheel", odometryRight.getCurrentPosition());
+        telemetry.addData("leftDeadWheel", odometryLeft.getCurrentPosition());
+        telemetry.addData("perpDeadWheel", odometryPerp.getCurrentPosition());
         telemetry.update();
-//make claw open wider and close tighter
+
         if (gamepad2.left_bumper) {
             mainIntake.setPosition(0.1);
         } else if (gamepad2.right_bumper) {
             mainIntake.setPosition(0.75);
         } else if (gamepad2.a) {
-     //       setServoPos(0.8);
-            temporaryPivot.setPosition(0.1);
-        } else if (gamepad2.y) {
-     //       setServoPos(0.2);
-            temporaryPivot.setPosition(0.75);
-        } else if (gamepad2.b) {
-      //      setServoPos(0.5);
             temporaryPivot.setPosition(0.4);
+        } else if (gamepad2.y) {
+            temporaryPivot.setPosition(0.9);
+        } else if (gamepad2.b) {
+            temporaryPivot.setPosition(0.5);
         } else if (gamepad2.x) {
-            temporaryPivot.setPosition(1);
-//            setServoPos(0.2);
-//            setSlidePos(1000);
-//            setArmPos(1400);
+          //  temporaryPivot.setPosition(1);
+            temporaryPivot.setPosition(0.4);
+            setArmPos(1400);
         }
 
 
