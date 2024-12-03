@@ -23,5 +23,16 @@ public class AutonomousLimelight extends LinearOpMode {
         limelight.pipelineSwitch(0);
 
         limelight.start();
+        while (opModeIsActive()) {
+            LLResult result = limelight.getLatestResult();
+            if (result != null) {
+                if (result.isValid()) {
+                    Pose3D botpose = result.getBotpose();
+                    telemetry.addData("tx", result.getTx());
+                    telemetry.addData("ty", result.getTy());
+                    telemetry.addData("Botpose", botpose.toString());
+                }
+            }
+        }
     }
 }
