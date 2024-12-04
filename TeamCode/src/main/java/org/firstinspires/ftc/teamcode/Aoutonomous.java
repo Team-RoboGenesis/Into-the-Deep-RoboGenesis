@@ -19,7 +19,8 @@ public class Aoutonomous extends LinearOpMode {
         Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action move = drive.actionBuilder(beginPose)
-                .lineToY(10)
+                .turn(Math.toRadians(180))
+                //.lineToY(10)
                 .build();
         waitForStart();
 
