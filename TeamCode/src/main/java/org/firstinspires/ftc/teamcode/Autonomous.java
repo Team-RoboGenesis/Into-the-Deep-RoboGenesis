@@ -16,8 +16,12 @@ public class Autonomous extends LinearOpMode {
         Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action move = drive.actionBuilder(beginPose)
+                .lineToY(60)
+                .turn(Math.toRadians(90))
+                .lineToX(30)
+                .lineToX(-30)
                 .turn(Math.toRadians(180))
-                //.lineToY(10)
+//                .lineToY(100)
                 .build();
         waitForStart();
 
