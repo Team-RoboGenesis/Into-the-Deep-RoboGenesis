@@ -16,17 +16,11 @@ public class teleop extends OpMode {
     public DcMotor backLeftWheel = null;
     public DcMotor backRightWheel = null;
     public Servo mainIntake = null;
-    //public Servo rightPivot = null;
-    //public Servo leftPivot = null;
     public DcMotor intakeArm = null;
     public DcMotor slides = null;
     public Servo temporaryPivot = null;
-
-    public DcMotor odometryLeft;
-    public DcMotor odometryRight;
-    public DcMotor odometryPerp;
-
-
+    public DcMotor leftIntakeArm = null;
+    public DcMotor rightIntakeArm = null;
 
     @Override
     public void init() {
@@ -35,19 +29,25 @@ public class teleop extends OpMode {
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-        //rightPivot = hardwareMap.get(Servo.class,"rightPivot");
-        //leftPivot = hardwareMap.get(Servo.class, "leftPivot");
         intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
         temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
-
-        odometryLeft = frontRightWheel;
-        odometryPerp = frontLeftWheel;
-        odometryRight = backLeftWheel;
+        leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
+        rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
 
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightIntakeArm.setTargetPosition(0);
+        leftIntakeArm.setTargetPosition(0);
+        rightIntakeArm.setPower(0);
+        leftIntakeArm.setPower(0);
+        rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -60,10 +60,6 @@ public class teleop extends OpMode {
         intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
-    public void setServoPos(double position) {
-        //rightPivot.setPosition(position);
-        //leftPivot.setPosition(position);
-    }
     public void setSlidePos(int position) {
         if (position>0) {
             slides.setTargetPosition(0);
@@ -74,12 +70,16 @@ public class teleop extends OpMode {
         }
     }
     public void setArmPos(int position) {
-        if (position<0) {
-            intakeArm.setTargetPosition(0);
-        } else if (position>2713){
-            intakeArm.setTargetPosition(2713);
+        if (position < 0) {
+            rightIntakeArm.setTargetPosition(0);
+            leftIntakeArm.setTargetPosition(0);
+//            intakeArm.setTargetPosition(0);
+        } else if (position > 2713) {
+            rightIntakeArm.setTargetPosition(2713);
+            leftIntakeArm.setTargetPosition(2713);
+//            intakeArm.setTargetPosition(2713);
         } else {
-            intakeArm.setTargetPosition(position);
+//            intakeArm.setTargetPosition(position);
         }
     }
 
@@ -89,7 +89,7 @@ public class teleop extends OpMode {
         double x = -gamepad1.left_stick_x/1.35;
         double rx = -gamepad1.right_stick_x/1.35;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
-        int armPos = (int) (intakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
+        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
 
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
@@ -100,9 +100,6 @@ public class teleop extends OpMode {
 
         telemetry.addData("armAngle", intakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
-        telemetry.addData("rightDeadWheel", odometryRight.getCurrentPosition());
-        telemetry.addData("leftDeadWheel", odometryLeft.getCurrentPosition());
-        telemetry.addData("perpDeadWheel", odometryPerp.getCurrentPosition());
         telemetry.update();
 
         if (gamepad2.left_bumper) {
