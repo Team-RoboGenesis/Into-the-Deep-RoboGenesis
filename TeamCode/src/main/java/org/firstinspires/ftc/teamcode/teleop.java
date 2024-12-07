@@ -16,7 +16,6 @@ public class teleop extends OpMode {
     public DcMotor backLeftWheel = null;
     public DcMotor backRightWheel = null;
     public Servo mainIntake = null;
-    public DcMotor intakeArm = null;
     public DcMotor slides = null;
     public Servo temporaryPivot = null;
     public DcMotor leftIntakeArm = null;
@@ -29,7 +28,6 @@ public class teleop extends OpMode {
         backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
         backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-        intakeArm = hardwareMap.get(DcMotor.class,"intakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
         temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
@@ -44,20 +42,15 @@ public class teleop extends OpMode {
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeArm.setTargetPosition(0);
         leftIntakeArm.setTargetPosition(0);
-        rightIntakeArm.setPower(0);
-        leftIntakeArm.setPower(0);
+        rightIntakeArm.setPower(0.5);
+        leftIntakeArm.setPower(0.5);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slides.setTargetPosition(0);
-        intakeArm.setTargetPosition(0);
         slides.setPower(0.75);
-        intakeArm.setPower(1);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
     public void setSlidePos(int position) {
@@ -73,13 +66,13 @@ public class teleop extends OpMode {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-//            intakeArm.setTargetPosition(0);
         } else if (position > 2713) {
             rightIntakeArm.setTargetPosition(2713);
             leftIntakeArm.setTargetPosition(2713);
-//            intakeArm.setTargetPosition(2713);
-        } else {
-//            intakeArm.setTargetPosition(position);
+        }
+        else {
+            rightIntakeArm.setTargetPosition(position);
+            leftIntakeArm.setTargetPosition(position);
         }
     }
 
@@ -88,8 +81,9 @@ public class teleop extends OpMode {
         double y = gamepad1.left_stick_y/1.35; // Remember, Y stick is reversed!
         double x = -gamepad1.left_stick_x/1.35;
         double rx = -gamepad1.right_stick_x/1.35;
+        double p2y = -gamepad2.left_stick_y * 100;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
-        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
+        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(p2y));
 
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
@@ -98,7 +92,7 @@ public class teleop extends OpMode {
         setSlidePos(slidesPos);
         setArmPos(armPos);
 
-        telemetry.addData("armAngle", intakeArm.getCurrentPosition());
+        telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
         telemetry.update();
 
@@ -111,11 +105,12 @@ public class teleop extends OpMode {
         } else if (gamepad2.y) {
             temporaryPivot.setPosition(0.9);
         } else if (gamepad2.b) {
-            temporaryPivot.setPosition(0.5);
+//            temporaryPivot.setPosition(0.5);
+            setArmPos(300);
         } else if (gamepad2.x) {
             //  temporaryPivot.setPosition(1);
             temporaryPivot.setPosition(0.4);
-            setArmPos(1400);
+            //setArmPos(1400);
         }
 
 
