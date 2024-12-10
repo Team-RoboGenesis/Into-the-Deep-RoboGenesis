@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryBuilder;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -67,14 +68,17 @@ public class Autonomous extends LinearOpMode {
 //        mainIntake.setPosition(0.1);
 //        wait();
 //        setArmPos(1000);
+//        temporaryPivot.setPosition(0.5);
         Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action move = drive.actionBuilder(beginPose)
 
                 .lineToY(30)
+//                setArmPos(800);
+//      mainIntake.setPosition(0.75);
                 .lineToY(20)
                 .turn(Math.toRadians(90))
-                .lineToX(25)
+                .strafeTo(new Vector2d(25, 20))
                 .turn(Math.toRadians(45))
                 .lineToY(40)
                 .turn(Math.toRadians(-135))
@@ -83,7 +87,6 @@ public class Autonomous extends LinearOpMode {
 
                 .build();
 
-  //      mainIntake.setPosition();
 
         Actions.runBlocking(move);
     }

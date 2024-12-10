@@ -62,7 +62,7 @@ public class teleop extends OpMode {
             slides.setTargetPosition(position);
         }
     }
-    public void setArmPos(int position) {
+    public void setArmPos(double position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
@@ -71,8 +71,8 @@ public class teleop extends OpMode {
             leftIntakeArm.setTargetPosition(2713);
         }
         else {
-            rightIntakeArm.setTargetPosition(position);
-            leftIntakeArm.setTargetPosition(position);
+            rightIntakeArm.setPower(position);
+            leftIntakeArm.setPower(position);
         }
     }
 
@@ -81,7 +81,7 @@ public class teleop extends OpMode {
         double y = gamepad1.left_stick_y/1.35; // Remember, Y stick is reversed!
         double x = -gamepad1.left_stick_x/1.35;
         double rx = -gamepad1.right_stick_x/1.35;
-        double p2y = -gamepad2.left_stick_y * 100;
+        double p2y = gamepad2.left_stick_y * 100;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
         int armPos = (int) (rightIntakeArm.getCurrentPosition()+(p2y));
 
@@ -94,6 +94,7 @@ public class teleop extends OpMode {
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
+        telemetry.addData("ly", -gamepad2.left_stick_y);
         telemetry.update();
 
         if (gamepad2.left_bumper) {
