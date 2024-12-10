@@ -77,7 +77,6 @@ public class Autonomous extends LinearOpMode {
 //                setArmPos(800);
 //      mainIntake.setPosition(0.75);
                 .lineToY(20)
-                .turn(Math.toRadians(90))
                 .strafeTo(new Vector2d(25, 20))
                 .turn(Math.toRadians(45))
                 .lineToY(40)

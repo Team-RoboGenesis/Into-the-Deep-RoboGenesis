@@ -36,21 +36,21 @@ public class teleop extends OpMode {
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightIntakeArm.setTargetPosition(0);
-        leftIntakeArm.setTargetPosition(0);
-        rightIntakeArm.setPower(0.5);
-        leftIntakeArm.setPower(0.5);
-        rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slides.setTargetPosition(0);
-        slides.setPower(0.75);
-        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightIntakeArm.setTargetPosition(0);
+//        leftIntakeArm.setTargetPosition(0);
+//        rightIntakeArm.setPower(0.5);
+//        leftIntakeArm.setPower(0.5);
+//        rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        slides.setTargetPosition(0);
+//        slides.setPower(0.75);
+//        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
     public void setSlidePos(int position) {
@@ -62,19 +62,19 @@ public class teleop extends OpMode {
             slides.setTargetPosition(position);
         }
     }
-    public void setArmPos(double position) {
-        if (position < 0) {
-            rightIntakeArm.setTargetPosition(0);
-            leftIntakeArm.setTargetPosition(0);
-        } else if (position > 2713) {
-            rightIntakeArm.setTargetPosition(2713);
-            leftIntakeArm.setTargetPosition(2713);
-        }
-        else {
-            rightIntakeArm.setPower(position);
-            leftIntakeArm.setPower(position);
-        }
-    }
+//    public void setArmPos(int position) {
+//        if (position < 0) {
+//            rightIntakeArm.setTargetPosition(0);
+//            leftIntakeArm.setTargetPosition(0);
+//        } else if (position > 2713) {
+//            rightIntakeArm.setTargetPosition(2713);
+//            leftIntakeArm.setTargetPosition(2713);
+//        }
+//        else {
+//            rightIntakeArm.setTargetPosition(position);
+//            leftIntakeArm.setTargetPosition(position);
+//        }
+//    }
 
     @Override
     public void loop() {
@@ -83,14 +83,17 @@ public class teleop extends OpMode {
         double rx = -gamepad1.right_stick_x/1.35;
         double p2y = gamepad2.left_stick_y * 100;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
-        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(p2y));
+        //int armPos = (int) (rightIntakeArm.getCurrentPosition()+(p2y));
 
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
+//        rightIntakeArm.setPower(-gamepad2.left_stick_y/2);
+//        leftIntakeArm.setPower(-gamepad2.left_stick_y/2);
+        rightIntakeArm.setPower(gamepad2.touchpad_finger_1_y);
         setSlidePos(slidesPos);
-        setArmPos(armPos);
+        //setArmPos(armPos);
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
@@ -106,11 +109,9 @@ public class teleop extends OpMode {
         } else if (gamepad2.y) {
             temporaryPivot.setPosition(0.9);
         } else if (gamepad2.b) {
-//            temporaryPivot.setPosition(0.5);
-            setArmPos(300);
+            temporaryPivot.setPosition(0.5);
         } else if (gamepad2.x) {
-            //  temporaryPivot.setPosition(1);
-            temporaryPivot.setPosition(0.4);
+            //temporaryPivot.setPosition(0.4);
             //setArmPos(1400);
         }
 
