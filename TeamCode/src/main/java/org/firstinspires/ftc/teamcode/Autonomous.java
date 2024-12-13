@@ -18,6 +18,7 @@ public class Autonomous extends LinearOpMode {
 //    DcMotor leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
 //    DcMotor slides = hardwareMap.get(DcMotor.class, "slides");
 
+
 //    public void setSlidePos(int position) {
 //        if (position>0) {
 //            slides.setTargetPosition(0);
@@ -62,13 +63,13 @@ public class Autonomous extends LinearOpMode {
 //        slides.setTargetPosition(0);
 //        slides.setPower(0.75);
 //        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        waitForStart();
-
+//
+//        waitForStart();
+//
 //        mainIntake.setPosition(0.1);
 //        wait();
 //        setArmPos(1000);
-//        temporaryPivot.setPosition(0.5);
+//        pivot.setPosition(0.5);
         Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action move = drive.actionBuilder(beginPose)
@@ -78,8 +79,7 @@ public class Autonomous extends LinearOpMode {
 //      mainIntake.setPosition(0.75);
                 .lineToY(20)
                 .strafeTo(new Vector2d(25, 20))
-                .turn(Math.toRadians(45))
-                .lineToY(40)
+                .strafeTo(new Vector2d(50, 40))
                 .turn(Math.toRadians(-135))
                 .lineToY(5)
                 .lineToY(50)

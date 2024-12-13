@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @TeleOp(name = "teleop")
 public class teleop extends OpMode {
 
-    public DcMotor frontLeftWheel   = null;
-    public DcMotor frontRightWheel  = null;
+    public DcMotor frontLeftWheel = null;
+    public DcMotor frontRightWheel = null;
     public DcMotor backLeftWheel = null;
     public DcMotor backRightWheel = null;
     public Servo mainIntake = null;
@@ -89,10 +89,8 @@ public class teleop extends OpMode {
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
-//        rightIntakeArm.setPower(-gamepad2.left_stick_y/2);
-//        leftIntakeArm.setPower(-gamepad2.left_stick_y/2);
-        rightIntakeArm.setPower(gamepad2.touchpad_finger_1_y);
-        setSlidePos(slidesPos);
+        rightIntakeArm.setPower(-gamepad2.left_stick_y/3);
+        leftIntakeArm.setPower(-gamepad2.left_stick_y/3);
         //setArmPos(armPos);
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
