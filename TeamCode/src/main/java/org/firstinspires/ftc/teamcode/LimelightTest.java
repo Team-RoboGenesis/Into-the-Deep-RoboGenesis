@@ -18,16 +18,18 @@ public class LimelightTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight = hardwareMap.get(Limelight3A.class, "Benny");
 
         telemetry.setMsTransmissionInterval(11);
 
-        limelight.pipelineSwitch(0);
+        limelight.pipelineSwitch(1);
 
         /*
          * Starts polling for data.
          */
         limelight.start();
+
+        waitForStart();
 
         while (opModeIsActive()) {
             LLResult result = limelight.getLatestResult();
@@ -40,7 +42,6 @@ public class LimelightTest extends LinearOpMode {
 
                     telemetry.addData(">", "Robot Ready.  Press Play.");
                     telemetry.update();
-                    waitForStart();
 
                     while (opModeIsActive()) {
                         LLStatus status = limelight.getStatus();

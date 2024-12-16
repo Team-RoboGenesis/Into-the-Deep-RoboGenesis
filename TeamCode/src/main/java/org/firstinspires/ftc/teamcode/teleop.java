@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,10 +9,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @TeleOp(name = "teleop")
 public class teleop extends OpMode {
 
+    private static final Logger log = LoggerFactory.getLogger(teleop.class);
     public DcMotor frontLeftWheel = null;
     public DcMotor frontRightWheel = null;
     public DcMotor backLeftWheel = null;
@@ -36,22 +41,21 @@ public class teleop extends OpMode {
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightIntakeArm.setTargetPosition(0);
-//        leftIntakeArm.setTargetPosition(0);
-//        rightIntakeArm.setPower(0.5);
-//        leftIntakeArm.setPower(0.5);
-//        rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        slides.setTargetPosition(0);
-//        slides.setPower(0.75);
-//        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntakeArm.setTargetPosition(0);
+        leftIntakeArm.setTargetPosition(0);
+        rightIntakeArm.setPower(0.5);
+        leftIntakeArm.setPower(0.5);
+        rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.setTargetPosition(0);
+        slides.setPower(0.9);
+        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void setSlidePos(int position) {
         if (position>0) {
@@ -69,8 +73,7 @@ public class teleop extends OpMode {
 //        } else if (position > 2713) {
 //            rightIntakeArm.setTargetPosition(2713);
 //            leftIntakeArm.setTargetPosition(2713);
-//        }
-//        else {
+//        } else {
 //            rightIntakeArm.setTargetPosition(position);
 //            leftIntakeArm.setTargetPosition(position);
 //        }
@@ -78,20 +81,19 @@ public class teleop extends OpMode {
 
     @Override
     public void loop() {
-        double y = gamepad1.left_stick_y/1.35; // Remember, Y stick is reversed!
+        double y = gamepad1.left_stick_y/1.35;
         double x = -gamepad1.left_stick_x/1.35;
         double rx = -gamepad1.right_stick_x/1.35;
-        double p2y = gamepad2.left_stick_y * 100;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
-        //int armPos = (int) (rightIntakeArm.getCurrentPosition()+(p2y));
+//        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(gamepad2.left_stick_y * 100));
 
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
-        rightIntakeArm.setPower(-gamepad2.left_stick_y/3);
-        leftIntakeArm.setPower(-gamepad2.left_stick_y/3);
-        //setArmPos(armPos);
+//        rightIntakeArm.setPower(-gamepad2.left_stick_y/3);
+//        leftIntakeArm.setPower(-gamepad2.left_stick_y/3);
+        setSlidePos(slidesPos);
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
@@ -108,11 +110,29 @@ public class teleop extends OpMode {
             temporaryPivot.setPosition(0.9);
         } else if (gamepad2.b) {
             temporaryPivot.setPosition(0.5);
-        } else if (gamepad2.x) {
-            //temporaryPivot.setPosition(0.4);
-            //setArmPos(1400);
+        } else if (rightIntakeArm.getCurrentPosition()<2713) {
+            rightIntakeArm.setPower(gamepad2.left_stick_y);
+            leftIntakeArm.setPower(gamepad2.left_stick_y);
+        } else if (rightIntakeArm.getCurrentPosition()>0) {
+            rightIntakeArm.setPower(gamepad2.left_stick_y);
+            leftIntakeArm.setPower(gamepad2.left_stick_y);
         }
-
+//            setArmPos(armPos);// arm presets
+//        else if (gamepad2.dpad_up) {
+//            setArmPos(2713);
+//            setSlidePos(500);
+//            Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
+//            MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
+//            Action move = drive.actionBuilder(beginPose)
+//                    .lineToY(10)
+//                    .build();
+//            setSlidePos(0);
+//        } else if (gamepad2.dpad_down) {
+//        setArmPos(500);
+//            temporaryPivot.setPosition(0.5);
+//        } else if (gamepad2.dpad_left) {
+//            setArmPos(1500);
+//        }
 
     }
 }
