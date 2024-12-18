@@ -30,14 +30,14 @@ public class Autonomous extends LinearOpMode {
     public Action setArmPos(int position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
-//            leftIntakeArm.setTargetPosition(0);
+            leftIntakeArm.setTargetPosition(0);
         } else if (position > 2713) {
             rightIntakeArm.setTargetPosition(2713);
-//            leftIntakeArm.setTargetPosition(2713);
+            leftIntakeArm.setTargetPosition(2713);
         }
         else {
             rightIntakeArm.setTargetPosition(position);
-//            leftIntakeArm.setTargetPosition(position);
+            leftIntakeArm.setTargetPosition(position);
         }
         return null;
     }
@@ -53,51 +53,37 @@ public class Autonomous extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeArm.setTargetPosition(0);
-//        leftIntakeArm.setTargetPosition(0);
+        leftIntakeArm.setTargetPosition(0);
         rightIntakeArm.setPower(0.5);
-//        leftIntakeArm.setPower(0.5);
+        leftIntakeArm.setPower(0.5);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slides.setTargetPosition(0);
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
+        Action preloadspecimenScore = drive.actionBuilder(drive.pose)
+                .lineToY(-38) //Score preloaded specimen
+                        .build();
+        Action firstSampleGrab = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
+                        .build();
         waitForStart();
 
         mainIntake.setPosition(0.1);
-        wait();
-        setArmPos(1000);
+        setArmPos(800);
         pivot.setPosition(0.5);
-        Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
-        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action move = drive.actionBuilder(beginPose)
-                .lineToY(30)
-                .build();
-                Actions.runBlocking(setArmPos(800));
-                Actions.runBlocking(setClawPos(0.75));
-                move = drive.actionBuilder(beginPose)
-                .lineToY(20)
-                .strafeTo(new Vector2d(25, 20))
-                .strafeTo(new Vector2d(50, 40))
-                .turn(Math.toRadians(-180))
-                .lineToY(5)
-                .lineToY(60)
-                        .strafeTo(new Vector2d(65, 60))
-                        .lineToY(5)
-                        .lineToY(60)
-                        .strafeTo(new Vector2d(80, 60))
-                        .lineToY(5)
+        Actions.runBlocking(preloadspecimenScore);
+        setArmPos(600);
+        Actions.runBlocking(firstSampleGrab);
 
-                .build();
-                setArmPos(0);
-
-
-        Actions.runBlocking(move);
     }
 }
