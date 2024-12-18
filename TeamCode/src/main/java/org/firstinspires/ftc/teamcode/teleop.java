@@ -36,7 +36,8 @@ public class teleop extends OpMode {
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
 
         backRightWheel.setDirection(DcMotorSimple.Direction.REVERSE);
-        slides.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -55,21 +56,21 @@ public class teleop extends OpMode {
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void setSlidePos(int position) {
-        if (position>0) {
+        if (position<0) {
             slides.setTargetPosition(0);
-        } else if (position<-1500) {
-            slides.setTargetPosition(-1500);
+        } else if (position>1500) {
+            slides.setTargetPosition(1500);
         } else {
             slides.setTargetPosition(position);
         }
     }
     public void setArmPos(int position) {
-        if (position > 0) {
+        if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position < -2713) {
-            rightIntakeArm.setTargetPosition(-2713);
-            leftIntakeArm.setTargetPosition(-2713);
+        } else if (position > 1500) {
+            rightIntakeArm.setTargetPosition(1500);
+            leftIntakeArm.setTargetPosition(1500);
         } else {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
@@ -82,13 +83,13 @@ public class teleop extends OpMode {
         double x = -gamepad1.left_stick_x/1.35;
         double rx = -gamepad1.right_stick_x/1.35;
         int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
-        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(gamepad2.left_stick_y*100));
+        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
 
         frontLeftWheel.setPower(y + x + rx);
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
-        setArmPos(armPos);
+//        setArmPos(armPos);
         setSlidePos(slidesPos);
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
@@ -106,29 +107,18 @@ public class teleop extends OpMode {
             temporaryPivot.setPosition(0.9);
         } else if (gamepad2.b) {
             temporaryPivot.setPosition(0.5);
-        } else if (rightIntakeArm.getCurrentPosition()<2713) {
-            rightIntakeArm.setPower(gamepad2.left_stick_y);
-            leftIntakeArm.setPower(gamepad2.left_stick_y);
-        } else if (rightIntakeArm.getCurrentPosition()>0) {
-            rightIntakeArm.setPower(gamepad2.left_stick_y);
-            leftIntakeArm.setPower(gamepad2.left_stick_y);
+        } else if (gamepad2.left_stick_y<0) {
+            setArmPos(armPos);
+        } else if (gamepad2.left_stick_y>0) {
+            setArmPos(armPos);
         }
 //        arm presets
-//        else if (gamepad2.dpad_up) {
-//            setArmPos(2713);
-//            setSlidePos(500);
-//            Pose2d beginPose = new Pose2d(0, 0, Math.toRadians(90));
-//            MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-//            Action move = drive.actionBuilder(beginPose)
-//                    .lineToY(10)
-//                    .build();
-//            setSlidePos(0);
-//        } else if (gamepad2.dpad_down) {
-//        setArmPos(500);
-//            temporaryPivot.setPosition(0.5);
-//        } else if (gamepad2.dpad_left) {
-//            setArmPos(1500);
-//        }
+        else if (gamepad2.dpad_down) {
+            setArmPos(500);
+            temporaryPivot.setPosition(0.5);
+        } else if (gamepad2.dpad_left) {
+            setArmPos(800);
+        }
 
     }
 }

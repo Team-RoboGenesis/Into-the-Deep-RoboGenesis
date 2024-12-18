@@ -27,7 +27,7 @@ public class Autonomous extends LinearOpMode {
             slides.setTargetPosition(position);
         }
     }
-    public Action setArmPos(int position) {
+    public void setArmPos(int position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
@@ -39,11 +39,6 @@ public class Autonomous extends LinearOpMode {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
         }
-        return null;
-    }
-    public Action setClawPos(double position) {
-        mainIntake.setPosition(position);
-        return null;
     }
 
     /**
@@ -74,6 +69,7 @@ public class Autonomous extends LinearOpMode {
                 .lineToY(-38) //Score preloaded specimen
                         .build();
         Action firstSampleGrab = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(15, -38), 0)
                 .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
                         .build();
         waitForStart();
