@@ -6,17 +6,17 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Autonomous")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "AutonomousRedRight")
 public class Autonomous extends LinearOpMode {
 
-    Servo mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-    Servo pivot = hardwareMap.get(Servo.class, "goBildaPivot");
-    DcMotor rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
-    DcMotor leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
-    DcMotor slides = hardwareMap.get(DcMotor.class, "slides");
-
+    public Servo mainIntake = null;
+    public DcMotor slides = null;
+    public Servo pivot = null;
+    public DcMotor leftIntakeArm = null;
+    public DcMotor rightIntakeArm = null;
 
     public void setSlidePos(int position) {
         if (position>0) {
@@ -47,14 +47,24 @@ public class Autonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+
+    mainIntake = hardwareMap.get(Servo.class, "mainIntake");
+    pivot = hardwareMap.get(Servo.class, "goBildaPivot");
+    rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
+    leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
+    slides = hardwareMap.get(DcMotor.class, "slides");
+
+    leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+    rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeArm.setTargetPosition(0);
         leftIntakeArm.setTargetPosition(0);
-        rightIntakeArm.setPower(0.5);
-        leftIntakeArm.setPower(0.5);
+        rightIntakeArm.setPower(0.75);
+        leftIntakeArm.setPower(0.75);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -66,14 +76,22 @@ public class Autonomous extends LinearOpMode {
         Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action preloadspecimenScore = drive.actionBuilder(drive.pose)
+                .waitSeconds(0.5)
                 .lineToY(-38)//Score preloaded specimen
                 .waitSeconds(1)
                         .build();
         Action firstSampleGrab = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(15, -40), 0)
-                .waitSeconds(3)
+                .waitSeconds(0.5)
                 .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
                         .build();
+        Action firstSampleDeliver = drive.actionBuilder(drive.pose)
+                .waitSeconds(0.3)
+                .splineTo(new Vector2d(40, -50), Math.toRadians(-45))
+                .build();
+        Action secondSampleGrab = drive.actionBuilder(drive.pose)
+                .waitSeconds(0.1)
+                .splineTo(new Vector2d(45, -38), Math.toRadians(48))
+                .build();
         Action fullRoute = drive.actionBuilder(drive.pose)
                 .lineToY(-40) //Score preloaded specimen
                 .waitSeconds(2)
@@ -94,14 +112,23 @@ public class Autonomous extends LinearOpMode {
                 .build();
         waitForStart();
 
-//        mainIntake.setPosition(0.1);
-//        setArmPos(750);
-//        pivot.setPosition(0.6);
-//        Actions.runBlocking(preloadspecimenScore);
-//        slides.setTargetPosition(400);
-//          setArmPos(600);
-//        Actions.runBlocking(firstSampleGrab);
-        Actions.runBlocking(fullRoute);
+        mainIntake.setPosition(0.1);
+        sleep(200);
+        setArmPos(750);
+        pivot.setPosition(0.6);
+        slides.setTargetPosition(400);
+        Actions.runBlocking(preloadspecimenScore);
+        mainIntake.setPosition(0.75);
+        Actions.runBlocking(firstSampleGrab);
+        slides.setTargetPosition(0);
+        setArmPos(40);
+        pivot.setPosition(0.55);
+        Actions.runBlocking(firstSampleDeliver);
+
+
+
+        pivot.setPosition(0.9);
+//        Actions.runBlocking(fullRoute);
 
     }
 }

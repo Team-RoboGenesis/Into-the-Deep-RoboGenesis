@@ -18,7 +18,6 @@ public class MeepMeepTesting {
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(10, -61, Math.toRadians(90)))
                 .lineToY(-40) //Score preloaded specimen
                 .waitSeconds(2)
-                .splineTo(new Vector2d(15, -45), 0)
                 .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
                 .waitSeconds(3)//lower arm and grab sample
                 .splineTo(new Vector2d(40, -50), Math.toRadians(-45))//Deliver sample to observation zone
