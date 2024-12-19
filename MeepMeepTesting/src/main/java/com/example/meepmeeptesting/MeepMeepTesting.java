@@ -18,6 +18,7 @@ public class MeepMeepTesting {
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(10, -61, Math.toRadians(90)))
                 .lineToY(-40) //Score preloaded specimen
                 .waitSeconds(2)
+                .splineTo(new Vector2d(15, -45), 0)
                 .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
                 .waitSeconds(3)//lower arm and grab sample
                 .splineTo(new Vector2d(40, -50), Math.toRadians(-45))//Deliver sample to observation zone
@@ -30,9 +31,7 @@ public class MeepMeepTesting {
                 .waitSeconds(0.5)
                 .splineTo(new Vector2d(10, -40), Math.toRadians(90))//score first specimen
                 .waitSeconds(2)
-                .splineTo(new Vector2d(10, -40), Math.toRadians(120))
-                .splineTo(new Vector2d(-35, -35), Math.toRadians(180))//park in ascent zone
-                .splineTo(new Vector2d(-26, -9), 0)
+                .splineTo(new Vector2d(47, -53), Math.toRadians(90))//park in ascent zone
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_OFFICIAL)

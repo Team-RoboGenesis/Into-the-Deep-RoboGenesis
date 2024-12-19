@@ -68,7 +68,7 @@ public class teleop extends OpMode {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > 1500) {
+        } else if (position > 1600) {
             rightIntakeArm.setTargetPosition(1500);
             leftIntakeArm.setTargetPosition(1500);
         } else {
@@ -82,7 +82,7 @@ public class teleop extends OpMode {
         double y = gamepad1.left_stick_y/1.35;
         double x = -gamepad1.left_stick_x/1.35;
         double rx = -gamepad1.right_stick_x/1.35;
-        int slidesPos = (int) (slides.getCurrentPosition()+(gamepad2.right_stick_y*100));
+        int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*100));
         int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
 
         frontLeftWheel.setPower(y + x + rx);
@@ -94,7 +94,6 @@ public class teleop extends OpMode {
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
-        telemetry.addData("ly", -gamepad2.left_stick_y);
         telemetry.update();
 
         if (gamepad2.left_bumper) {
@@ -111,14 +110,23 @@ public class teleop extends OpMode {
             setArmPos(armPos);
         } else if (gamepad2.left_stick_y>0) {
             setArmPos(armPos);
+        } else if (gamepad2.x) {
+            temporaryPivot.setPosition(0.1);
         }
 //        arm presets
-        else if (gamepad2.dpad_down) {
-            setArmPos(500);
-            temporaryPivot.setPosition(0.5);
+        else if (gamepad2.dpad_up) {
+            setArmPos(731);
+            temporaryPivot.setPosition(0.6);
+            slides.setTargetPosition(330);
+        } else if (gamepad2.dpad_down) {
+            setArmPos(520);
+            temporaryPivot.setPosition(0.35);
         } else if (gamepad2.dpad_left) {
-            setArmPos(800);
+            setArmPos(1165);
+            slides.setTargetPosition(220);
+            temporaryPivot.setPosition(0.3);
         }
+
 
     }
 }
