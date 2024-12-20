@@ -68,7 +68,7 @@ public class teleop extends OpMode {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > 1600) {
+        } else if (position > 1700) {
             rightIntakeArm.setTargetPosition(1500);
             leftIntakeArm.setTargetPosition(1500);
         } else {
@@ -89,6 +89,11 @@ public class teleop extends OpMode {
         backLeftWheel.setPower(y - x + rx);
         frontRightWheel.setPower(y - x - rx);
         backRightWheel.setPower(y + x - rx);
+        //new driver mode
+//        frontLeftWheel.setPower(y + x + rx/2);
+//        backLeftWheel.setPower(y - x + rx/2);
+//        frontRightWheel.setPower(y - x - rx/2);
+//        backRightWheel.setPower(y + x - rx/2);
 //        setArmPos(armPos);
         setSlidePos(slidesPos);
 
@@ -115,11 +120,11 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
-            setArmPos(731);
+            setArmPos(740);
             temporaryPivot.setPosition(0.6);
             slides.setTargetPosition(330);
         } else if (gamepad2.dpad_down) {
-            setArmPos(520);
+            setArmPos(525);
             temporaryPivot.setPosition(0.35);
         } else if (gamepad2.dpad_left) {
             setArmPos(1165);

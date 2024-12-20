@@ -77,57 +77,76 @@ public class Autonomous extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action preloadspecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
-                .lineToY(-38)//Score preloaded specimen
+                .lineToY(-22)//Score preloaded specimen
                 .waitSeconds(1)
                         .build();
         Action firstSampleGrab = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
-                .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
+                .splineTo(new Vector2d(35, -35), 0)
+                .splineTo(new Vector2d(53, -10), Math.toRadians(90))//Maneuver to 1st sample push
                         .build();
-        Action firstSampleDeliver = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.3)
-                .splineTo(new Vector2d(40, -50), Math.toRadians(-45))
+        Action firstSamplePositionPt2 = drive.actionBuilder(drive.pose)
+                .waitSeconds(0.5)
+                .lineToY(-55)
                 .build();
         Action secondSampleGrab = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.1)
                 .splineTo(new Vector2d(45, -38), Math.toRadians(48))
                 .build();
+        Action secondSpecimenGrab = drive.actionBuilder(drive.pose)
+                .waitSeconds(0.75)
+                .splineTo(new Vector2d(34, -51), Math.toRadians(-90))
+                .build();
+        Action secondSpecimenScore = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(10, -40), Math.toRadians(90))
+                .lineToY(-22)
+                .build();
         Action fullRoute = drive.actionBuilder(drive.pose)
-                .lineToY(-40) //Score preloaded specimen
+                .lineToY(-22) //Score preloaded specimen
                 .waitSeconds(2)
-                .splineTo(new Vector2d(15, -45), 0)
-                .splineTo(new Vector2d(30, -38), Math.toRadians(35))//Maneuver to 1st sample push
-                .waitSeconds(3)//lower arm and grab sample
-                .splineTo(new Vector2d(40, -50), Math.toRadians(-45))//Deliver sample to observation zone
-                .waitSeconds(3)//let go of sample and move arm out of way
-                .splineTo(new Vector2d(45, -38), Math.toRadians(48))//Maneuver to 2nd sample push
-                .waitSeconds(3)//lower arm and grab sample
-                .splineTo(new Vector2d(50, -47), Math.toRadians(-45))//Deliver sample to observation zone
-                .waitSeconds(1)//let go of sample
-                .splineTo(new Vector2d(47.1, -47), Math.toRadians(-90))//grab first specimen
+                .lineToY(-50)
+                .waitSeconds(0.1)
+                .splineTo(new Vector2d(50, -28), Math.toRadians(35))//Maneuver to 1st sample push
+                .waitSeconds(3)
+                .turn(Math.toRadians(-135))
+                .lineToY(-55)//Push sample to observation zone
+                .waitSeconds(0.1)
+                .splineTo(new Vector2d(60, -28), Math.toRadians(35))//Maneuver to 2nd sample push
+                .waitSeconds(0.1)
+                .turn(Math.toRadians(-135))
+                .lineToY(-55)//Push sample to observation zone
                 .waitSeconds(0.5)
-                .splineTo(new Vector2d(10, -40), Math.toRadians(90))//score first specimen
-                .waitSeconds(2)
-                .splineTo(new Vector2d(47, -53), Math.toRadians(90))//park in ascent zone
+                .splineTo(new Vector2d(34, -51), Math.toRadians(-90))//Grab second specimen
+                .waitSeconds(0.5)
+                .splineTo(new Vector2d(10, -22), Math.toRadians(90))//score second specimen
+                .waitSeconds(1)
+                .lineToY(-50)
+                .splineTo(new Vector2d(29, -45), 0)
+                .splineTo(new Vector2d(47, -53), Math.toRadians(90))//park in observation zone
                 .build();
         waitForStart();
 
         mainIntake.setPosition(0.1);
-        sleep(200);
-        setArmPos(750);
+        sleep(1000);
+        setArmPos(775);
         pivot.setPosition(0.6);
         slides.setTargetPosition(400);
         Actions.runBlocking(preloadspecimenScore);
         mainIntake.setPosition(0.75);
-        Actions.runBlocking(firstSampleGrab);
+        sleep(500);
+        pivot.setPosition(0.4);
         slides.setTargetPosition(0);
-        setArmPos(40);
-        pivot.setPosition(0.55);
-        Actions.runBlocking(firstSampleDeliver);
-
-
-
+        Actions.runBlocking(firstSampleGrab);
+//        Actions.runBlocking(firstSamplePositionPt2);
+        sleep(3000);
         pivot.setPosition(0.9);
+        sleep(500);
+        setArmPos(0);
+
+        sleep(2000);
+//        setArmPos(520);
+//        pivot.setPosition(0.35);
+
 //        Actions.runBlocking(fullRoute);
 
     }
