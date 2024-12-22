@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "AutonomousRedRight")
-public class Autonomous extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "roboctopiAuto")
+public class roboctopiAuto extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
@@ -48,14 +48,14 @@ public class Autonomous extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
 
-    mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-    pivot = hardwareMap.get(Servo.class, "goBildaPivot");
-    rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
-    leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
-    slides = hardwareMap.get(DcMotor.class, "slides");
+        mainIntake = hardwareMap.get(Servo.class, "mainIntake");
+        pivot = hardwareMap.get(Servo.class, "goBildaPivot");
+        rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
+        leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
+        slides = hardwareMap.get(DcMotor.class, "slides");
 
-    leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
-    rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -73,59 +73,20 @@ public class Autonomous extends LinearOpMode {
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
+        Pose2d beginPose = new Pose2d(-8, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action preloadspecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
                 .lineToY(-22)//Score preloaded specimen
                 .waitSeconds(1)
-                        .build();
-        Action firstSampleGrab = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.5)
-                .splineTo(new Vector2d(35, -35), 0)
-                .splineTo(new Vector2d(53, -10), Math.toRadians(90))//Maneuver to 1st sample push
-                        .build();
-        Action firstSamplePositionPt2 = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.5)
-                .lineToY(-55)
                 .build();
-        Action secondSampleGrab = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.1)
-                .splineTo(new Vector2d(45, -38), Math.toRadians(48))
-                .build();
-        Action secondSpecimenGrab = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.75)
-                .splineTo(new Vector2d(34, -51), Math.toRadians(-90))
-                .build();
-        Action secondSpecimenScore = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(10, -40), Math.toRadians(90))
-                .lineToY(-22)
-                .build();
-        Action fullRoute = drive.actionBuilder(drive.pose)
-                .lineToY(-22) //Score preloaded specimen
-                .waitSeconds(2)
-                .lineToY(-50)
-                .waitSeconds(0.1)
-                .splineTo(new Vector2d(50, -28), Math.toRadians(35))//Maneuver to 1st sample push
-                .waitSeconds(3)
-                .turn(Math.toRadians(-135))
-                .lineToY(-55)//Push sample to observation zone
-                .waitSeconds(0.1)
-                .splineTo(new Vector2d(60, -28), Math.toRadians(35))//Maneuver to 2nd sample push
-                .waitSeconds(0.1)
-                .turn(Math.toRadians(-135))
-                .lineToY(-55)//Push sample to observation zone
+        Action parkObservation = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
-                .splineTo(new Vector2d(34, -51), Math.toRadians(-90))//Grab second specimen
-                .waitSeconds(0.5)
-                .splineTo(new Vector2d(10, -22), Math.toRadians(90))//score second specimen
-                .waitSeconds(1)
-                .lineToY(-50)
-                .splineTo(new Vector2d(29, -45), 0)
-                .splineTo(new Vector2d(47, -53), Math.toRadians(90))//park in observation zone
+                .splineTo(new Vector2d(60, -60), Math.toRadians(90))
                 .build();
         waitForStart();
 
+        sleep(5000);
         mainIntake.setPosition(0.1);
         sleep(1000);
         setArmPos(775);
@@ -133,21 +94,16 @@ public class Autonomous extends LinearOpMode {
         slides.setTargetPosition(400);
         Actions.runBlocking(preloadspecimenScore);
         mainIntake.setPosition(0.75);
-        sleep(500);
+        sleep(5000);
         pivot.setPosition(0.4);
         slides.setTargetPosition(0);
-        Actions.runBlocking(firstSampleGrab);
-//        Actions.runBlocking(firstSamplePositionPt2);
-        sleep(3000);
+        Actions.runBlocking(parkObservation);
+
         pivot.setPosition(0.9);
         sleep(500);
         setArmPos(0);
 
         sleep(2000);
-//        setArmPos(520);
-//        pivot.setPosition(0.35);
-
-//        Actions.runBlocking(fullRoute);
 
     }
 }

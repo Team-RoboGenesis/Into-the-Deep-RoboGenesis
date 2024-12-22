@@ -65,12 +65,9 @@ public class teleop extends OpMode {
         }
     }
     public void setArmPos(int position) {
-        if (position < 0) {
-            rightIntakeArm.setTargetPosition(0);
-            leftIntakeArm.setTargetPosition(0);
-        } else if (position > 1700) {
-            rightIntakeArm.setTargetPosition(1500);
-            leftIntakeArm.setTargetPosition(1500);
+        if (position > 1700) {
+            rightIntakeArm.setTargetPosition(1700);
+            leftIntakeArm.setTargetPosition(1700);
         } else {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
@@ -102,13 +99,13 @@ public class teleop extends OpMode {
         telemetry.update();
 
         if (gamepad2.left_bumper) {
-            mainIntake.setPosition(0.1);
+            mainIntake.setPosition(0.05);
         } else if (gamepad2.right_bumper) {
-            mainIntake.setPosition(0.75);
+            mainIntake.setPosition(0.7);
         } else if (gamepad2.a) {
             temporaryPivot.setPosition(0.4);
         } else if (gamepad2.y) {
-            temporaryPivot.setPosition(0.9);
+            temporaryPivot.setPosition(0);
         } else if (gamepad2.b) {
             temporaryPivot.setPosition(0.5);
         } else if (gamepad2.left_stick_y<0) {
@@ -116,16 +113,17 @@ public class teleop extends OpMode {
         } else if (gamepad2.left_stick_y>0) {
             setArmPos(armPos);
         } else if (gamepad2.x) {
-            temporaryPivot.setPosition(0.1);
+            temporaryPivot.setPosition(1);
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
             setArmPos(740);
-            temporaryPivot.setPosition(0.6);
-            slides.setTargetPosition(330);
+            temporaryPivot.setPosition(0);
+            slides.setTargetPosition(385);
         } else if (gamepad2.dpad_down) {
-            setArmPos(525);
-            temporaryPivot.setPosition(0.35);
+            setArmPos(515);
+            temporaryPivot.setPosition(0.45);
+            slides.setTargetPosition(0);
         } else if (gamepad2.dpad_left) {
             setArmPos(1165);
             slides.setTargetPosition(220);

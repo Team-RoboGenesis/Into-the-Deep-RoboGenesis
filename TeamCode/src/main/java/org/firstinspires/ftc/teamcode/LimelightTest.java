@@ -104,7 +104,6 @@ public class LimelightTest extends LinearOpMode {
                         } else {
                             telemetry.addData("Limelight", "No data available");
                         }
-
                         telemetry.update();
                     }
                     limelight.stop();

@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "specimenParkAutoRight")
-public class specimenParkAutoRight extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "specimenParkAutoLeft")
+public class specimenParkAutoLeft extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
@@ -73,7 +73,7 @@ public class specimenParkAutoRight extends LinearOpMode {
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
+        Pose2d beginPose = new Pose2d(-8, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action preloadspecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
@@ -89,10 +89,12 @@ public class specimenParkAutoRight extends LinearOpMode {
                 .waitSeconds(0.5)
                 .lineToY(-55)
                 .build();
-        Action parkObservation = drive.actionBuilder(drive.pose)
+        Action parkAscent = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
-                .lineToY(-55)
-                .strafeTo(new Vector2d(60, -55))
+                .lineToY(-46)
+                .splineTo(new Vector2d(-40, -40), Math.toRadians(90))//park in observation zone
+                .splineTo(new Vector2d(-40, -10), Math.toRadians(90))
+//                .splineTo(new Vector2d())
                 .build();
         Action secondSampleGrab = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.1)
@@ -135,16 +137,16 @@ public class specimenParkAutoRight extends LinearOpMode {
         sleep(1000);
         setArmPos(772);
         pivot.setPosition(0);
-        slides.setTargetPosition(440);
+        slides.setTargetPosition(400);
         Actions.runBlocking(preloadspecimenScore);
         mainIntake.setPosition(0.75);
         sleep(5000);
         pivot.setPosition(0.4);
         slides.setTargetPosition(0);
         sleep(3000);
-        Actions.runBlocking(parkObservation);
+        Actions.runBlocking(parkAscent);
 
-        pivot.setPosition(0);
+        pivot.setPosition(0.9);
         sleep(500);
         setArmPos(0);
 
