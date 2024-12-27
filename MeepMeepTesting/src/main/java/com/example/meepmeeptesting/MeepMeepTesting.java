@@ -22,7 +22,7 @@ public class MeepMeepTesting {
                         .splineTo(new Vector2d(37, -38), Math.toRadians(90))
                         .lineToY(-9)
                         .strafeTo(new Vector2d(46, -9))
-                
+                        .lineToY(-50)//move sample into observation
 
                 .build());
 
