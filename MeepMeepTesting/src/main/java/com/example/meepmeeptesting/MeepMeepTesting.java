@@ -8,7 +8,7 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(650);
+        MeepMeep meepMeep = new MeepMeep(600);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -20,9 +20,18 @@ public class MeepMeepTesting {
                         .waitSeconds(0.5)
                         .lineToY(-40)//line up for first sample push
                         .splineTo(new Vector2d(37, -38), Math.toRadians(90))
-                        .lineToY(-9)
-                        .strafeTo(new Vector2d(46, -9))
-                        .lineToY(-50)//move sample into observation
+                        .lineToY(-17)
+
+                        .strafeTo(new Vector2d(46, -14))
+                        .strafeTo(new Vector2d(46, -55))//move first sample into observation
+                        .strafeTo(new Vector2d(46, -14))
+                        .strafeTo(new Vector2d(55, -14))
+                        .strafeTo(new Vector2d(55, -55))//move second sample into observation
+                        .strafeTo(new Vector2d(55, -14))
+                        .strafeTo(new Vector2d(64, -14))
+                        .strafeTo(new Vector2d(64, -55))//move third sample into observation
+
+
 
                 .build());
 
