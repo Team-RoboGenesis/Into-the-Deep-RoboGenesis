@@ -117,9 +117,9 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
-            setArmPos(740);
-            temporaryPivot.setPosition(0);
-            slides.setTargetPosition(385);
+            setArmPos(772);
+            temporaryPivot.setPosition(0.1);
+            slides.setTargetPosition(450);
         } else if (gamepad2.dpad_down) {
             setArmPos(515);
             temporaryPivot.setPosition(0.45);

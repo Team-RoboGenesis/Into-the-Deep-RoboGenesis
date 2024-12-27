@@ -100,6 +100,12 @@ public class specimenParkAutoLeft extends LinearOpMode {
                 .waitSeconds(0.1)
                 .splineTo(new Vector2d(45, -38), Math.toRadians(48))
                 .build();
+        Action strafe = drive.actionBuilder(drive.pose)
+                .waitSeconds(1)
+                .strafeTo(new Vector2d(0, -60))
+                .build();
+
+
         Action secondSpecimenGrab = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.75)
                 .splineTo(new Vector2d(34, -51), Math.toRadians(-90))
@@ -136,19 +142,21 @@ public class specimenParkAutoLeft extends LinearOpMode {
         mainIntake.setPosition(0.1);
         sleep(1000);
         setArmPos(772);
-        pivot.setPosition(0);
-        slides.setTargetPosition(400);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(530);
+        Actions.runBlocking(strafe);
+        sleep(500);
         Actions.runBlocking(preloadspecimenScore);
         mainIntake.setPosition(0.75);
-        sleep(5000);
+        sleep(1000);
         pivot.setPosition(0.4);
         slides.setTargetPosition(0);
-        sleep(3000);
+        sleep(1000);
         Actions.runBlocking(parkAscent);
 
         pivot.setPosition(0.9);
         sleep(500);
-        setArmPos(0);
+
 
         sleep(2000);
 

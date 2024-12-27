@@ -137,8 +137,8 @@ public class specimenParkAutoLeftWithWait extends LinearOpMode {
         mainIntake.setPosition(0.1);
         sleep(1000);
         setArmPos(772);
-        pivot.setPosition(0);
-        slides.setTargetPosition(400);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(530);
         Actions.runBlocking(preloadspecimenScore);
         mainIntake.setPosition(0.75);
         sleep(5000);

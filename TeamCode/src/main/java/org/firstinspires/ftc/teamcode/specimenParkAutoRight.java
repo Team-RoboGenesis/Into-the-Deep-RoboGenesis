@@ -77,7 +77,7 @@ public class specimenParkAutoRight extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action preloadspecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
-                .lineToY(-22)//Score preloaded specimen
+                .lineToY(-18)//Score preloaded specimen
                 .waitSeconds(1)
                 .build();
         Action firstSampleGrab = drive.actionBuilder(drive.pose)
@@ -91,7 +91,7 @@ public class specimenParkAutoRight extends LinearOpMode {
                 .build();
         Action parkObservation = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.5)
-                .lineToY(-55)
+                .lineToY(-50)
                 .strafeTo(new Vector2d(60, -55))
                 .build();
         Action secondSampleGrab = drive.actionBuilder(drive.pose)
@@ -134,14 +134,14 @@ public class specimenParkAutoRight extends LinearOpMode {
         mainIntake.setPosition(0.1);
         sleep(1000);
         setArmPos(772);
-        pivot.setPosition(0);
-        slides.setTargetPosition(440);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(530);
         Actions.runBlocking(preloadspecimenScore);
         mainIntake.setPosition(0.75);
-        sleep(5000);
+        sleep(1000);
         pivot.setPosition(0.4);
         slides.setTargetPosition(0);
-        sleep(3000);
+        sleep(1000);
         Actions.runBlocking(parkObservation);
 
         pivot.setPosition(0);
