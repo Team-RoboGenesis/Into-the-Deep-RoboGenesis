@@ -21,7 +21,6 @@ public class MeepMeepTesting {
                         .lineToY(-40)//line up for first sample push
                         .splineTo(new Vector2d(37, -38), Math.toRadians(90))
                         .lineToY(-17)
-
                         .strafeTo(new Vector2d(46, -14))
                         .strafeTo(new Vector2d(46, -55))//move first sample into observation
                         .strafeTo(new Vector2d(46, -14))
