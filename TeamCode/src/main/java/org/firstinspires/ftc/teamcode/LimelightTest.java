@@ -6,6 +6,9 @@ import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
@@ -14,10 +17,79 @@ import java.util.List;
 @Autonomous (name = "limelightTest")
 public class LimelightTest extends LinearOpMode {
 
+    public DcMotor frontLeftWheel = null;
+    public DcMotor frontRightWheel = null;
+    public DcMotor backLeftWheel = null;
+    public DcMotor backRightWheel = null;
+    public Servo mainIntake = null;
+    public DcMotor slides = null;
+    public Servo pivot = null;
+    public DcMotor leftIntakeArm = null;
+    public DcMotor rightIntakeArm = null;
+
+    public void setSlidePos(int position) {
+        if (position>0) {
+            slides.setTargetPosition(0);
+        } else if (position<-1500) {
+            slides.setTargetPosition(-1500);
+        } else {
+            slides.setTargetPosition(position);
+        }
+    }
+    public void setArmPos(int position) {
+        if (position < 0) {
+            rightIntakeArm.setTargetPosition(0);
+            leftIntakeArm.setTargetPosition(0);
+        } else if (position > 2713) {
+            rightIntakeArm.setTargetPosition(2713);
+            leftIntakeArm.setTargetPosition(2713);
+        }
+        else {
+            rightIntakeArm.setTargetPosition(position);
+            leftIntakeArm.setTargetPosition(position);
+        }
+    }
+    public void strafe(double direction) {
+        frontLeftWheel.setPower(-direction);
+        backLeftWheel.setPower(direction);
+        frontRightWheel.setPower(-direction);
+        backRightWheel.setPower(direction);
+    }
+
     private Limelight3A limelight;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        frontLeftWheel = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRightWheel = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
+        backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
+        mainIntake = hardwareMap.get(Servo.class, "mainIntake");
+        pivot = hardwareMap.get(Servo.class, "goBildaPivot");
+        rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
+        leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
+        slides = hardwareMap.get(DcMotor.class, "slides");
+
+        leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightIntakeArm.setTargetPosition(0);
+        leftIntakeArm.setTargetPosition(0);
+        rightIntakeArm.setPower(0.75);
+        leftIntakeArm.setPower(0.75);
+        rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.setTargetPosition(0);
+        slides.setPower(0.75);
+        slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         limelight = hardwareMap.get(Limelight3A.class, "Benny");
 
         telemetry.setMsTransmissionInterval(11);
@@ -33,6 +105,16 @@ public class LimelightTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             LLResult result = limelight.getLatestResult();
+            frontLeftWheel.setPower(-result.getTx());
+            frontRightWheel.setPower(-result.getTx());
+            backRightWheel.setPower(result.getTx());
+            backLeftWheel.setPower(result.getTx());
+
+//            frontLeftWheel.setPower(result.getTy() + result.getTx());
+//            backLeftWheel.setPower(result.getTy() + result.getTx());
+//            frontRightWheel.setPower(result.getTy() - result.getTx());
+//            backRightWheel.setPower(result.getTy() - result.getTx());
+
             if (result != null) {
                 if (result.isValid()) {
                     Pose3D botpose = result.getBotpose();
