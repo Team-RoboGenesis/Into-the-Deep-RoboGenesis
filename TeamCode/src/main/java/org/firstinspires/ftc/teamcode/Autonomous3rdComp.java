@@ -80,13 +80,13 @@ public class Autonomous3rdComp extends LinearOpMode {
                 .build();
         Action firstSamplePush = drive.actionBuilder(drive.pose)
                 .lineToY(-40)//line up for first sample push
-//                .strafeToLinearHeading(new Vector2d(40, -40), Math.toRadians(-90))
-                .strafeTo(new Vector2d(40, -40))
+                .splineTo(new Vector2d(37, -38), Math.toRadians(90))
+                .splineTo(new Vector2d(37, 0), Math.toRadians(90))
                 .strafeTo(new Vector2d(40, 3))
                 .strafeTo(new Vector2d(55, 3))
                 .strafeTo(new Vector2d(55, -60))//move first sample into observation
                 .strafeTo(new Vector2d(55, -45))
-                .turn(Math.toRadians(-90))
+                .turn(Math.toRadians(-180))
                 .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
@@ -101,8 +101,6 @@ public class Autonomous3rdComp extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(4, -25))
                 .waitSeconds(1)
-                .lineToY(-40)
-                .strafeTo(new Vector2d(60, -60))
                 .build();
         Action parkObservation = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(4, -50))
