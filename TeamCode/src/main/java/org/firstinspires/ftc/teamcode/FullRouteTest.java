@@ -78,10 +78,11 @@ public class FullRouteTest extends LinearOpMode {
         Action fullRoute = drive.actionBuilder(drive.pose)
                 .lineToY(-30)//score first specimen
                 .lineToY(-40)//line up for first sample push
-                .splineTo(new Vector2d(37, -38), Math.toRadians(90))
-                .splineTo(new Vector2d(37, -14), Math.toRadians(90))
-                .strafeTo(new Vector2d(46, -14))
-                .strafeTo(new Vector2d(46, -55))//move first sample into observation
+                .splineTo(new Vector2d(40, -38), Math.toRadians(90))
+                .splineTo(new Vector2d(40, 5), Math.toRadians(90))
+                .strafeTo(new Vector2d(55, 5))
+                .strafeTo(new Vector2d(55, -60))//move first sample into observation
+                .strafeTo(new Vector2d(55, -45))
                 .strafeToLinearHeading(new Vector2d(7, -40), Math.toRadians(90)) //score second specimen
                 .strafeTo(new Vector2d(7, -30))
                 .lineToY(-40)
@@ -89,7 +90,7 @@ public class FullRouteTest extends LinearOpMode {
 //                        .splineTo(new Vector2d(46, -14), Math.toRadians(90))
 //                        .strafeTo(new Vector2d(57, -14))
 //                        .strafeTo(new Vector2d(57, -55))//move second sample into observation
-                .strafeToLinearHeading(new Vector2d(47, -55), Math.toRadians(-90))//score third specimen
+                .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
                 .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(4, -30))
                 .lineToY(-40)

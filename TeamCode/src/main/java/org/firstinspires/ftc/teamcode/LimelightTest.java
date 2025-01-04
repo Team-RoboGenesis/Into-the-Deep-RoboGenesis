@@ -6,6 +6,7 @@ import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
-@Autonomous (name = "limelightTest")
+@Autonomous(name = "limelightTest")
 public class LimelightTest extends LinearOpMode {
 
     public DcMotor frontLeftWheel = null;
@@ -94,7 +95,7 @@ public class LimelightTest extends LinearOpMode {
 
         telemetry.setMsTransmissionInterval(11);
 
-        limelight.pipelineSwitch(1);
+        limelight.pipelineSwitch(0);
 
         /*
          * Starts polling for data.
@@ -105,15 +106,8 @@ public class LimelightTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             LLResult result = limelight.getLatestResult();
-            frontLeftWheel.setPower(-result.getTx());
-            frontRightWheel.setPower(-result.getTx());
-            backRightWheel.setPower(result.getTx());
-            backLeftWheel.setPower(result.getTx());
 
-//            frontLeftWheel.setPower(result.getTy() + result.getTx());
-//            backLeftWheel.setPower(result.getTy() + result.getTx());
-//            frontRightWheel.setPower(result.getTy() - result.getTx());
-//            backRightWheel.setPower(result.getTy() - result.getTx());
+            frontLeftWheel.setPower(result.getTy()/1000);
 
             if (result != null) {
                 if (result.isValid()) {
