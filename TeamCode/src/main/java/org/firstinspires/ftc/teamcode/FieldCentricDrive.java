@@ -117,13 +117,7 @@ public class FieldCentricDrive extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
             int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*100));
             int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
-
-            //new driver mode
-//        frontLeftWheel.setPower(y + x + rx);
-//        backLeftWheel.setPower(y - x + rx);
-//        frontRightWheel.setPower(y - x - rx);
-//        backRightWheel.setPower(y + x - rx);
-//        setArmPos(armPos/2);
+            
             setSlidePos(slidesPos);
 
             telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
