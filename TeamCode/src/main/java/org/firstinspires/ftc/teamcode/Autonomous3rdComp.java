@@ -121,17 +121,16 @@ public class Autonomous3rdComp extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(7, -40), Math.toRadians(90)) //score second specimen
                 .strafeTo(new Vector2d(7, -30))
                 .lineToY(-40)
-//                        .splineTo(new Vector2d(46, -38), Math.toRadians(90))
-//                        .splineTo(new Vector2d(46, -14), Math.toRadians(90))
-//                        .strafeTo(new Vector2d(57, -14))
-//                        .strafeTo(new Vector2d(57, -55))//move second sample into observation
                 .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
                 .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(4, -30))
                 .lineToY(-40)
                 .strafeTo(new Vector2d(60, -60))
                 .build();
-
+            Action somefingElse = drive.actionBuilder(drive.pose)
+                    .setTangent(0)
+                    .splineTo(new Vector2d(48, 48), Math.PI / 2)
+                    .build();
         waitForStart();
 
 //        Actions.runBlocking(fullRoute);
