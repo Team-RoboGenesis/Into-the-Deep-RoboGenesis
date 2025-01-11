@@ -27,7 +27,7 @@ public class MeepMeepTesting {
                 .strafeTo(new Vector2d(7, -30))
                 .lineToY(-40)
                 .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
-                        .strafeTo(new Vector2d(47, -50))
+                .strafeTo(new Vector2d(47, -50))
                 .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(4, -30))
                 .lineToY(-40)
