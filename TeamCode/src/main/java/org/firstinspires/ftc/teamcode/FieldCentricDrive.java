@@ -20,21 +20,21 @@ public class FieldCentricDrive extends LinearOpMode {
     public DcMotor rightIntakeArm = null;
 
     public void setSlidePos(int position) {
-        if (position>0) {
+        if (position<0) {
             slides.setTargetPosition(0);
-        } else if (position<-1500) {
-            slides.setTargetPosition(-1500);
+        } else if (position>2830) {
+            slides.setTargetPosition(2830);
         } else {
             slides.setTargetPosition(position);
         }
     }
     public void setArmPos(int position) {
-        if (position < 0) {
+        if (position > 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > 2713) {
-            rightIntakeArm.setTargetPosition(2713);
-            leftIntakeArm.setTargetPosition(2713);
+        } else if (position < -2713) {
+            rightIntakeArm.setTargetPosition(-2713);
+            leftIntakeArm.setTargetPosition(-2713);
         }
         else {
             rightIntakeArm.setTargetPosition(position);
@@ -98,7 +98,7 @@ public class FieldCentricDrive extends LinearOpMode {
                 imu.resetYaw();
             }
 
-            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)+10;
 
             double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
             double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
@@ -115,8 +115,8 @@ public class FieldCentricDrive extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
-            int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*100));
-            int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
+            int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*400));
+            int armPos = (int) (rightIntakeArm.getCurrentPosition()+(gamepad2.left_stick_y*100));
             
             setSlidePos(slidesPos);
 

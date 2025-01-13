@@ -18,16 +18,21 @@ public class MeepMeepTesting {
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(10, -61, Math.toRadians(90)))
                 .lineToY(-30)//score first specimen
                 .lineToY(-40)//line up for first sample push
-                .splineTo(new Vector2d(40, -38), Math.toRadians(90))
-                .splineTo(new Vector2d(40, 5), Math.toRadians(90))
-                .strafeTo(new Vector2d(55, 5))
-                .strafeTo(new Vector2d(55, -60))//move first sample into observation
-                .strafeTo(new Vector2d(55, -45))
+                .splineTo(new Vector2d(35, -38), Math.toRadians(90))
+                .splineTo(new Vector2d(35, -10), Math.toRadians(90))
+                .strafeTo(new Vector2d(45, -10))
+                .strafeTo(new Vector2d(45, -55))//move first sample into observation
+                .strafeTo(new Vector2d(45, -10))
+                .strafeTo(new Vector2d(55, -10))
+                .strafeTo(new Vector2d(55, -55))//move first sample into observation
                 .strafeToLinearHeading(new Vector2d(7, -40), Math.toRadians(90)) //score second specimen
                 .strafeTo(new Vector2d(7, -30))
                 .lineToY(-40)
-                .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
-                .strafeTo(new Vector2d(47, -50))
+                .strafeToLinearHeading(new Vector2d(47, -50), Math.toRadians(-90))//score third specimen
+                .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(4, -30))
+                .lineToY(-40)
+                .strafeToLinearHeading(new Vector2d(47, -50), Math.toRadians(-90))//score third specimen
                 .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(4, -30))
                 .lineToY(-40)
