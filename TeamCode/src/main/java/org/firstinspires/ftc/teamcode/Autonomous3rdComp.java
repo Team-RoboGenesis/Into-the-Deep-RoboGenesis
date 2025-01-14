@@ -81,7 +81,6 @@ public class Autonomous3rdComp extends LinearOpMode {
         Action firstSamplePush = drive.actionBuilder(drive.pose)
                 .lineToY(-40)//line up for first sample push
                 .splineTo(new Vector2d(37, -38), Math.toRadians(90))
-                .waitSeconds(0.001)
                 .splineTo(new Vector2d(37, 0), Math.toRadians(90))
                 .strafeTo(new Vector2d(40, 3))
                 .strafeTo(new Vector2d(55, 3))
