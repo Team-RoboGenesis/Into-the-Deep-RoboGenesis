@@ -101,11 +101,11 @@ public class teleop extends OpMode {
         telemetry.update();
 
         if (gamepad2.left_bumper) {
-            mainIntake.setPosition(0.05);
+            mainIntake.setPosition(0.1);
         } else if (gamepad2.right_bumper) {
-            mainIntake.setPosition(0.7);
+            mainIntake.setPosition(0.5);
         } else if (gamepad2.a) {
-            temporaryPivot.setPosition(0.4);
+            temporaryPivot.setPosition(0.3);
         } else if (gamepad2.y) {
             temporaryPivot.setPosition(0);
         } else if (gamepad2.b) {
@@ -119,11 +119,11 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
-            setArmPos(772);
+            setArmPos(840);
             temporaryPivot.setPosition(0.1);
-            slides.setTargetPosition(450);
+            slides.setTargetPosition(2450);
         } else if (gamepad2.dpad_down) {
-            setArmPos(515);
+            setArmPos(600);
             temporaryPivot.setPosition(0.45);
             slides.setTargetPosition(0);
         } else if (gamepad2.dpad_left) {

@@ -74,25 +74,24 @@ public class Autonomous3rdComp extends LinearOpMode {
 
         Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action firstSpecimenScore = drive.actionBuilder(drive.pose)
+        Action SpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
-                .lineToY(-25)
+                .lineToY(-24)
+                .build();
+        Action clearSubmersible = drive.actionBuilder(drive.pose)
+                .lineToY(-45)
                 .build();
         Action firstSamplePush = drive.actionBuilder(drive.pose)
-                .lineToY(-40)//line up for first sample push
-                .splineTo(new Vector2d(37, -38), Math.toRadians(90))
-                .splineTo(new Vector2d(37, 0), Math.toRadians(90))
-                .strafeTo(new Vector2d(40, 3))
-                .strafeTo(new Vector2d(55, 3))
-                .strafeTo(new Vector2d(55, -60))//move first sample into observation
-                .strafeTo(new Vector2d(55, -45))
-                .turn(Math.toRadians(-180))
+                .strafeToLinearHeading(new Vector2d(46, -40), Math.toRadians(-90))
+                .strafeTo(new Vector2d(46, 0))
+                .strafeTo(new Vector2d(55, 0))
+                .strafeTo(new Vector2d(55, -55))//move first sample into observation
+                .strafeTo(new Vector2d(55, -49.4))
                 .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(7, -45), Math.toRadians(90)) //score second specimen
-                .waitSeconds(0.001)
-                .strafeTo(new Vector2d(7, -25))
+                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
+                .lineToY(-24)
                 .build();
         Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
                 .lineToY(-40)
@@ -134,56 +133,34 @@ public class Autonomous3rdComp extends LinearOpMode {
 
 //        Actions.runBlocking(fullRoute);
         mainIntake.setPosition(0.05);
-        sleep(200);
-        setArmPos(772);
-        pivot.setPosition(0.1);
-        slides.setTargetPosition(530);
-        Actions.runBlocking(firstSpecimenScore);
-        sleep(3000);
-        mainIntake.setPosition(0.75);
-        sleep(1000);
-        pivot.setPosition(0.5);
-        slides.setTargetPosition(0);
-        Actions.runBlocking(firstSamplePush);
-        sleep(1000);
-        setArmPos(1000);
-        sleep(5500);
-        setArmPos(515);
-        pivot.setPosition(0.45);
-        slides.setTargetPosition(0);
-        sleep(1000);
-        mainIntake.setPosition(0.05);
-        sleep(200);
-        setArmPos(772);
-        pivot.setPosition(0.1);
-        slides.setTargetPosition(530);
-        Actions.runBlocking(secondSpecimenScore);
-        sleep(3000);
-        mainIntake.setPosition(0.75);
-        sleep(200);
-        pivot.setPosition(0.5);
-        slides.setTargetPosition(0);
-        Actions.runBlocking(thirdSpecimenGrab);
         sleep(400);
-        setArmPos(515);
-        pivot.setPosition(0.45);
-        slides.setTargetPosition(0);
-        sleep(1500);
-        mainIntake.setPosition(0.05);
-        sleep(100);
-        setArmPos(772);
+        setArmPos(860);
         pivot.setPosition(0.1);
-        slides.setTargetPosition(530);
-        Actions.runBlocking(thirdSpecimenScore);
-        sleep(3000);
+        slides.setTargetPosition(2500);
+        Actions.runBlocking(SpecimenScore);
+        sleep(300);
         mainIntake.setPosition(0.75);
-        sleep(200);
-        pivot.setPosition(0.5);
+        sleep(1000);
         slides.setTargetPosition(0);
-        Actions.runBlocking(parkObservation);
-        sleep(2000);
+        Actions.runBlocking(clearSubmersible);
+        setArmPos(1500);
+        Actions.runBlocking(firstSamplePush);
+        setArmPos(490);
+        pivot.setPosition(0.3);
+        sleep(400);
+        slides.setTargetPosition(1200);
+        sleep(500);
+        mainIntake.setPosition(0.05);
+        sleep(800);
+        setArmPos(840);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(2450);
+        Actions.runBlocking(secondSpecimenScore);
+        sleep(300);
+        mainIntake.setPosition(0.75);
+        sleep(1000);
         slides.setTargetPosition(0);
-        pivot.setPosition(0);
-        setArmPos(0);
+        Actions.runBlocking(clearSubmersible);
+        sleep(1000);
     }
 }
