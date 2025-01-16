@@ -15,7 +15,7 @@ public class FieldCentricDrive extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
-    public Servo pivot = null;
+    public Servo temporaryPivot = null;
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
 
@@ -50,7 +50,7 @@ public class FieldCentricDrive extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRight");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRight");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
-        pivot = hardwareMap.get(Servo.class, "goBildaPivot");
+        temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
@@ -125,35 +125,35 @@ public class FieldCentricDrive extends LinearOpMode {
             telemetry.update();
 
             if (gamepad2.left_bumper) {
-                mainIntake.setPosition(0.05);
+                mainIntake.setPosition(0.1);
             } else if (gamepad2.right_bumper) {
-                mainIntake.setPosition(0.7);
+                mainIntake.setPosition(0.5);
             } else if (gamepad2.a) {
-                pivot.setPosition(0.4);
+                temporaryPivot.setPosition(0.3);
             } else if (gamepad2.y) {
-                pivot.setPosition(0);
+                temporaryPivot.setPosition(0);
             } else if (gamepad2.b) {
-                pivot.setPosition(0.5);
+                temporaryPivot.setPosition(0.5);
             } else if (gamepad2.left_stick_y<0) {
                 setArmPos(armPos);
             } else if (gamepad2.left_stick_y>0) {
                 setArmPos(armPos);
             } else if (gamepad2.x) {
-                pivot.setPosition(1);
+                temporaryPivot.setPosition(1);
             }
 //        arm presets
             else if (gamepad2.dpad_up) {
-                setArmPos(772);
-                pivot.setPosition(0.1);
-                slides.setTargetPosition(450);
+                setArmPos(840);
+                temporaryPivot.setPosition(0.1);
+                slides.setTargetPosition(2450);
             } else if (gamepad2.dpad_down) {
-                setArmPos(515);
-                pivot.setPosition(0.45);
+                setArmPos(600);
+                temporaryPivot.setPosition(0.45);
                 slides.setTargetPosition(0);
             } else if (gamepad2.dpad_left) {
                 setArmPos(1165);
                 slides.setTargetPosition(220);
-                pivot.setPosition(0.3);
+                temporaryPivot.setPosition(0.3);
             }
 
         }

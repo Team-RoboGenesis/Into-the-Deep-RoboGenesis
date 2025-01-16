@@ -94,10 +94,7 @@ public class Autonomous3rdComp extends LinearOpMode {
                 .lineToY(-24)
                 .build();
         Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
-                .lineToY(-40)
-                .strafeToLinearHeading(new Vector2d(47, -35), Math.toRadians(-90))//score third specimen
-                .waitSeconds(0.001)
-                .strafeTo(new Vector2d(47, -45))
+                .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
                 .build();
         Action thirdSpecimenScore = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(new Vector2d(4, -45), Math.toRadians(90))
@@ -109,20 +106,22 @@ public class Autonomous3rdComp extends LinearOpMode {
                 .strafeTo(new Vector2d(60, -60))
                 .build();
         Action fullRoute = drive.actionBuilder(drive.pose)
-                .lineToY(-30)//score first specimen
-                .lineToY(-40)//line up for first sample push
-                .splineTo(new Vector2d(40, -38), Math.toRadians(90))
-                .splineTo(new Vector2d(40, 5), Math.toRadians(90))
-                .strafeTo(new Vector2d(55, 5))
-                .strafeTo(new Vector2d(55, -60))//move first sample into observation
-                .strafeTo(new Vector2d(55, -45))
-                .strafeToLinearHeading(new Vector2d(7, -40), Math.toRadians(90)) //score second specimen
-                .strafeTo(new Vector2d(7, -30))
+                .waitSeconds(1)
+                .lineToY(-24)
+                .lineToY(-45)
+                .strafeToLinearHeading(new Vector2d(46, -40), Math.toRadians(-90))
+                .strafeTo(new Vector2d(46, 0))
+                .strafeTo(new Vector2d(55, 0))
+                .strafeTo(new Vector2d(55, -55))//move first sample into observation
+                .strafeTo(new Vector2d(55, -49.4))
+                .waitSeconds(0.3)
+                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
+                .lineToY(-24)
                 .lineToY(-40)
                 .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
-                .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
-                .strafeTo(new Vector2d(4, -30))
-                .lineToY(-40)
+                .waitSeconds(0.3)
+                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
+                .lineToY(-24)
                 .strafeTo(new Vector2d(60, -60))
                 .build();
             Action somefingElse = drive.actionBuilder(drive.pose)
