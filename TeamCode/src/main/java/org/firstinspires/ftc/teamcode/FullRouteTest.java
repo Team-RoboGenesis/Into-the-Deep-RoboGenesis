@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "roboctopiAuto")
-public class roboctopiAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "fullRouteTest")
+public class FullRouteTest extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
@@ -73,37 +73,28 @@ public class roboctopiAuto extends LinearOpMode {
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Pose2d beginPose = new Pose2d(-8, -61, Math.toRadians(90));
+        Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action preloadspecimenScore = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.5)
-                .lineToY(-22)//Score preloaded specimen
-                .waitSeconds(1)
-                .build();
-        Action parkObservation = drive.actionBuilder(drive.pose)
-                .waitSeconds(0.5)
-                .splineTo(new Vector2d(60, -60), Math.toRadians(90))
+        Action fullRoute = drive.actionBuilder(drive.pose)
+                .lineToY(-30)//score first specimen
+                .lineToY(-40)//line up for first sample push
+                .splineTo(new Vector2d(40, -38), Math.toRadians(90))
+                .splineTo(new Vector2d(40, 5), Math.toRadians(90))
+                .strafeTo(new Vector2d(55, 5))
+                .strafeTo(new Vector2d(55, -60))//move first sample into observation
+                .strafeTo(new Vector2d(55, -45))
+                .strafeToLinearHeading(new Vector2d(7, -40), Math.toRadians(90)) //score second specimen
+                .strafeTo(new Vector2d(7, -30))
+                .lineToY(-40)
+                .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
+                .strafeToLinearHeading(new Vector2d(4, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(4, -30))
+                .lineToY(-40)
+                .strafeTo(new Vector2d(60, -60))
                 .build();
         waitForStart();
 
-        sleep(5000);
-        mainIntake.setPosition(0.1);
-        sleep(1000);
-        setArmPos(775);
-        pivot.setPosition(0.6);
-        slides.setTargetPosition(400);
-        Actions.runBlocking(preloadspecimenScore);
-        mainIntake.setPosition(0.75);
-        sleep(5000);
-        pivot.setPosition(0.4);
-        slides.setTargetPosition(0);
-        Actions.runBlocking(parkObservation);
-
-        pivot.setPosition(0.9);
-        sleep(500);
-        setArmPos(0);
-
-        sleep(2000);
+        Actions.runBlocking(fullRoute);
 
     }
 }
