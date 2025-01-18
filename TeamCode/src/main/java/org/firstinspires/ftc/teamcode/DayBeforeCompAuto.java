@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto3rdComp")
-public class Autonomous3rdComp extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "specimenParkAutoRight")
+public class DayBeforeCompAuto extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
@@ -40,6 +40,7 @@ public class Autonomous3rdComp extends LinearOpMode {
             leftIntakeArm.setTargetPosition(position);
         }
     }
+
     /**
      * @throws InterruptedException
      */
@@ -74,7 +75,7 @@ public class Autonomous3rdComp extends LinearOpMode {
 
         Pose2d beginPose = new Pose2d(10, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action SpecimenScore = drive.actionBuilder(drive.pose)
+        Action specimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
                 .lineToY(-24)
                 .build();
@@ -91,8 +92,6 @@ public class Autonomous3rdComp extends LinearOpMode {
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
                 .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(90)) //score second specimen
-                .waitSeconds(1)
-                .lineToY(-24)
                 .build();
         Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
@@ -125,31 +124,35 @@ public class Autonomous3rdComp extends LinearOpMode {
                 .lineToY(-24)
                 .strafeTo(new Vector2d(60, -60))
                 .build();
-            Action somefingElse = drive.actionBuilder(drive.pose)
-                    .setTangent(0)
-                    .splineTo(new Vector2d(48, 48), Math.PI / 2)
-                    .build();
         waitForStart();
 
-//        Actions.runBlocking(fullRoute);
         mainIntake.setPosition(0.05);
-        sleep(400);
-        setArmPos(910);
-        pivot.setPosition(0.2);
-//        slides.setTargetPosition(2500);
-        Actions.runBlocking(SpecimenScore);
-        sleep(300);
-        mainIntake.setPosition(0.75);
         sleep(1000);
+        setArmPos(772);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(500);
+        Actions.runBlocking(specimenScore);
+        mainIntake.setPosition(0.6);
+        sleep(300);
+        pivot.setPosition(0.4);
         slides.setTargetPosition(0);
         Actions.runBlocking(clearSubmersible);
         setArmPos(1500);
         Actions.runBlocking(firstSamplePush);
         setArmPos(505);
         pivot.setPosition(0.3);
-        sleep(800);
+        sleep(500);
         mainIntake.setPosition(0.05);
-        sleep(800);
+        sleep(300);
+        setArmPos(772);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(500);
+        Actions.runBlocking(secondSpecimenScore);
+        sleep(300);
+        Actions.runBlocking(specimenScore);
+        sleep(300);
+        mainIntake.setPosition(0.6);
+        //reference
         setArmPos(840);
         pivot.setPosition(0.1);
         slides.setTargetPosition(2450);
@@ -160,5 +163,12 @@ public class Autonomous3rdComp extends LinearOpMode {
         slides.setTargetPosition(0);
         Actions.runBlocking(clearSubmersible);
         sleep(1000);
+
+        pivot.setPosition(0);
+        sleep(500);
+        setArmPos(0);
+
+        sleep(2000);
+
     }
 }

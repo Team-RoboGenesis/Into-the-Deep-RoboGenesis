@@ -25,12 +25,12 @@ public class MeepMeepTesting {
                 .strafeTo(new Vector2d(55, -55))//move first sample into observation
                 .strafeTo(new Vector2d(55, -49.4))
                 .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
-                .lineToY(-24)
-                .lineToY(-40)
+                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(90)) //score second specimen
+                .strafeTo(new Vector2d(7, -24))
+                .strafeTo(new Vector2d(7, -40))
                 .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
                 .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
+                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(90)) //score second specimen
                 .lineToY(-24)
                 .strafeTo(new Vector2d(60, -60))
                 .build());

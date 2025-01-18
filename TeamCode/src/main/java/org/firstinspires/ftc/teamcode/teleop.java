@@ -87,7 +87,7 @@ public class teleop extends OpMode {
     public void loop() {
         double y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
         double x = -gamepad1.left_stick_x;
-        double rx = gamepad1.right_stick_x;
+        double rx = -gamepad1.right_stick_x;
         int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*400));
         int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
         frontLeftWheel.setPower(y + x + rx);
@@ -103,7 +103,7 @@ public class teleop extends OpMode {
         if (gamepad2.left_bumper) {
             mainIntake.setPosition(0.1);
         } else if (gamepad2.right_bumper) {
-            mainIntake.setPosition(0.5);
+            mainIntake.setPosition(0.65);
         } else if (gamepad2.a) {
             temporaryPivot.setPosition(0.3);
         } else if (gamepad2.y) {
@@ -119,12 +119,12 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
-            setArmPos(840);
-            temporaryPivot.setPosition(0.1);
-            slides.setTargetPosition(2450);
+            setArmPos(880);
+            setSlidePos(1800);
+            temporaryPivot.setPosition(0.2);
         } else if (gamepad2.dpad_down) {
-            setArmPos(600);
-            temporaryPivot.setPosition(0.45);
+            setArmPos(505);
+            temporaryPivot.setPosition(0.3);
             slides.setTargetPosition(0);
         } else if (gamepad2.dpad_left) {
             setArmPos(1165);
