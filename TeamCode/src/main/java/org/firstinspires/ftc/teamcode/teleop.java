@@ -48,6 +48,7 @@ public class teleop extends OpMode {
         leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
+
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
