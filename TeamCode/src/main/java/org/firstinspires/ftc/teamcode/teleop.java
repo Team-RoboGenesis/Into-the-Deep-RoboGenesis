@@ -25,7 +25,7 @@ public class teleop extends OpMode {
     public Servo temporaryPivot = null;
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
-//    public DcMotor hangArm = null;
+    public DcMotor hangArm = null;
 
     @Override
     public void init() {
@@ -38,7 +38,7 @@ public class teleop extends OpMode {
         temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
-//        hangArm = hardwareMap.get(DcMotor.class, "hangArm");
+        hangArm = hardwareMap.get(DcMotor.class, "hangArm");
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -67,21 +67,21 @@ public class teleop extends OpMode {
         slides.setTargetPosition(0);
         slides.setPower(0.5);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        hangArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        hangArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        hangArm.setTargetPosition(0);
-//        hangArm.setPower(0.5);
-//        hangArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hangArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hangArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hangArm.setTargetPosition(0);
+        hangArm.setPower(0.5);
+        hangArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-//    public void setHangPos(int position) {
-//        if (position<0) {
-//            hangArm.setTargetPosition(0);
-//        } else if (position>2830) {
-//            hangArm.setTargetPosition(2830);
-//        } else {
-//            hangArm.setTargetPosition(position);
-//        }
-//    }
+    public void setHangPos(int position) {
+        if (position<0) {
+            hangArm.setTargetPosition(0);
+        } else if (position>2830) {
+            hangArm.setTargetPosition(2830);
+        } else {
+            hangArm.setTargetPosition(position);
+        }
+    }
     public void setArmPos(int position) {
         if (position > 3400) {
             rightIntakeArm.setTargetPosition(3400);
@@ -108,13 +108,13 @@ public class teleop extends OpMode {
         double rx = -gamepad1.right_stick_x;
         int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*100));
         int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*100));
-//        int hangPos = (int) (hangArm.getCurrentPosition()+(-gamepad2.left_trigger*400+gamepad2.right_trigger*400));
-        frontLeftWheel.setPower(y + x/2 + rx);
-        backLeftWheel.setPower(y - x/2 + rx);
-        frontRightWheel.setPower(y - x/2 - rx);
-        backRightWheel.setPower(y + x/2 - rx);
+        int hangPos = (int) (hangArm.getCurrentPosition()+(-gamepad2.left_trigger*400+gamepad2.right_trigger*400));
+        frontLeftWheel.setPower(y + x + rx);
+        backLeftWheel.setPower(y - x + rx);
+        frontRightWheel.setPower(y - x - rx);
+        backRightWheel.setPower(y + x - rx);
         setSlidePos(slidesPos);
-//        setHangPos(hangPos);
+        setHangPos(hangPos);
 
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());
         telemetry.addData("slides", slides.getCurrentPosition());
@@ -139,10 +139,10 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
-            setArmPos(700);
+            setArmPos(740);
             temporaryPivot.setPosition(0.1);
         } else if (gamepad2.dpad_down) {
-            setArmPos(410);
+            setArmPos(415);
             temporaryPivot.setPosition(0.3);
             slides.setTargetPosition(0);
         } else if (gamepad2.dpad_left) {
