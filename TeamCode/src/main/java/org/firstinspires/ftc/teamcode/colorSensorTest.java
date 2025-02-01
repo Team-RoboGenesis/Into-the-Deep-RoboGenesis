@@ -18,13 +18,16 @@ public class colorSensorTest extends LinearOpMode {
     // Define a variable for our color sensor
     ColorRangeSensor color;
 public boolean isASample() {
-    if (color.blue()>400& color.green()<400&color.red()<400&color.getDistance(DistanceUnit.MM)<30) {
+    if (color.blue()>400& color.green()>400&color.red()>400&color.getDistance(DistanceUnit.MM)<30) {
        return true;
     }
     return false;
 }
+int yellow = color.green();
+int red = color.red();
+int blue = color.blue();
 public boolean yellow() {
-    if (color.getDistance(DistanceUnit.MM) < 30 & color.green() > color.blue() & color.green() > color.red() & color.green()>500) {
+    if (color.getDistance(DistanceUnit.MM) < 30 & yellow > blue & yellow > red & yellow>500) {
         return true;
     }
     return false;
