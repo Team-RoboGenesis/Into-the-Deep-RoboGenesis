@@ -126,8 +126,8 @@ public class teleop extends OpMode {
             mainIntake.setPosition(0.1);
         } else if (gamepad2.right_bumper) {
             mainIntake.setPosition(0.75);
-        } else if (gamepad2.a) {
-            temporaryPivot.setPosition(0.3);
+        } else if (gamepad2.a & slides.getCurrentPosition()>50) {
+            temporaryPivot.setPosition(1);
         } else if (gamepad2.y) {
             temporaryPivot.setPosition(0);
         } else if (gamepad2.b) {
@@ -136,8 +136,6 @@ public class teleop extends OpMode {
             setArmPos(armPos);
         } else if (gamepad2.left_stick_y>0) {
             setArmPos(armPos);
-        } else if (gamepad2.x) {
-            temporaryPivot.setPosition(1);
         } else if (gamepad1.b) {
             ascentServo.setPosition(0);
         } else if (gamepad1.y) {
