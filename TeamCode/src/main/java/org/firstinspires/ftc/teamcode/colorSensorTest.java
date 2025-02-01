@@ -26,12 +26,25 @@ public boolean isASample() {
 int yellow = color.green();
 int red = color.red();
 int blue = color.blue();
-public boolean yellow() {
+public boolean yellow() { // see if yellow is the color of sample in claw
     if (color.getDistance(DistanceUnit.MM) < 30 & yellow > blue & yellow > red & yellow>500) {
+        return true;
+
+    }
+    return false;
+
+} public boolean red() { // see if red is the color of sample in claw
+    if (color.getDistance(DistanceUnit.MM) < 30 & red > yellow & red > blue & red > 500) {
         return true;
     }
     return false;
-}
+
+    } public boolean blue() { // see if blue is the color of sample in claw
+    if (color.getDistance(DistanceUnit.MM) < 30 & blue > red & blue > yellow & blue > 500) {
+        return true;
+    }
+    return false;
+    }
     @Override
     public void runOpMode() {
         // Get the color sensor from hardwareMap
@@ -64,6 +77,10 @@ public boolean yellow() {
             }
             if (yellow()) {
                 led1.setPosition(0.35);//yellow
+            } else if (red()) {
+                led1.setPosition(0.28);//red
+            } else if (blue()) {
+                led1.setPosition(0.6);//blue
             }
         }
     }
