@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "DayBeforeCompAuto")
-public class DayBeforeCompAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Specimen")
+public class specimenAuto extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
@@ -80,17 +80,10 @@ public class DayBeforeCompAuto extends LinearOpMode {
                 .strafeTo(new Vector2d(46, -40))
                 .strafeTo(new Vector2d(46, 0))
                 .strafeTo(new Vector2d(55, 0))
-                .strafeTo(new Vector2d(60, -55))//move first sample into observation
-                .strafeTo(new Vector2d(60, -46.5))
+                .strafeTo(new Vector2d(55, -55))//move first sample into observation
+                .strafeTo(new Vector2d(55, -46.5))
                 .turn(Math.toRadians(-180))
                 .build();
-//        Action firstSamplePushV2 = drive.actionBuilder(drive.pose)
-//                .strafeTo(new Vector2d(46, -40))
-//                .strafeTo(new Vector2d(46, 0))
-//                .strafeToLinearHeading(new Vector2d(58, 0), Math.toRadians(-90))
-//                .strafeTo(new Vector2d(60, -55))
-//                .strafeTo(new Vector2d(60, -42))
-//                .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
                 .turn(Math.toRadians(180))
