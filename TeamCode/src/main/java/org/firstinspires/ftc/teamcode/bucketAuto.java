@@ -75,11 +75,10 @@ public class bucketAuto extends LinearOpMode {
 
         Pose2d beginPose = new Pose2d(-45, -55, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action parkAscent = drive.actionBuilder(drive.pose)
-                .lineToX(-65)
+        Action scoreBasket = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(new Vector2d(-72, -45), Math.toRadians(-135))
                 .build();
-        Action parkAscent2 = drive.actionBuilder(drive.pose)
-                .lineToX(-45)
+        Action sampleGrab = drive.actionBuilder(drive.pose)
                 .build();
         waitForStart();
 
@@ -90,13 +89,11 @@ public class bucketAuto extends LinearOpMode {
         pivot.setPosition(0.5);
         slides.setTargetPosition(1700);
         sleep(2000);
-        Actions.runBlocking(parkAscent);
+        Actions.runBlocking(scoreBasket);
         sleep(500);
         mainIntake.setPosition(0.7);
-        sleep(400);
-        mainIntake.setPosition(0.525);
         sleep(1000);
-        Actions.runBlocking(parkAscent2);
+        Actions.runBlocking(sampleGrab);
         sleep(1000);
         slides.setTargetPosition(0);
         pivot.setPosition(0);

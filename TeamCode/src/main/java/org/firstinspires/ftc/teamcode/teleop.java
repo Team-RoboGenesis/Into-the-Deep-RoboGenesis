@@ -26,6 +26,7 @@ public class teleop extends OpMode {
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
     public DcMotor hangArm = null;
+    public Servo ascentServo = null;
 
     @Override
     public void init() {
@@ -39,6 +40,7 @@ public class teleop extends OpMode {
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
         hangArm = hardwareMap.get(DcMotor.class, "hangArm");
+        ascentServo = hardwareMap.get(Servo.class, "revAscent");
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -136,13 +138,18 @@ public class teleop extends OpMode {
             setArmPos(armPos);
         } else if (gamepad2.x) {
             temporaryPivot.setPosition(1);
+        } else if (gamepad1.b) {
+            ascentServo.setPosition(0);
+        } else if (gamepad1.y) {
+            ascentServo.setPosition(0.7);
         }
 //        arm presets
         else if (gamepad2.dpad_up) {
-            setArmPos(740);
+            setArmPos(750);
             temporaryPivot.setPosition(0.1);
+            slides.setTargetPosition(300);
         } else if (gamepad2.dpad_down) {
-            setArmPos(415);
+            setArmPos(425);
             temporaryPivot.setPosition(0.3);
             slides.setTargetPosition(0);
         } else if (gamepad2.dpad_left) {

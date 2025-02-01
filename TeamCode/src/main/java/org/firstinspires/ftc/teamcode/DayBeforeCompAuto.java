@@ -17,6 +17,7 @@ public class DayBeforeCompAuto extends LinearOpMode {
     public Servo pivot = null;
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
+    public Servo ascentServo = null;
 
     public void setArmPos(int position) {
         if (position < 0) {
@@ -44,6 +45,7 @@ public class DayBeforeCompAuto extends LinearOpMode {
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
+        ascentServo = hardwareMap.get(Servo.class, "revAscent");
 
         leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -79,11 +81,21 @@ public class DayBeforeCompAuto extends LinearOpMode {
                 .strafeTo(new Vector2d(46, 0))
                 .strafeTo(new Vector2d(55, 0))
                 .strafeTo(new Vector2d(60, -55))//move first sample into observation
-                .strafeTo(new Vector2d(60, -50))
+                .strafeTo(new Vector2d(60, -46.5))
+                .turn(Math.toRadians(-180))
                 .build();
+//        Action firstSamplePushV2 = drive.actionBuilder(drive.pose)
+//                .strafeTo(new Vector2d(46, -40))
+//                .strafeTo(new Vector2d(46, 0))
+//                .strafeToLinearHeading(new Vector2d(58, 0), Math.toRadians(-90))
+//                .strafeTo(new Vector2d(60, -55))
+//                .strafeTo(new Vector2d(60, -42))
+//                .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(-8, -50), Math.toRadians(90)) //score second specimen
+                .turn(Math.toRadians(180))
+                .strafeTo(new Vector2d(0, -45)) //score second specimen
+                .strafeTo(new Vector2d(0, -24))
                 .build();
         Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
@@ -97,78 +109,37 @@ public class DayBeforeCompAuto extends LinearOpMode {
                 .strafeTo(new Vector2d(4, -50))
                 .strafeTo(new Vector2d(60, -60))
                 .build();
-        Action fullRoute = drive.actionBuilder(drive.pose)
-                .waitSeconds(1)
-                .lineToY(-24)
-                .lineToY(-45)
-                .strafeToLinearHeading(new Vector2d(46, -40), Math.toRadians(-90))
-                .strafeTo(new Vector2d(46, 0))
-                .strafeTo(new Vector2d(55, 0))
-                .strafeTo(new Vector2d(55, -55))//move first sample into observation
-                .strafeTo(new Vector2d(55, -49.4))
-                .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
-                .lineToY(-24)
-                .lineToY(-40)
-                .strafeToLinearHeading(new Vector2d(47, -45), Math.toRadians(-90))//score third specimen
-                .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(7, -50), Math.toRadians(180)) //score second specimen
-                .lineToY(-24)
-                .strafeTo(new Vector2d(60, -60))
-                .build();
         waitForStart();
 
         mainIntake.setPosition(0.05);
         sleep(300);
-        setArmPos(740);
+        setArmPos(735);
         pivot.setPosition(0.1);
-        slides.setTargetPosition(450);
+        slides.setTargetPosition(480);
         sleep(1000);
         Actions.runBlocking(specimenScore);
-        mainIntake.setPosition(0.6);
+        mainIntake.setPosition(0.7);
         sleep(300);
         pivot.setPosition(0.4);
         slides.setTargetPosition(0);
         Actions.runBlocking(clearSubmersible);
-//        setArmPos(1500);
         pivot.setPosition(0.1);
+        setArmPos(405);
         sleep(1000);
+//        Actions.runBlocking(firstSamplePushV2);
         Actions.runBlocking(firstSamplePush);
-        pivot.setPosition(0);
-        setArmPos(0);
         slides.setTargetPosition(0);
-        sleep(2000);
+        pivot.setPosition(0.3);
+        sleep(1000);
+        mainIntake.setPosition(0.05);
+        sleep(300);
+        setArmPos(720);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(500);
+        Actions.runBlocking(secondSpecimenScore);
+        sleep(300);
+        mainIntake.setPosition(0.7);
 
-//        setArmPos(380);
-//        pivot.setPosition(0.3);
-//        sleep(1000);
-//        mainIntake.setPosition(0.05);
-//        sleep(300);
-//        setArmPos(720);
-//        pivot.setPosition(0.1);
-//        slides.setTargetPosition(500);
-//        Actions.runBlocking(secondSpecimenScore);
-//        sleep(300);
-//        Actions.runBlocking(specimenScore);
-//        sleep(300);
-//        mainIntake.setPosition(0.6);
-        //reference
-//        setArmPos(840);
-//        pivot.setPosition(0.1);
-//        slides.setTargetPosition(2450);
-//        Actions.runBlocking(secondSpecimenScore);
-//        sleep(300);
-//        mainIntake.setPosition(0.75);
-//        sleep(1000);
-//        slides.setTargetPosition(0);
-//        Actions.runBlocking(clearSubmersible);
-//        sleep(1000);
-//
-//        pivot.setPosition(0);
-//        sleep(500);
-//        setArmPos(0);
-
-        sleep(2000);
 
     }
 }
