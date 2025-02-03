@@ -124,7 +124,6 @@ public class specimenAuto extends LinearOpMode {
         pivot.setPosition(0.1);
         setArmPos(405);
         sleep(200);
-//        Actions.runBlocking(firstSamplePushV2);
         Actions.runBlocking(firstSamplePush);
         slides.setTargetPosition(0);
         pivot.setPosition(0.3);
@@ -154,7 +153,5 @@ public class specimenAuto extends LinearOpMode {
         slides.setTargetPosition(500);
         Actions.runBlocking(thirdSpecimenScore);
 //        Actions.runBlocking(parkObservation);
-
-
     }
 }

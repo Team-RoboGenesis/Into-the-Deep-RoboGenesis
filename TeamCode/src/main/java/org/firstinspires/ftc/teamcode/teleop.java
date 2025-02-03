@@ -110,7 +110,6 @@ public class teleop extends OpMode {
     } public boolean yellow() { // see if yellow is the color of sample in claw
         if (color.getDistance(DistanceUnit.MM) < 30 & color.green() > color.blue() & color.green()> color.red() & color.green()>500) {
             return true;
-
         }
         return false;
 
@@ -191,7 +190,7 @@ public class teleop extends OpMode {
         } else if (blue()) {
             led1.setPosition(0.6);//blue
         } else if (purple()) {
-            led1.setPosition(0.71);
+            led1.setPosition(0.71);//purple
         }
 
 
