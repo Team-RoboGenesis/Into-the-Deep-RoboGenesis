@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +29,8 @@ public class teleop extends OpMode {
     public DcMotor rightIntakeArm = null;
     public DcMotor hangArm = null;
     public Servo ascentServo = null;
+    public Servo led1 = null;
+    ColorRangeSensor color;
 
     @Override
     public void init() {
@@ -41,6 +45,8 @@ public class teleop extends OpMode {
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
         hangArm = hardwareMap.get(DcMotor.class, "hangArm");
         ascentServo = hardwareMap.get(Servo.class, "revAscent");
+        color = hardwareMap.get(ColorRangeSensor.class, "color");
+        led1 = hardwareMap.get(Servo.class, "LED1");
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -101,6 +107,29 @@ public class teleop extends OpMode {
         } else {
             slides.setTargetPosition(position);
         }
+    } public boolean yellow() { // see if yellow is the color of sample in claw
+        if (color.getDistance(DistanceUnit.MM) < 30 & color.green() > color.blue() & color.green()> color.red() & color.green()>500) {
+            return true;
+
+        }
+        return false;
+
+    } public boolean red() { // see if red is the color of sample in claw
+        if (color.getDistance(DistanceUnit.MM) < 30 & color.red() > color.green() & color.red() > color.blue() & color.red() > 500) {
+            return true;
+        }
+        return false;
+
+    } public boolean blue() { // see if blue is the color of sample in claw
+        if (color.getDistance(DistanceUnit.MM) < 30 & color.blue() > color.red() & color.blue() > color.green() & color.blue() > 500) {
+            return true;
+        }
+        return false;
+    } public boolean purple() {
+        if (color.getDistance(DistanceUnit.MM)>30) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -154,6 +183,15 @@ public class teleop extends OpMode {
             setArmPos(1165);
             slides.setTargetPosition(220);
             temporaryPivot.setPosition(0.3);
+        }
+        if (yellow()) {
+            led1.setPosition(0.35);//yellow
+        } else if (red()) {
+            led1.setPosition(0.28);//red
+        } else if (blue()) {
+            led1.setPosition(0.6);//blue
+        } else if (purple()) {
+            led1.setPosition(0.71);
         }
 
 
