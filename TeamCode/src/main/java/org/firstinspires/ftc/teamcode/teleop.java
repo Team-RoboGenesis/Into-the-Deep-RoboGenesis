@@ -37,6 +37,10 @@ public class teleop extends OpMode {
     int hangExtend = 2830;
     int slidesExtend = 1700;
     int armLimit = 3400;
+    int armScorePos = 750;
+    int armWallPos = 425;
+    int armBucketPos = 1450;
+    int slidesRetract = 0;
 
     @Override
     public void init() {
@@ -98,7 +102,13 @@ public class teleop extends OpMode {
             hangArm.setTargetPosition(position);
         }
     }
-    public void setArmPos(int position) { // limits for arm
+    /*
+    setArmPos is a helpful function for handling the pitching arm movement and
+    preventing the arm from moving above or below its physical limitations
+    *
+    parameter "int position" is a measurement for tick that the arm can run to
+    */
+    public void setArmPos(int position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
@@ -111,8 +121,8 @@ public class teleop extends OpMode {
         }
     }
     public void setSlidePos(int position) { // limits for slides
-        if (position < 0) {
-            slides.setTargetPosition(0);
+        if (position < slidesRetract) {
+            slides.setTargetPosition(slidesRetract);
         } else if (position > slidesExtend) {
             slides.setTargetPosition(slidesExtend);
         } else {
@@ -127,6 +137,7 @@ public class teleop extends OpMode {
     } public boolean purple() { // run on purple
         return color.getDistance(DistanceUnit.MM) > grabDistance;
     }
+
     //functions
     public void openClaw () {
         mainIntake.setPosition(0.7);
@@ -134,6 +145,16 @@ public class teleop extends OpMode {
     public void closeClaw () {
         mainIntake.setPosition(0.05);
     }
+    public void pivotTopPos () {
+        pivot.setPosition(0.1);
+    }
+    public void pivotMiddlePos () {
+        pivot.setPosition(0.5);
+    }
+    public void pivotWallPos () {
+        pivot.setPosition(0.3);
+    }
+
 
     @Override
     public void loop() {
@@ -164,7 +185,7 @@ public class teleop extends OpMode {
             closeClaw();
         } else if (gamepad2.right_bumper) {
             openClaw();
-        } else if (gamepad2.a & slides.getCurrentPosition()>50) {
+        } else if (gamepad2.a & slides.getCurrentPosition()>50) {//The slides have to be slightly extended for the pivot to clear the pulley for the slides
             pivot.setPosition(1);
         } else if (gamepad2.y) {
             pivot.setPosition(0);
@@ -178,17 +199,17 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) { //score specimen preset
-            setArmPos(750);
-            pivot.setPosition(0.1);
+            setArmPos(armScorePos);
+            pivotTopPos();
             slides.setTargetPosition(300);
         } else if (gamepad2.dpad_down) { //wall grab preset
-            setArmPos(425);
-            pivot.setPosition(0.3);
-            slides.setTargetPosition(0);
-        } else if (gamepad2.dpad_left) { //low bucket preset
-            setArmPos(1165);
-            slides.setTargetPosition(220);
-            pivot.setPosition(0.3);
+            setArmPos(armWallPos);
+            pivotWallPos();
+            slides.setTargetPosition(slidesRetract);
+        } else if (gamepad2.dpad_left) { //high bucket preset
+            setArmPos(armBucketPos);
+            slides.setTargetPosition(slidesExtend);
+            pivotMiddlePos();
         }
         //LED control
         if (yellow()) {
