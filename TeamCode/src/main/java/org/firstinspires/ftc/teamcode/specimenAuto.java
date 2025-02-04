@@ -10,38 +10,83 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "SpecimenAuto")
 public class specimenAuto extends LinearOpMode {
 
+    //motors and sensors
     public Servo mainIntake = null;
     public DcMotor slides = null;
     public Servo pivot = null;
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
     public Servo ascentServo = null;
+    public Servo led1 = null;
     ColorRangeSensor color;
+
+    //constants
+    int grabDistance = 30;
+    int maxColor = 500;
+    int armLimit = 3400;
+
+    //color definitions
+    public boolean yellow() { // see if yellow is the color of sample in claw
+        return color.getDistance(DistanceUnit.MM) < grabDistance & color.green() > color.blue() & color.green() > color.red() & color.green() > maxColor;
+    } public boolean red() { // see if red is the color of sample in claw
+        return color.getDistance(DistanceUnit.MM) < grabDistance & color.red() > color.green() & color.red() > color.blue() & color.red() > maxColor;
+    } public boolean blue() { // see if blue is the color of sample in claw
+        return color.getDistance(DistanceUnit.MM) < grabDistance & color.blue() > color.red() & color.blue() > color.green() & color.blue() > maxColor;
+    } public boolean purple() { // run on purple
+        return color.getDistance(DistanceUnit.MM) > grabDistance;
+    }
 
     public void setArmPos(int position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > 2713) {
-            rightIntakeArm.setTargetPosition(2713);
-            leftIntakeArm.setTargetPosition(2713);
-        }
-        else {
+        } else if (position > armLimit) {
+            rightIntakeArm.setTargetPosition(armLimit);
+            leftIntakeArm.setTargetPosition(armLimit);
+        } else {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
         }
     }
-
+    //functions
+    public void scoreSpecimen() {
+        closeClaw();
+        sleep(100);
+        setArmPos(740);
+        pivot.setPosition(0.1);
+        slides.setTargetPosition(500);
+    }
+    public void wallGrab() {
+        slides.setTargetPosition(0);
+        pivot.setPosition(0.3);
+        sleep(300);
+        closeClaw();
+        sleep(200);
+    }
+    public void openClaw () {
+        mainIntake.setPosition(0.7);
+    }
+    public void closeClaw () {
+        mainIntake.setPosition(0.05);
+    }
+    public void pivotMiddlePos () {
+        pivot.setPosition(0.4);
+    }
+    public void pivotTopPos () {
+        pivot.setPosition(0.1);
+    }
     /**
      * @throws InterruptedException
      */
     @Override
     public void runOpMode() throws InterruptedException {
 
-
+        //configuration
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
         pivot = hardwareMap.get(Servo.class, "goBildaPivot");
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
@@ -49,11 +94,13 @@ public class specimenAuto extends LinearOpMode {
         slides = hardwareMap.get(DcMotor.class, "slides");
         ascentServo = hardwareMap.get(Servo.class, "revAscent");
         color = hardwareMap.get(ColorRangeSensor.class, "color");
+        led1 = hardwareMap.get(Servo.class, "LED1");
 
         leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
 
+//        ftcLib blocks
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -72,7 +119,7 @@ public class specimenAuto extends LinearOpMode {
 
         Pose2d beginPose = new Pose2d(6, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action specimenScore = drive.actionBuilder(drive.pose)
+        Action firstSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
                 .lineToY(-24)
                 .build();
@@ -91,7 +138,6 @@ public class specimenAuto extends LinearOpMode {
                 .waitSeconds(0.3)
                 .splineTo(new Vector2d(30, -45), Math.toRadians(90))
                 .strafeTo(new Vector2d(0, -40))
-//                .splineTo(new Vector2d(0, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(0, -24))
                 .build();
         Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
@@ -100,57 +146,50 @@ public class specimenAuto extends LinearOpMode {
         Action thirdSpecimenScore = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(30, -45), Math.toRadians(90))
                 .strafeTo(new Vector2d(3, -40))
-//                .splineTo(new Vector2d(0, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(3, -24))
                 .build();
         Action parkObservation = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(4, -50))
                 .strafeTo(new Vector2d(60, -60))
                 .build();
+
+        if (yellow()) {
+            led1.setPosition(0.35);//yellow
+        } else if (red()) {
+            led1.setPosition(0.28);//red
+        } else if (blue()) {
+            led1.setPosition(0.6);//blue
+        } else if (purple()) {
+            led1.setPosition(0.71);//purple
+        }
         waitForStart();
 
-        mainIntake.setPosition(0.05);
-        sleep(100);
-        setArmPos(740);
-        pivot.setPosition(0.1);
-        slides.setTargetPosition(500);
-        sleep(300);
-        Actions.runBlocking(specimenScore);
-        mainIntake.setPosition(0.7);
+        scoreSpecimen();
+        Actions.runBlocking(firstSpecimenScore);
+        openClaw();
         sleep(200);
-        pivot.setPosition(0.4);
+        pivotMiddlePos();
         slides.setTargetPosition(0);
         Actions.runBlocking(clearSubmersible);
-        pivot.setPosition(0.1);
+        pivotTopPos();
         setArmPos(405);
         sleep(200);
         Actions.runBlocking(firstSamplePush);
-        slides.setTargetPosition(0);
-        pivot.setPosition(0.3);
-        sleep(300);
-        mainIntake.setPosition(0.05);
-        sleep(200);
-        setArmPos(740);
-        pivot.setPosition(0.1);
-        slides.setTargetPosition(500);
+        wallGrab();
+        scoreSpecimen();
         Actions.runBlocking(secondSpecimenScore);
-//        sleep(300);
-        mainIntake.setPosition(0.7);
         sleep(300);
-        pivot.setPosition(0.4);
+        openClaw();
+        sleep(200);
+        pivotMiddlePos();
         slides.setTargetPosition(0);
         Actions.runBlocking(clearSubmersible);
         sleep(200);
-        pivot.setPosition(0.1);
+        pivotTopPos();
         setArmPos(405);
         Actions.runBlocking(thirdSpecimenGrab);
-        pivot.setPosition(0.3);
-        sleep(300);
-        mainIntake.setPosition(0.05);
-        sleep(300);
-        setArmPos(740);
-        pivot.setPosition(0.1);
-        slides.setTargetPosition(500);
+        wallGrab();
+        scoreSpecimen();
         Actions.runBlocking(thirdSpecimenScore);
 //        Actions.runBlocking(parkObservation);
     }

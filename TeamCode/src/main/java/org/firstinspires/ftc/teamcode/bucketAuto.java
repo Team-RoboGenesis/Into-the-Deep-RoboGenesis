@@ -18,27 +18,30 @@ public class bucketAuto extends LinearOpMode {
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
 
-    public void setSlidePos(int position) {
-        if (position>0) {
-            slides.setTargetPosition(0);
-        } else if (position<-1500) {
-            slides.setTargetPosition(-1500);
-        } else {
-            slides.setTargetPosition(position);
-        }
-    }
+    int armLimit = 3400;
+
     public void setArmPos(int position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > 2713) {
-            rightIntakeArm.setTargetPosition(2713);
-            leftIntakeArm.setTargetPosition(2713);
-        }
-        else {
+        } else if (position > armLimit) {
+            rightIntakeArm.setTargetPosition(armLimit);
+            leftIntakeArm.setTargetPosition(armLimit);
+        } else {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
         }
+    }
+    public void bucketScore () {
+        setArmPos(1450);
+        pivot.setPosition(0.5);
+        slides.setTargetPosition(1700);
+    }
+    public void openClaw () {
+        mainIntake.setPosition(0.7);
+    }
+    public void closeClaw () {
+        mainIntake.setPosition(0.05);
     }
     /**
      * @throws InterruptedException
@@ -83,15 +86,13 @@ public class bucketAuto extends LinearOpMode {
         waitForStart();
 
 //        Actions.runBlocking(fullRoute);
-        mainIntake.setPosition(0.05);
+        closeClaw();
         sleep(400);
-        setArmPos(1450);
-        pivot.setPosition(0.5);
-        slides.setTargetPosition(1700);
+        bucketScore();
         sleep(2000);
         Actions.runBlocking(scoreBasket);
         sleep(500);
-        mainIntake.setPosition(0.7);
+        openClaw();
         sleep(1000);
         Actions.runBlocking(sampleGrab);
         sleep(1000);
