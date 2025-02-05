@@ -72,6 +72,9 @@ public class teleop extends OpMode {
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //ftc lib blocks
+        FTCLibBlocks();
+    }
+    public void FTCLibBlocks () {
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -93,6 +96,13 @@ public class teleop extends OpMode {
         hangArm.setPower(0.5);
         hangArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+    /*
+    * setHangPos is a handy function for controlling the movement
+    * of our linear actuator and preventing the the actuator extending past
+    * its physical limitations
+    *
+    *parameter "int position" is a measurement of ticks that the actuator can run to
+     */
     public void setHangPos(int position) { // limits for hang arm
         if (position < 0) {
             hangArm.setTargetPosition(0);
@@ -106,7 +116,7 @@ public class teleop extends OpMode {
     setArmPos is a helpful function for handling the pitching arm movement and
     preventing the arm from moving above or below its physical limitations
     *
-    parameter "int position" is a measurement for tick that the arm can run to
+    parameter "int position" is a measurement for ticks that the arm can run to
     */
     public void setArmPos(int position) {
         if (position < 0) {
