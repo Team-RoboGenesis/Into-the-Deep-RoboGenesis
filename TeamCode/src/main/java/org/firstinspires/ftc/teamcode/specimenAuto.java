@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "SpecimenAuto")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "MeanAuto")
 public class specimenAuto extends LinearOpMode {
 
     //motors and sensors
@@ -57,12 +57,13 @@ public class specimenAuto extends LinearOpMode {
     public void scoreSpecimen() {
         closeClaw();
         sleep(100);
-        setArmPos(740);
+        setArmPos(710);
         pivot.setPosition(0.1);
-        slides.setTargetPosition(500);
+        slides.setTargetPosition(530);
     }
     public void wallGrab() {
         slides.setTargetPosition(0);
+        setArmPos(370);
         pivot.setPosition(0.3);
         sleep(300);
         closeClaw();
@@ -107,8 +108,8 @@ public class specimenAuto extends LinearOpMode {
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeArm.setTargetPosition(0);
         leftIntakeArm.setTargetPosition(0);
-        rightIntakeArm.setPower(1);
-        leftIntakeArm.setPower(1);
+        rightIntakeArm.setPower(0.75);
+        leftIntakeArm.setPower(0.75);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -121,13 +122,16 @@ public class specimenAuto extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action firstSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
-                .lineToY(-24)
+                .lineToY(-23)
                 .build();
         Action clearSubmersible = drive.actionBuilder(drive.pose)
                 .lineToY(-46)
                 .build();
         Action firstSamplePush = drive.actionBuilder(drive.pose)
+                .strafeTo(new Vector2d(6, -46))
                 .strafeTo(new Vector2d(46, -40))
+//                .splineTo(new Vector2d(46, 0), Math.toRadians(90))
+//                .splineTo(new Vector2d(55, 0), Math.toRadians(90))
                 .strafeTo(new Vector2d(46, 0))
                 .strafeTo(new Vector2d(55, 0))
                 .strafeTo(new Vector2d(55, -55))//move first sample into observation
@@ -136,17 +140,15 @@ public class specimenAuto extends LinearOpMode {
                 .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
-                .splineTo(new Vector2d(30, -45), Math.toRadians(90))
-                .strafeTo(new Vector2d(0, -40))
-                .strafeTo(new Vector2d(0, -24))
+                .strafeToLinearHeading(new Vector2d(0, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(0, -21))
                 .build();
         Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
-                .strafeToLinearHeading(new Vector2d(55, -46.8), Math.toRadians(-90))//score third specimen
+                .splineTo(new Vector2d(56, -47.5), Math.toRadians(-100))//score third specimen
                 .build();
         Action thirdSpecimenScore = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(30, -45), Math.toRadians(90))
-                .strafeTo(new Vector2d(3, -40))
-                .strafeTo(new Vector2d(3, -24))
+                .splineTo(new Vector2d(3, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(3, -23))
                 .build();
         Action parkObservation = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(4, -50))
@@ -170,9 +172,9 @@ public class specimenAuto extends LinearOpMode {
         sleep(200);
         pivotMiddlePos();
         slides.setTargetPosition(0);
-        Actions.runBlocking(clearSubmersible);
-        pivotTopPos();
-        setArmPos(405);
+//        Actions.runBlocking(clearSubmersible);
+//        pivotTopPos();
+//        setArmPos(385);
         sleep(200);
         Actions.runBlocking(firstSamplePush);
         wallGrab();
@@ -184,13 +186,13 @@ public class specimenAuto extends LinearOpMode {
         pivotMiddlePos();
         slides.setTargetPosition(0);
         Actions.runBlocking(clearSubmersible);
-        sleep(200);
-        pivotTopPos();
-        setArmPos(405);
         Actions.runBlocking(thirdSpecimenGrab);
         wallGrab();
         scoreSpecimen();
         Actions.runBlocking(thirdSpecimenScore);
+        pivotMiddlePos();
+        slides.setTargetPosition(0);
+        Actions.runBlocking(clearSubmersible);
 //        Actions.runBlocking(parkObservation);
     }
 }
