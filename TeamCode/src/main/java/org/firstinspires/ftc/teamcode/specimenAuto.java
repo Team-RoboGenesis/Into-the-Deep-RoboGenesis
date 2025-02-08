@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "MeanAuto")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "NiceAuto")
 public class specimenAuto extends LinearOpMode {
 
     //motors and sensors
