@@ -134,7 +134,6 @@ public class specimenAuto extends LinearOpMode {
 //                .splineTo(new Vector2d(55, 0), Math.toRadians(90))
                 .strafeTo(new Vector2d(46, 0))
                 .strafeTo(new Vector2d(55, 0))
-                .strafeTo(new Vector2d(55, -55))//move first sample into observation
                 .strafeTo(new Vector2d(55, -46.5))
                 .turn(Math.toRadians(-180))
                 .build();
