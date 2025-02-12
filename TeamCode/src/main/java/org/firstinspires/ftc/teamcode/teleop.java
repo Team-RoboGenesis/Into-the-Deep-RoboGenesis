@@ -75,12 +75,12 @@ public class teleop extends OpMode {
         FTCLibBlocks();
     }
     public void FTCLibBlocks () {
-//        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightIntakeArm.setTargetPosition(0);
-//        leftIntakeArm.setTargetPosition(0);
+        rightIntakeArm.setTargetPosition(0);
+        leftIntakeArm.setTargetPosition(0);
         rightIntakeArm.setPower(1);
         leftIntakeArm.setPower(1);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
