@@ -109,24 +109,19 @@ public class TwoSpecimenAuto extends LinearOpMode {
                 .build();
         Action secondSpecimenGrab = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(56, -40), Math.toRadians(-90))
-                .strafeTo(new Vector2d(56, -47))
+                .strafeTo(new Vector2d(56, -47.6))
                 .build();
         Action firstSamplePush = drive.actionBuilder(drive.pose)
 //                .strafeTo(new Vector2d(46, -40))
-                .splineToConstantHeading(new Vector2d(6, -46), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(46, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(46, -40))
                 .strafeTo(new Vector2d(46, 0))
-                .strafeTo(new Vector2d(55, 0))
+                .strafeTo(new Vector2d(59, 0))
                 .strafeTo(new Vector2d(55, -55))
                 .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
-                .splineTo(new Vector2d(0, -40), Math.toRadians(90))
-                .strafeTo(new Vector2d(0, -21))
-                .build();
-        Action parkObservation = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(4, -50))
-                .strafeTo(new Vector2d(60, -60))
+                .splineTo(new Vector2d(6, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(4, -21))
                 .build();
         waitForStart();
 
@@ -138,7 +133,7 @@ public class TwoSpecimenAuto extends LinearOpMode {
         slides.setTargetPosition(0);
         sleep(200);
         Actions.runBlocking(clearSubmersible);
-        setArmPos(355);
+        setArmPos(360);
         pivot.setPosition(0.3);
         Actions.runBlocking(secondSpecimenGrab);
         sleep(200);
@@ -149,8 +144,13 @@ public class TwoSpecimenAuto extends LinearOpMode {
         sleep(300);
         openClaw();
         pivotMiddlePos();
+        Actions.runBlocking(clearSubmersible);
         Actions.runBlocking(firstSamplePush);
         sleep(500);
+        pivotTopPos();
+        slides.setTargetPosition(0);
+        setArmPos(0);
+        sleep(300);
 
 //        Actions.runBlocking(parkObservation);
     }

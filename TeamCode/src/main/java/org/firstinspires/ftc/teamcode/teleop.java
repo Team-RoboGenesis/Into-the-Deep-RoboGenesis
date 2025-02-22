@@ -37,8 +37,8 @@ public class teleop extends OpMode {
     int hangExtend = 2830;
     int slidesExtend = 1700;
     int armLimit = 3400;
-    int armScorePos = 750;
-    int armWallPos = 425;
+    int armScorePos = 760;
+    int armWallPos = 420;
     int armBucketPos = 1450;
     int slidesRetract = 0;
 
@@ -191,6 +191,7 @@ public class teleop extends OpMode {
         setArmPos(armPos);
         setSlidePos(slidesPos);
         setHangPos(hangPos);
+//        slides.setPower(gamepad2.right_stick_y);
         if (gamepad2.left_bumper) {
             closeClaw();
         } else if (gamepad2.right_bumper) {

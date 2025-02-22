@@ -28,6 +28,8 @@ public class LimelightTest extends LinearOpMode {
     public DcMotor leftIntakeArm = null;
     public DcMotor rightIntakeArm = null;
 
+    double inchMultiplier = 1.38;
+
     public void setSlidePos(int position) {
         if (position>0) {
             slides.setTargetPosition(0);
@@ -56,7 +58,15 @@ public class LimelightTest extends LinearOpMode {
         frontRightWheel.setPower(-direction);
         backRightWheel.setPower(direction);
     }
-
+    public void alignClaw () {
+        if (limelight.getLatestResult().getTx()<0) {
+            double xOffset = limelight.getLatestResult().getTx() * inchMultiplier;
+            strafe(xOffset / 10);
+        } else if (limelight.getLatestResult().getTx()>0) {
+            double xOffset = limelight.getLatestResult().getTx() * inchMultiplier;
+            strafe(xOffset/10);
+        }
+    }
     private Limelight3A limelight;
 
     @Override
@@ -106,8 +116,10 @@ public class LimelightTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             LLResult result = limelight.getLatestResult();
+        if (gamepad1.right_bumper) {
+            alignClaw();
+        }
 
-            frontLeftWheel.setPower(result.getTy()/1000);
 
             if (result != null) {
                 if (result.isValid()) {

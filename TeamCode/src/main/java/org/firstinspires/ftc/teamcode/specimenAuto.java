@@ -52,7 +52,7 @@ public class specimenAuto extends LinearOpMode {
         slides.setTargetPosition(0);
         setArmPos(350);
         pivot.setPosition(0.3);
-        sleep(400);
+        sleep(1000);
         closeClaw();
         sleep(100);
     }
