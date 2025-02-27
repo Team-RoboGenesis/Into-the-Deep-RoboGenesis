@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Actions.ScoreAction;
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "NiceAuto")
 public class specimenAuto extends LinearOpMode {
 
@@ -80,6 +82,7 @@ public class specimenAuto extends LinearOpMode {
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
         ascentServo = hardwareMap.get(Servo.class, "revAscent");
+        ScoreAction specimenDeposit = new ScoreAction(leftIntakeArm, rightIntakeArm);
 
         leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -140,14 +143,13 @@ public class specimenAuto extends LinearOpMode {
         waitForStart();
 
         scoreSpecimen();
+        
         Actions.runBlocking(
                 new SequentialAction(
-                    firstSpecimenScore,
-                        new ParallelAction(
-                                openClaw(),
-                                firstSamplePush
-                        )
+                        firstSpecimenScore,
+                        specimenDeposit.scoreSpecimen()
                 )
         );
+
     }
 }
