@@ -1,16 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "NiceAuto")
 public class specimenAuto extends LinearOpMode {
@@ -141,37 +140,14 @@ public class specimenAuto extends LinearOpMode {
         waitForStart();
 
         scoreSpecimen();
-        Actions.runBlocking(firstSpecimenScore);
-        openClaw();
-        sleep(200);
-        pivotMiddlePos();
-        slides.setTargetPosition(0);
-//        Actions.runBlocking(clearSubmersible);
-//        pivotTopPos();
-//        setArmPos(385);
-        sleep(200);
-        Actions.runBlocking(clearSubmersible);
-        setArmPos(350);
-        pivot.setPosition(0.3);
-        Actions.runBlocking(firstSamplePush);
-        wallGrab();
-        scoreSpecimen();
-        slides.setTargetPosition(560);
-        Actions.runBlocking(secondSpecimenScore);
-        sleep(300);
-        openClaw();
-        sleep(200);
-        pivotMiddlePos();
-        slides.setTargetPosition(0);
-        Actions.runBlocking(clearSubmersible);
-        Actions.runBlocking(thirdSpecimenGrab);
-        wallGrab();
-        scoreSpecimen();
-        Actions.runBlocking(thirdSpecimenScore);
-        sleep(1000);
-        pivotMiddlePos();
-        slides.setTargetPosition(0);
-        Actions.runBlocking(clearSubmersible);
-//        Actions.runBlocking(parkObservation);
+        Actions.runBlocking(
+                new SequentialAction(
+                    firstSpecimenScore,
+                        new ParallelAction(
+                                openClaw(),
+                                firstSamplePush
+                        )
+                )
+        );
     }
 }
