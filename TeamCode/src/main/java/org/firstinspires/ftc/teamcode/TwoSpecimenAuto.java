@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "NiceAuto")
-public class specimenAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "2SpecAuto")
+public class TwoSpecimenAuto extends LinearOpMode {
 
     //motors and sensors
     public Servo mainIntake = null;
@@ -23,8 +21,6 @@ public class specimenAuto extends LinearOpMode {
     public Servo ascentServo = null;
 
     //constants
-    int grabDistance = 30;
-    int maxColor = 500;
     int armLimit = 3400;
 
     public void setArmPos(int position) {
@@ -51,7 +47,7 @@ public class specimenAuto extends LinearOpMode {
         slides.setTargetPosition(0);
         setArmPos(350);
         pivot.setPosition(0.3);
-        sleep(1000);
+        sleep(400);
         closeClaw();
         sleep(100);
     }
@@ -68,7 +64,7 @@ public class specimenAuto extends LinearOpMode {
         pivot.setPosition(0.1);
     }
     /**
-     * @throws InterruptedException
+     *
      */
     @Override
     public void runOpMode() throws InterruptedException {
@@ -111,43 +107,51 @@ public class specimenAuto extends LinearOpMode {
         Action clearSubmersible = drive.actionBuilder(drive.pose)
                 .strafeToConstantHeading(new Vector2d(6, -40))
                 .build();
+        Action secondSpecimenGrab = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(56, -40), Math.toRadians(-90))
+                .strafeTo(new Vector2d(56, -47.6))
+                .build();
         Action firstSamplePush = drive.actionBuilder(drive.pose)
+//                .strafeTo(new Vector2d(46, -40))
                 .strafeTo(new Vector2d(46, -40))
-//                .splineTo(new Vector2d(46, 0), Math.toRadians(90))
-//                .splineTo(new Vector2d(55, 0), Math.toRadians(90))
                 .strafeTo(new Vector2d(46, 0))
-                .strafeTo(new Vector2d(55, 0))
+                .strafeTo(new Vector2d(59, 0))
                 .strafeTo(new Vector2d(55, -55))
-                .strafeTo(new Vector2d(55, -46.2))
-                .turn(Math.toRadians(-180))
                 .build();
         Action secondSpecimenScore = drive.actionBuilder(drive.pose)
                 .waitSeconds(0.3)
-                .strafeToLinearHeading(new Vector2d(0, -40), Math.toRadians(90))
-                .strafeTo(new Vector2d(0, -21))
-                .build();
-        Action thirdSpecimenGrab = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(56, -49), Math.toRadians(-100))//score third specimen
-                .build();
-        Action thirdSpecimenScore = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(3, -40), Math.toRadians(90))
-                .strafeTo(new Vector2d(3, -23))
-                .build();
-        Action parkObservation = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(4, -50))
-                .strafeTo(new Vector2d(60, -60))
+                .splineTo(new Vector2d(6, -40), Math.toRadians(90))
+                .strafeTo(new Vector2d(4, -21))
                 .build();
         waitForStart();
 
         scoreSpecimen();
-        Actions.runBlocking(
-                new SequentialAction(
-                    firstSpecimenScore,
-                        new ParallelAction(
-                                openClaw(),
-                                firstSamplePush
-                        )
-                )
-        );
+        Actions.runBlocking(firstSpecimenScore);
+        openClaw();
+        sleep(200);
+        pivotMiddlePos();
+        slides.setTargetPosition(0);
+        sleep(200);
+        Actions.runBlocking(clearSubmersible);
+        setArmPos(360);
+        pivot.setPosition(0.3);
+        Actions.runBlocking(secondSpecimenGrab);
+        sleep(200);
+        closeClaw();
+        sleep(500);
+        scoreSpecimen();
+        Actions.runBlocking(secondSpecimenScore);
+        sleep(300);
+        openClaw();
+        pivotMiddlePos();
+        Actions.runBlocking(clearSubmersible);
+        Actions.runBlocking(firstSamplePush);
+        sleep(500);
+        pivotTopPos();
+        slides.setTargetPosition(0);
+        setArmPos(0);
+        sleep(300);
+
+//        Actions.runBlocking(parkObservation);
     }
 }
