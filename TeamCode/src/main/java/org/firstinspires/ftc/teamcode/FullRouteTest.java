@@ -108,6 +108,7 @@ public class FullRouteTest extends LinearOpMode {
         Pose2d beginPose = new Pose2d(6, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action fullRoute = drive.actionBuilder(drive.pose)
+                .waitSeconds(1)
                 .splineToConstantHeading(new Vector2d(6, -30), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
@@ -115,10 +116,13 @@ public class FullRouteTest extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(58, -50), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(53, 0), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(60, 0), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(65, -5), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(65, -50), Math.toRadians(-90))
+
                         .build();
         waitForStart();
+
         Actions.runBlocking(fullRoute);
     }
 }
