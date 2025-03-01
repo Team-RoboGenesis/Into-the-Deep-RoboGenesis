@@ -38,12 +38,10 @@ boolean fastLoop = false;
         if (TargetPos - CurrentPos < 10) fastLoop = true; //almost a function that works like a D in PID
 
         if (!fastLoop) {
-            aw
+
         }
 
             }
         }
       }
-
-    }
-}
+    

@@ -29,32 +29,32 @@ public class RegionalAuto extends LinearOpMode {
         TrajectoryActionBuilder firstSpecimenScore = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(6, -22), Math.toRadians(90));
 
-        TrajectoryActionBuilder clearSubmersible = firstSpecimenScore.fresh()
+        TrajectoryActionBuilder clearSubmersible = firstSpecimenScore.endTrajectory().fresh()
                 .splineTo(new Vector2d(6, -35), Math.toRadians(90));
 
-        TrajectoryActionBuilder firstSamplePush = clearSubmersible.fresh()
+        TrajectoryActionBuilder firstSamplePush = clearSubmersible.endTrajectory().fresh()
                 .splineToConstantHeading(new Vector2d(46, -35), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(46, 0), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(55, 0), Math.toRadians(90));
 
-        TrajectoryActionBuilder secondSamplePush = firstSamplePush.fresh()
+        TrajectoryActionBuilder secondSamplePush = firstSamplePush.endTrajectory().fresh()
                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(63, -5), Math.toRadians(-90))
                 .splineToConstantHeading(new Vector2d(60, -48), Math.toRadians(-90));
 
-        TrajectoryActionBuilder secondSpecimenScore = secondSamplePush.fresh()
+        TrajectoryActionBuilder secondSpecimenScore = secondSamplePush.endTrajectory().fresh()
                 .strafeToLinearHeading(new Vector2d(0, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(0, -21));
 
-        TrajectoryActionBuilder thirdSpecimenGrab = secondSpecimenScore.fresh()
+        TrajectoryActionBuilder thirdSpecimenGrab = secondSpecimenScore.endTrajectory().fresh()
                 .splineTo(new Vector2d(56, -49), Math.toRadians(-100));//score third specimen
 
-        TrajectoryActionBuilder thirdSpecimenScore = thirdSpecimenGrab.fresh()
+        TrajectoryActionBuilder thirdSpecimenScore = thirdSpecimenGrab.endTrajectory().fresh()
                 .splineTo(new Vector2d(3, -40), Math.toRadians(90))
                 .strafeTo(new Vector2d(3, -23));
 
-        TrajectoryActionBuilder parkObservation = thirdSpecimenScore.fresh()
+        TrajectoryActionBuilder parkObservation = thirdSpecimenScore.endTrajectory().fresh()
                 .strafeTo(new Vector2d(4, -50))
                 .strafeTo(new Vector2d(60, -60));
 
@@ -75,7 +75,6 @@ public class RegionalAuto extends LinearOpMode {
                         new ParallelAction(
                                 actionController.depositSpecimen(),
                                 escapeSubmersible
-
                         ),
                         new ParallelAction(
                                 actionController.resetArm(),
