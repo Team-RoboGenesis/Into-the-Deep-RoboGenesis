@@ -23,7 +23,7 @@ public class AutoActionController {
     int WALL_GRAB = 355;
 
     //constant for slide position
-    int SCORE_POSITION = 490;
+    int SCORE_POSITION = 545;
     int RETRACTED = 0;
 
 
@@ -121,7 +121,7 @@ public class AutoActionController {
             pivotTopPos();
             slides.setTargetPosition(RETRACTED);
             setArmPos(LOWERED);
-            return slides.getCurrentPosition()<=slides.getTargetPosition()+20;
+            return slides.getCurrentPosition()<=slides.getTargetPosition();
         }
     }
 

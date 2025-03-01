@@ -112,7 +112,7 @@ public class FullRouteTest extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action fullRoute = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(6, -26), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(6, -23), Math.toRadians(90))
                 .stopAndAdd(this::openClaw)
                 .stopAndAdd(this::pivotMiddlePos)
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
@@ -120,12 +120,19 @@ public class FullRouteTest extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(58, -5), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -50), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(58, -45), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(63, -5), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(63, -47.8), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(60, -48), Math.toRadians(-90))
                 .stopAndAdd(this::wallGrab)
+                .waitSeconds(0.3)
+                .stopAndAdd(this::scoreSpecimen)
+                .splineTo(new Vector2d(60, -40), Math.toRadians(180))
+                .splineTo(new Vector2d(5, -45), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(5, -25), Math.toRadians(90))
+                .stopAndAdd(this::openClaw)
+                .stopAndAdd(this::pivotMiddlePos)
 
                         .build();
         waitForStart();
