@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Actions.ScoreAction;
+import org.firstinspires.ftc.teamcode.Auto.AutoActionController;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "FullRoute")
 public class FullRouteTest extends LinearOpMode {
@@ -51,11 +49,17 @@ public class FullRouteTest extends LinearOpMode {
     }
     public void wallGrab() {
         slides.setTargetPosition(0);
-        setArmPos(350);
+        setArmPos(355);
         pivot.setPosition(0.3);
         sleep(1000);
         closeClaw();
         sleep(100);
+    }
+    public void resetArm() {
+        setArmPos(0);
+        slides.setTargetPosition(0);
+        pivot.setPosition(0);
+        openClaw();
     }
     public void openClaw () {
         mainIntake.setPosition(0.7);
@@ -82,7 +86,6 @@ public class FullRouteTest extends LinearOpMode {
         leftIntakeArm = hardwareMap.get(DcMotor.class, "leftIntakeArm");
         slides = hardwareMap.get(DcMotor.class, "slides");
         ascentServo = hardwareMap.get(Servo.class, "revAscent");
-        ScoreAction specimenDeposit = new ScoreAction(leftIntakeArm, rightIntakeArm);
 
         leftIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -109,20 +112,25 @@ public class FullRouteTest extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         Action fullRoute = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(6, -30), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(6, -26), Math.toRadians(90))
+                .stopAndAdd(this::openClaw)
+                .stopAndAdd(this::pivotMiddlePos)
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
+                .stopAndAdd(this::resetArm)
                 .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(58, -5), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(58, -50), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(65, -5), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(65, -50), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(63, -5), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(63, -47.8), Math.toRadians(-90))
+                .stopAndAdd(this::wallGrab)
 
                         .build();
         waitForStart();
 
+        scoreSpecimen();
         Actions.runBlocking(fullRoute);
     }
 }
