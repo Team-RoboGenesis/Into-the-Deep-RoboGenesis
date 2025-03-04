@@ -121,7 +121,7 @@ public class AutoActionController {
             pivotTopPos();
             slides.setTargetPosition(RETRACTED);
             setArmPos(LOWERED);
-            return slides.getCurrentPosition()<=slides.getTargetPosition();
+            return true;
         }
     }
 

@@ -1,20 +1,20 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Auto.AutoActionController;
+import org.firstinspires.ftc.teamcode.roadRunner.MecanumDrive;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "FullRoute")
-public class FullRouteTest extends LinearOpMode {
+@Autonomous(name = "2BucketAuto")
+public class BucketAuto extends LinearOpMode {
 
-    //motors and sensors
     public Servo mainIntake = null;
     public DcMotor slides = null;
     public Servo pivot = null;
@@ -22,9 +22,6 @@ public class FullRouteTest extends LinearOpMode {
     public DcMotor rightIntakeArm = null;
     public Servo ascentServo = null;
 
-    //constants
-    int grabDistance = 30;
-    int maxColor = 500;
     int armLimit = 3400;
 
     public void setArmPos(int position) {
@@ -39,27 +36,10 @@ public class FullRouteTest extends LinearOpMode {
             leftIntakeArm.setTargetPosition(position);
         }
     }
-    //functions
-    public void scoreSpecimen() {
-        closeClaw();
-        sleep(100);
-        setArmPos(710);
-        pivot.setPosition(0.1);
-        slides.setTargetPosition(545);
-    }
-    public void wallGrab() {
-        slides.setTargetPosition(0);
-        setArmPos(355);
-        pivot.setPosition(0.3);
-        sleep(1000);
-        closeClaw();
-        sleep(100);
-    }
-    public void resetArm() {
-        setArmPos(0);
-        slides.setTargetPosition(0);
-        pivot.setPosition(0);
-        openClaw();
+    public void bucketScore () {
+        setArmPos(1400);
+        pivot.setPosition(0.5);
+        slides.setTargetPosition(1700);
     }
     public void openClaw () {
         mainIntake.setPosition(0.7);
@@ -67,19 +47,13 @@ public class FullRouteTest extends LinearOpMode {
     public void closeClaw () {
         mainIntake.setPosition(0.05);
     }
-    public void pivotMiddlePos () {
-        pivot.setPosition(0.4);
-    }
-    public void pivotTopPos () {
-        pivot.setPosition(0.1);
-    }
     /**
      * @throws InterruptedException
      */
     @Override
     public void runOpMode() throws InterruptedException {
 
-        //configuration
+
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
         pivot = hardwareMap.get(Servo.class, "goBildaPivot");
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");
@@ -91,15 +65,14 @@ public class FullRouteTest extends LinearOpMode {
         rightIntakeArm.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        ftcLib blocks
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntakeArm.setTargetPosition(0);
         leftIntakeArm.setTargetPosition(0);
-        rightIntakeArm.setPower(0.9);
-        leftIntakeArm.setPower(0.9);
+        rightIntakeArm.setPower(0.75);
+        leftIntakeArm.setPower(0.75);
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -108,36 +81,55 @@ public class FullRouteTest extends LinearOpMode {
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Pose2d beginPose = new Pose2d(6, -61, Math.toRadians(90));
+        Pose2d beginPose = new Pose2d(-45, -55, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action fullRoute = drive.actionBuilder(drive.pose)
-                .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(6, -23), Math.toRadians(90))
-                .stopAndAdd(this::openClaw)
-                .stopAndAdd(this::pivotMiddlePos)
-                .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
-                .stopAndAdd(this::resetArm)
-                .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -5), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -45), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(63, -5), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(60, -48), Math.toRadians(-90))
-                .stopAndAdd(this::wallGrab)
-                .waitSeconds(0.3)
-                .stopAndAdd(this::scoreSpecimen)
-                .splineTo(new Vector2d(60, -40), Math.toRadians(180))
-                .splineTo(new Vector2d(5, -45), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(5, -25), Math.toRadians(90))
-                .stopAndAdd(this::openClaw)
-                .stopAndAdd(this::pivotMiddlePos)
-
-                        .build();
+        Action scoreBasket = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(new Vector2d(-72, -45), Math.toRadians(-135))
+                .build();
+        Action sampleGrab = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(new Vector2d(-62, -24), Math.toRadians(90))
+                .build();
+        Action scoreSecondBasket = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(new Vector2d(-75, -43), Math.toRadians(-135))
+                .build();
+        Action parkAscent = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(new Vector2d(-55, 5), Math.toRadians(180))
+                .strafeTo(new Vector2d(-30, 5))
+                .build();
         waitForStart();
 
-        scoreSpecimen();
-        Actions.runBlocking(fullRoute);
+        //        Actions.runBlocking(fullRoute);
+        closeClaw();
+        sleep(400);
+        bucketScore();
+        sleep(1500);
+        Actions.runBlocking(scoreBasket);
+        ascentServo.setPosition(0.55);
+        sleep(500);
+        openClaw();
+        sleep(500);
+        Actions.runBlocking(sampleGrab);
+        sleep(500);
+        slides.setTargetPosition(100);
+        pivot.setPosition(0.9);
+        sleep(500);
+        setArmPos(300);
+        sleep(1000);
+        closeClaw();
+        sleep(400);
+        bucketScore();
+        sleep(1500);
+        Actions.runBlocking(scoreSecondBasket);
+        sleep(500);
+        openClaw();
+        sleep(500);
+        pivot.setPosition(0);
+        sleep(500);
+        slides.setTargetPosition(0);
+        Actions.runBlocking(parkAscent);
+        setArmPos(0);
+        sleep(1000);
+
     }
 }
+

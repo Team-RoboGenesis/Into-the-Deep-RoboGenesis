@@ -1,16 +1,22 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "2SpecAuto")
-public class TwoSpecimenAuto extends LinearOpMode {
+import org.firstinspires.ftc.teamcode.roadRunner.MecanumDrive;
+
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "FullRoute")
+public class FullRouteTest extends LinearOpMode {
 
     //motors and sensors
     public Servo mainIntake = null;
@@ -21,15 +27,15 @@ public class TwoSpecimenAuto extends LinearOpMode {
     public Servo ascentServo = null;
 
     //constants
-    int armLimit = 3400;
+    int ARM_LIMIT = 3400;
 
     public void setArmPos(int position) {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > armLimit) {
-            rightIntakeArm.setTargetPosition(armLimit);
-            leftIntakeArm.setTargetPosition(armLimit);
+        } else if (position > ARM_LIMIT) {
+            rightIntakeArm.setTargetPosition(ARM_LIMIT);
+            leftIntakeArm.setTargetPosition(ARM_LIMIT);
         } else {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
@@ -45,11 +51,17 @@ public class TwoSpecimenAuto extends LinearOpMode {
     }
     public void wallGrab() {
         slides.setTargetPosition(0);
-        setArmPos(350);
+        setArmPos(355);
         pivot.setPosition(0.3);
-        sleep(400);
+        sleep(1000);
         closeClaw();
         sleep(100);
+    }
+    public void resetArm() {
+        setArmPos(0);
+        slides.setTargetPosition(0);
+        pivot.setPosition(0);
+        openClaw();
     }
     public void openClaw () {
         mainIntake.setPosition(0.7);
@@ -64,7 +76,7 @@ public class TwoSpecimenAuto extends LinearOpMode {
         pivot.setPosition(0.1);
     }
     /**
-     *
+     * @throws InterruptedException
      */
     @Override
     public void runOpMode() throws InterruptedException {
@@ -98,60 +110,64 @@ public class TwoSpecimenAuto extends LinearOpMode {
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        VelConstraint baseVelConstraint = (robotPose, _path, _disp) -> {
+            if (robotPose.position.x.value() > 50.0) {
+                return 20.0;
+            } else {
+                return 50.0;
+            }
+        };
+
         Pose2d beginPose = new Pose2d(6, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        Action firstSpecimenScore = drive.actionBuilder(drive.pose)
+        TrajectoryActionBuilder firstSpecimenScore = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(6, -22), Math.toRadians(90));
+
+        TrajectoryActionBuilder fullRoute = firstSpecimenScore.endTrajectory().fresh()
                 .waitSeconds(1)
-                .splineTo(new Vector2d(6, -22), Math.toRadians(90))
-                .build();
-        Action clearSubmersible = drive.actionBuilder(drive.pose)
-                .strafeToConstantHeading(new Vector2d(6, -40))
-                .build();
-        Action secondSpecimenGrab = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(56, -40), Math.toRadians(-90))
-                .strafeTo(new Vector2d(56, -47.6))
-                .build();
-        Action firstSamplePush = drive.actionBuilder(drive.pose)
-//                .strafeTo(new Vector2d(46, -40))
-                .strafeTo(new Vector2d(46, -40))
-                .strafeTo(new Vector2d(46, 0))
-                .strafeTo(new Vector2d(59, 0))
-                .strafeTo(new Vector2d(55, -55))
-                .build();
-        Action secondSpecimenScore = drive.actionBuilder(drive.pose)
+                .strafeTo(new Vector2d(6, -22))
+                .stopAndAdd(this::openClaw)
+                .stopAndAdd(this::pivotMiddlePos)
+                .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
+                .stopAndAdd(this::resetArm)
+                //first sample push
+                .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(58, -5), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(58, -45), Math.toRadians(90))
+                //second sample push
+                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90), null,
+                        new ProfileAccelConstraint(-5, 5))
+                .strafeToLinearHeading(new Vector2d(65, -5), 0, null,
+                        new ProfileAccelConstraint(-10, 10))
+                .setTangent(Math.toRadians(-90))
+//                .stopAndAdd(this::wallGrab)
+//                .stopAndAdd(this::openClaw)
+                .splineToConstantHeading(new Vector2d(60, -53), 0)
+                .setTangent(0)
+                //Score second specimen
+                .stopAndAdd(this::closeClaw)
                 .waitSeconds(0.3)
-                .splineTo(new Vector2d(6, -40), Math.toRadians(90))
-                .strafeTo(new Vector2d(4, -21))
-                .build();
+                .stopAndAdd(this::scoreSpecimen)
+                .splineTo(new Vector2d(60, -40), Math.toRadians(180))
+                .splineTo(new Vector2d(5, -45), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(5, -25), Math.toRadians(90))
+                .stopAndAdd(this::openClaw)
+                .stopAndAdd(this::pivotMiddlePos);
+
+        Action firstSpecimen = firstSpecimenScore.build();
+        Action FullRoute = fullRoute.build();
+
         waitForStart();
 
+//        Actions.runBlocking(
+//                new SequentialAction(
+//                        controllerOfActions.scoreSpecimen(),
+//                        firstSpecimen
+//                )
+//        );
         scoreSpecimen();
-        Actions.runBlocking(firstSpecimenScore);
-        openClaw();
-        sleep(200);
-        pivotMiddlePos();
-        slides.setTargetPosition(0);
-        sleep(200);
-        Actions.runBlocking(clearSubmersible);
-        setArmPos(360);
-        pivot.setPosition(0.3);
-        Actions.runBlocking(secondSpecimenGrab);
-        sleep(200);
-        closeClaw();
-        sleep(500);
-        scoreSpecimen();
-        Actions.runBlocking(secondSpecimenScore);
-        sleep(300);
-        openClaw();
-        pivotMiddlePos();
-        Actions.runBlocking(clearSubmersible);
-        Actions.runBlocking(firstSamplePush);
-        sleep(500);
-        pivotTopPos();
-        slides.setTargetPosition(0);
-        setArmPos(0);
-        sleep(300);
-
-//        Actions.runBlocking(parkObservation);
+        Actions.runBlocking(FullRoute);
     }
 }

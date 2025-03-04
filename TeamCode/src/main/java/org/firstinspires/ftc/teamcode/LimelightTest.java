@@ -59,12 +59,9 @@ public class LimelightTest extends LinearOpMode {
         backRightWheel.setPower(direction);
     }
     public void alignClaw () {
-        if (limelight.getLatestResult().getTx()<0) {
+        if (limelight.getLatestResult().getTx()!=0) {
             double xOffset = limelight.getLatestResult().getTx() * inchMultiplier;
             strafe(xOffset / 10);
-        } else if (limelight.getLatestResult().getTx()>0) {
-            double xOffset = limelight.getLatestResult().getTx() * inchMultiplier;
-            strafe(xOffset/10);
         }
     }
     private Limelight3A limelight;

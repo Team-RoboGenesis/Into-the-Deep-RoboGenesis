@@ -15,32 +15,32 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class teleop extends OpMode {
 
     //motors, servos', and sensors
-    public DcMotor frontLeftWheel = null;
-    public DcMotor frontRightWheel = null;
-    public DcMotor backLeftWheel = null;
-    public DcMotor backRightWheel = null;
-    public Servo mainIntake = null;
-    public DcMotor slides = null;
-    public Servo pivot = null;
-    public DcMotor leftIntakeArm = null;
-    public DcMotor rightIntakeArm = null;
-    public DcMotor hangArm = null;
-    public Servo ascentServo = null;
-    public Servo led1 = null;
+    private DcMotor frontLeftWheel = null;
+    private DcMotor frontRightWheel = null;
+    private DcMotor backLeftWheel = null;
+    private DcMotor backRightWheel = null;
+    private Servo mainIntake = null;
+    private DcMotor slides = null;
+    private Servo pivot = null;
+    private DcMotor leftIntakeArm = null;
+    private DcMotor rightIntakeArm = null;
+    private DcMotor hangArm = null;
+    private Servo ascentServo = null;
+    private Servo led1 = null;
     ColorRangeSensor color;
 
     //constants
-    int grabDistance = 30;
-    int maxColor = 500;
-    int highSpeed = 400;
-    int roundToInt = 100;
-    int hangExtend = 2830;
-    int slidesExtend = 1700;
-    int armLimit = 3400;
-    int armScorePos = 760;
-    int armWallPos = 420;
-    int armBucketPos = 1450;
-    int slidesRetract = 0;
+    int GRAB_DISTANCE = 30;
+    int MAX_COLOR = 500;
+    int HIGH_SPEED = 400;
+    int ROUND_TO_INT = 100;
+    int HANG_EXTEND = 2830;
+    int SLIDES_EXTEND = 1700;
+    int ARM_LIMIT = 3400;
+    int ARM_SCORE_POS = 760;
+    int ARM_WALL_POS = 420;
+    int ARM_BUCKET_POS = 1450;
+    int SLIDES_RETRACT = 0;
 
     @Override
     public void init() {
@@ -77,19 +77,25 @@ public class teleop extends OpMode {
     public void FTCLibBlocks () {
         rightIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         rightIntakeArm.setTargetPosition(0);
         leftIntakeArm.setTargetPosition(0);
+
         rightIntakeArm.setPower(1);
         leftIntakeArm.setPower(1);
+
         rightIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftIntakeArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slides.setTargetPosition(0);
         slides.setPower(0.5);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         hangArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hangArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         hangArm.setTargetPosition(0);
@@ -106,8 +112,8 @@ public class teleop extends OpMode {
     public void setHangPos(int position) { // limits for hang arm
         if (position < 0) {
             hangArm.setTargetPosition(0);
-        } else if (position > hangExtend) {
-            hangArm.setTargetPosition(hangExtend);
+        } else if (position > HANG_EXTEND) {
+            hangArm.setTargetPosition(HANG_EXTEND);
         } else {
             hangArm.setTargetPosition(position);
         }
@@ -122,30 +128,30 @@ public class teleop extends OpMode {
         if (position < 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
-        } else if (position > armLimit) {
-            rightIntakeArm.setTargetPosition(armLimit);
-            leftIntakeArm.setTargetPosition(armLimit);
+        } else if (position > ARM_LIMIT) {
+            rightIntakeArm.setTargetPosition(ARM_LIMIT);
+            leftIntakeArm.setTargetPosition(ARM_LIMIT);
         } else {
             rightIntakeArm.setTargetPosition(position);
             leftIntakeArm.setTargetPosition(position);
         }
     }
     public void setSlidePos(int position) { // limits for slides
-        if (position < slidesRetract) {
-            slides.setTargetPosition(slidesRetract);
-        } else if (position > slidesExtend) {
-            slides.setTargetPosition(slidesExtend);
+        if (position < SLIDES_RETRACT) {
+            slides.setTargetPosition(SLIDES_RETRACT);
+        } else if (position > SLIDES_EXTEND) {
+            slides.setTargetPosition(SLIDES_EXTEND);
         } else {
             slides.setTargetPosition(position);
         }
     } public boolean yellow() { // see if yellow is the color of sample in claw
-        return color.getDistance(DistanceUnit.MM) < grabDistance & color.green() > color.blue() & color.green() > color.red() & color.green() > maxColor;
+        return color.getDistance(DistanceUnit.MM) < GRAB_DISTANCE & color.green() > color.blue() & color.green() > color.red() & color.green() > MAX_COLOR;
     } public boolean red() { // see if red is the color of sample in claw
-        return color.getDistance(DistanceUnit.MM) < grabDistance & color.red() > color.green() & color.red() > color.blue() & color.red() > maxColor;
+        return color.getDistance(DistanceUnit.MM) < GRAB_DISTANCE & color.red() > color.green() & color.red() > color.blue() & color.red() > MAX_COLOR;
     } public boolean blue() { // see if blue is the color of sample in claw
-        return color.getDistance(DistanceUnit.MM) < grabDistance & color.blue() > color.red() & color.blue() > color.green() & color.blue() > maxColor;
+        return color.getDistance(DistanceUnit.MM) < GRAB_DISTANCE & color.blue() > color.red() & color.blue() > color.green() & color.blue() > MAX_COLOR;
     } public boolean purple() { // run on purple
-        return color.getDistance(DistanceUnit.MM) > grabDistance;
+        return color.getDistance(DistanceUnit.MM) > GRAB_DISTANCE;
     }
 
     //functions
@@ -172,9 +178,9 @@ public class teleop extends OpMode {
         double y = gamepad1.left_stick_y;
         double x = -gamepad1.left_stick_x;
         double rx = -gamepad1.right_stick_x;
-        int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y*roundToInt));
-        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y*roundToInt));
-        int hangPos = (int) (hangArm.getCurrentPosition()+(-gamepad2.left_trigger*highSpeed+gamepad2.right_trigger*highSpeed));
+        int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y* ROUND_TO_INT));
+        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y* ROUND_TO_INT));
+        int hangPos = (int) (hangArm.getCurrentPosition()+(-gamepad2.left_trigger* HIGH_SPEED +gamepad2.right_trigger* HIGH_SPEED));
 
         // mecanum drive
         frontLeftWheel.setPower(y + x + rx);
@@ -201,7 +207,7 @@ public class teleop extends OpMode {
         } else if (gamepad2.y) {
             pivot.setPosition(0);
         } else if (gamepad2.b) {
-            pivot.setPosition(0.5);
+            pivotMiddlePos();
         }
         if (gamepad1.b) {
             ascentServo.setPosition(0);
@@ -210,17 +216,21 @@ public class teleop extends OpMode {
         }
 //        arm presets
         else if (gamepad2.dpad_up) { //score specimen preset
-            setArmPos(armScorePos);
+            setArmPos(ARM_SCORE_POS);
             pivotTopPos();
             slides.setTargetPosition(300);
         } else if (gamepad2.dpad_down) { //wall grab preset
-            setArmPos(armWallPos);
+            setArmPos(ARM_WALL_POS);
             pivotWallPos();
-            slides.setTargetPosition(slidesRetract);
+            slides.setTargetPosition(SLIDES_RETRACT);
         } else if (gamepad2.dpad_left) { //high bucket preset
-            setArmPos(armBucketPos);
-            slides.setTargetPosition(slidesExtend);
+            setArmPos(ARM_BUCKET_POS);
+            slides.setTargetPosition(SLIDES_EXTEND);
             pivotMiddlePos();
+        } else if (gamepad2.dpad_right) {
+            setSlidePos(SLIDES_RETRACT);
+            pivotTopPos();
+            setHangPos(HANG_EXTEND);
         }
         //LED control
         if (yellow()) {
