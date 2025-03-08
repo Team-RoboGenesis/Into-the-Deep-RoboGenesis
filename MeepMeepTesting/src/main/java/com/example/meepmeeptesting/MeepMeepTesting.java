@@ -13,35 +13,23 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 17.25)
+                .setConstraints(600, 600, Math.toRadians(180), Math.toRadians(180), 17.25)
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(6, -61, Math.toRadians(90)))
-                .strafeTo(new Vector2d(6, -22))
-                .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
-                //first sample push
-                .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -5), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -45), Math.toRadians(90))
-                //second sample push
-                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90), null,
-                        new ProfileAccelConstraint(-5, 5))
-                .strafeToLinearHeading(new Vector2d(65, -5), Math.toRadians(-90), null,
-                        new ProfileAccelConstraint(-10, 10))
-                                .setTangent(Math.toRadians(-90))
-//                .stopAndAdd(this::wallGrab)
+                .waitSeconds(1)
+                .splineToConstantHeading(new Vector2d(6, -20), Math.toRadians(90))
 //                .stopAndAdd(this::openClaw)
-                .splineToConstantHeading(new Vector2d(50, -53), Math.toRadians(-90))
-                                .setTangent(0)
-                //Score second specimen
-                .waitSeconds(0.3)
-                        .setReversed(true)
-                .splineTo(new Vector2d(5, -50), Math.toRadians(-90))
-                        .setReversed(false)
-                .splineToConstantHeading(new Vector2d(5, -25), Math.toRadians(90))
+//                .stopAndAdd(this::pivotMiddlePos)
+                .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
+//                .stopAndAdd(this::resetArm)
 
+                //first sample push
+//                TrajectoryActionBuilder firstsample = clearSubmersible.endTrajectory().fresh()
+                        .splineTo(new Vector2d(24.50, -35.01), Math.toRadians(36.38))
+                        .splineToSplineHeading(new Pose2d(44.05, -12.49, Math.toRadians(53.75)), Math.toRadians(53.75))
+                        .turn(Math.toRadians(-90))
+                        .splineToSplineHeading(new Pose2d(49.16, -58.81, Math.toRadians(-90.00)), Math.toRadians(-90.00))
                 .build());
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_OFFICIAL)
                 .setDarkMode(true)

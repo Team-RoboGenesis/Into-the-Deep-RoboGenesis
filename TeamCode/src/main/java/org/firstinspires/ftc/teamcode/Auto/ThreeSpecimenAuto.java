@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,8 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.roadRunner.MecanumDrive;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "2specAuto")
-public class FullRouteTest extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "3specAuto")
+public class ThreeSpecimenAuto extends LinearOpMode {
 
     //motors and sensors
     public Servo mainIntake = null;
@@ -117,24 +114,18 @@ public class FullRouteTest extends LinearOpMode {
 
         Action fullRoute = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(6, -20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(6, -23), Math.toRadians(90))
                 .stopAndAdd(this::openClaw)
                 .stopAndAdd(this::pivotMiddlePos)
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
                 .stopAndAdd(this::resetArm)
 
                 //first sample push
-                .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
-
-                //second sample push
-                .splineToConstantHeading(new Vector2d(45, -10), Math.toRadians(90), null,
-                        new ProfileAccelConstraint(-5, 8))
-                .strafeToLinearHeading(new Vector2d(55, -5), Math.toRadians(-90), null,
-                        new ProfileAccelConstraint(-5, 20))
+                .splineTo(new Vector2d(24.50, -35.01), Math.toRadians(36.38))
+                .splineToSplineHeading(new Pose2d(49.05, -10.49, Math.toRadians(53.75)), Math.toRadians(53.75))
+                .turn(Math.toRadians(-90))
                 .stopAndAdd(this::wallGrab)
-                .setTangent(Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(50, -47), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(50, -47, Math.toRadians(90)), Math.toRadians(-90))
 
                 //Score second specimen
                 .stopAndAdd(this::closeClaw)
