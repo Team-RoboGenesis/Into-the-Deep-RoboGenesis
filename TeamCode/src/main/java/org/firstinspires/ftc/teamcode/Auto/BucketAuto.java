@@ -94,7 +94,7 @@ public class BucketAuto extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-72, -45), Math.toRadians(-135));
 
         TrajectoryActionBuilder secondSampleGrab = scoreSecondBasket.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(-72, -45.5), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(-75, -24), Math.toRadians(90));
 
         Action parkAscent = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(new Vector2d(-55, 5), Math.toRadians(180))
@@ -131,13 +131,13 @@ public class BucketAuto extends LinearOpMode {
         closeClaw();
         sleep(400);
         bucketScore();
-        sleep(300);
+//        sleep(300);
         Actions.runBlocking(secondScore);
-        sleep(500);
+        sleep(200);
         openClaw();
         sleep(500);
         Actions.runBlocking(mean);
-        sleep(500);
+//        sleep(500);
         slides.setTargetPosition(100);
         pivot.setPosition(0.9);
         sleep(500);
