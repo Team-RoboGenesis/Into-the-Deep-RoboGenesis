@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -28,6 +29,8 @@ public class teleop extends OpMode {
     private Servo ascentServo = null;
     private Servo led1 = null;
     ColorRangeSensor color;
+
+    TouchSensor armLimit;
 
     //constants
     int GRAB_DISTANCE = 30;
@@ -59,6 +62,7 @@ public class teleop extends OpMode {
         ascentServo = hardwareMap.get(Servo.class, "revAscent");
         color = hardwareMap.get(ColorRangeSensor.class, "color");
         led1 = hardwareMap.get(Servo.class, "LED1");
+        armLimit = hardwareMap.get(TouchSensor.class, "touchSensorArm");
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -125,7 +129,7 @@ public class teleop extends OpMode {
     parameter "int position" is a measurement for ticks that the arm can run to
     */
     public void setArmPos(int position) {
-        if (position < 0) {
+        if (armLimit.isPressed()) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
         } else if (position > ARM_LIMIT) {
