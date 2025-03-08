@@ -129,7 +129,7 @@ public class teleop extends OpMode {
     parameter "int position" is a measurement for ticks that the arm can run to
     */
     public void setArmPos(int position) {
-        if (armLimit.isPressed()) {
+        if (armLimit.isPressed() & gamepad2.left_stick_y<=0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
         } else if (position > ARM_LIMIT) {
