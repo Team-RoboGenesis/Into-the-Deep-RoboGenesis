@@ -94,18 +94,22 @@ public class BucketAuto extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-72, -45), Math.toRadians(-135));
 
         TrajectoryActionBuilder secondSampleGrab = scoreSecondBasket.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(-75, -24), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(-74, -24), Math.toRadians(90));
+
+        TrajectoryActionBuilder scoreThirdBasket = secondSampleGrab.endTrajectory().fresh()
+                .turn(Math.toRadians(-180))
+                .strafeToLinearHeading(new Vector2d(-74, -44), Math.toRadians(-135));
 
         Action parkAscent = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(new Vector2d(-55, 5), Math.toRadians(180))
-                .strafeTo(new Vector2d(-30, 5))
+                .strafeTo(new Vector2d(-26, 5))
                 .build();
 
         Action firstScore = scoreBasket.build();
         Action firstGrab = sampleGrab.build();
         Action secondScore = scoreSecondBasket.build();
-        Action mean = secondSampleGrab.build();
-
+        Action secondGrab = secondSampleGrab.build();
+        Action thirdScore = scoreThirdBasket.build();
 
         waitForStart();
 
@@ -118,7 +122,6 @@ public class BucketAuto extends LinearOpMode {
         sleep(1500);
         Actions.runBlocking(firstScore);
         ascentServo.setPosition(0.55);
-        sleep(500);
         openClaw();
         sleep(500);
         Actions.runBlocking(firstGrab);
@@ -131,23 +134,31 @@ public class BucketAuto extends LinearOpMode {
         closeClaw();
         sleep(400);
         bucketScore();
-//        sleep(300);
         Actions.runBlocking(secondScore);
         sleep(200);
         openClaw();
         sleep(500);
-        Actions.runBlocking(mean);
+        Actions.runBlocking(secondGrab);
 //        sleep(500);
         slides.setTargetPosition(100);
         pivot.setPosition(0.9);
         sleep(500);
         setArmPos(300);
+        sleep(1000);
+        closeClaw();
+        sleep(400);
+        bucketScore();
+//        sleep(300);
+        Actions.runBlocking(thirdScore);
+        sleep(500);
+        openClaw();
+        sleep(500);
         pivot.setPosition(0);
-//        sleep(500);
-//        slides.setTargetPosition(0);
-//        Actions.runBlocking(parkAscent);
-//        setArmPos(0);
-//        sleep(1000);
+        sleep(500);
+        slides.setTargetPosition(0);
+        Actions.runBlocking(parkAscent);
+        setArmPos(0);
+        sleep(1000);
 
     }
 }
