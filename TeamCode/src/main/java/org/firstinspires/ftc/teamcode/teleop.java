@@ -40,8 +40,8 @@ public class teleop extends OpMode {
     int HANG_EXTEND = 2830;
     int SLIDES_EXTEND = 1700;
     int ARM_LIMIT = 3400;
-    int ARM_SCORE_POS = 760;
-    int ARM_WALL_POS = 420;
+    int ARM_SCORE_POS = 730;
+    int ARM_WALL_POS = 370;
     int ARM_BUCKET_POS = 1450;
     int SLIDES_RETRACT = 0;
 
@@ -183,14 +183,14 @@ public class teleop extends OpMode {
         double x = -gamepad1.left_stick_x;
         double rx = -gamepad1.right_stick_x;
         int slidesPos = (int) (slides.getCurrentPosition()+(-gamepad2.right_stick_y* ROUND_TO_INT));
-        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y* ROUND_TO_INT));
+        int armPos = (int) (rightIntakeArm.getCurrentPosition()+(-gamepad2.left_stick_y* ROUND_TO_INT*2));
         int hangPos = (int) (hangArm.getCurrentPosition()+(-gamepad2.left_trigger* HIGH_SPEED +gamepad2.right_trigger* HIGH_SPEED));
 
         // mecanum drive
-        frontLeftWheel.setPower(y + x + rx);
-        backLeftWheel.setPower(y - x + rx);
-        frontRightWheel.setPower(y - x - rx);
-        backRightWheel.setPower(y + x - rx);
+        frontLeftWheel.setPower(y/2 + x/2 + rx/2);
+        backLeftWheel.setPower(y/2 - x/2 + rx/2);
+        frontRightWheel.setPower(y/2 - x/2 - rx/2);
+        backRightWheel.setPower(y/2 + x/2 - rx/2);
 
         //telemetry
         telemetry.addData("armAngle", rightIntakeArm.getCurrentPosition());

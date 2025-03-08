@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.roadRunner.MecanumDrive;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "FullRoute")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "2specAuto")
 public class FullRouteTest extends LinearOpMode {
 
     //motors and sensors
@@ -45,17 +45,17 @@ public class FullRouteTest extends LinearOpMode {
     public void scoreSpecimen() {
         closeClaw();
         sleep(100);
-        setArmPos(710);
+        setArmPos(720);
         pivot.setPosition(0.1);
-        slides.setTargetPosition(545);
+        slides.setTargetPosition(585);
     }
     public void wallGrab() {
         slides.setTargetPosition(0);
-        setArmPos(355);
+        setArmPos(375);
         pivot.setPosition(0.3);
-        sleep(1000);
-        closeClaw();
-        sleep(100);
+//        sleep(1000);
+//        closeClaw();
+//        sleep(100);
     }
     public void resetArm() {
         setArmPos(0);
@@ -110,64 +110,53 @@ public class FullRouteTest extends LinearOpMode {
         slides.setPower(0.75);
         slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        VelConstraint baseVelConstraint = (robotPose, _path, _disp) -> {
-            if (robotPose.position.x.value() > 50.0) {
-                return 20.0;
-            } else {
-                return 50.0;
-            }
-        };
-
         Pose2d beginPose = new Pose2d(6, -61, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        TrajectoryActionBuilder firstSpecimenScore = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(6, -22), Math.toRadians(90));
+//        TrajectoryActionBuilder firstSpecimenScore = drive.actionBuilder(drive.pose)
+//                .splineTo(new Vector2d(6, -22), Math.toRadians(90));
 
-        TrajectoryActionBuilder fullRoute = firstSpecimenScore.endTrajectory().fresh()
+        Action fullRoute = drive.actionBuilder(drive.pose)
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(6, -22))
+                .splineToConstantHeading(new Vector2d(6, -20), Math.toRadians(90))
                 .stopAndAdd(this::openClaw)
                 .stopAndAdd(this::pivotMiddlePos)
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
                 .stopAndAdd(this::resetArm)
+
                 //first sample push
                 .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -5), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(58, -45), Math.toRadians(90))
+
                 //second sample push
-                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90), null,
-                        new ProfileAccelConstraint(-5, 5))
-                .strafeToLinearHeading(new Vector2d(65, -5), 0, null,
-                        new ProfileAccelConstraint(-10, 10))
+                .splineToConstantHeading(new Vector2d(45, -10), Math.toRadians(90), null,
+                        new ProfileAccelConstraint(-5, 8))
+                .strafeToLinearHeading(new Vector2d(55, -5), Math.toRadians(-90), null,
+                        new ProfileAccelConstraint(-5, 20))
+                .stopAndAdd(this::wallGrab)
                 .setTangent(Math.toRadians(-90))
-//                .stopAndAdd(this::wallGrab)
-//                .stopAndAdd(this::openClaw)
-                .splineToConstantHeading(new Vector2d(60, -53), 0)
-                .setTangent(0)
+                .splineToConstantHeading(new Vector2d(50, -47), Math.toRadians(-90))
+
                 //Score second specimen
                 .stopAndAdd(this::closeClaw)
                 .waitSeconds(0.3)
                 .stopAndAdd(this::scoreSpecimen)
-                .splineTo(new Vector2d(60, -40), Math.toRadians(180))
-                .splineTo(new Vector2d(5, -45), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(5, -25), Math.toRadians(90))
+                .strafeTo(new Vector2d(50, -40))
+                .strafeToLinearHeading(new Vector2d(3, -40), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(3, -20), Math.toRadians(90))
                 .stopAndAdd(this::openClaw)
-                .stopAndAdd(this::pivotMiddlePos);
+                .stopAndAdd(this::pivotMiddlePos)
+                .splineToConstantHeading(new Vector2d(8, -55), Math.toRadians(90))
+                .stopAndAdd(this::resetArm)
+                .splineToConstantHeading(new Vector2d(60, -58), Math.toRadians(90))
+                .stopAndAdd(this::resetArm)
+                .build();
 
-        Action firstSpecimen = firstSpecimenScore.build();
-        Action FullRoute = fullRoute.build();
+//        Action firstSpecimen = firstSpecimenScore.build();
+//        Action FullRoute = fullRoute.build();
 
         waitForStart();
 
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        controllerOfActions.scoreSpecimen(),
-//                        firstSpecimen
-//                )
-//        );
         scoreSpecimen();
-        Actions.runBlocking(FullRoute);
+        Actions.runBlocking(fullRoute);
     }
 }
