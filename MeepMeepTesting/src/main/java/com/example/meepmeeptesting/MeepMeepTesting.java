@@ -28,17 +28,17 @@ public class MeepMeepTesting {
                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(53, -5), Math.toRadians(90), null,
                         new ProfileAccelConstraint(-5, 5))
-                .strafeToLinearHeading(new Vector2d(65, -5), 0, null,
+                .strafeToLinearHeading(new Vector2d(65, -5), Math.toRadians(-90), null,
                         new ProfileAccelConstraint(-10, 10))
                                 .setTangent(Math.toRadians(-90))
 //                .stopAndAdd(this::wallGrab)
 //                .stopAndAdd(this::openClaw)
-                .splineToConstantHeading(new Vector2d(60, -53), 0)
+                .splineToConstantHeading(new Vector2d(50, -53), Math.toRadians(-90))
                                 .setTangent(0)
                 //Score second specimen
                 .waitSeconds(0.3)
                         .setReversed(true)
-                .splineTo(new Vector2d(5, -45), Math.toRadians(-90))
+                .splineTo(new Vector2d(5, -50), Math.toRadians(-90))
                         .setReversed(false)
                 .splineToConstantHeading(new Vector2d(5, -25), Math.toRadians(90))
 
