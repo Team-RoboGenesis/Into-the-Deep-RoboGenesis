@@ -13,23 +13,36 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(600, 600, Math.toRadians(180), Math.toRadians(180), 17.25)
+                .setConstraints(50, 50, Math.toRadians(180), Math.toRadians(180), 17.25)
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(6, -61, Math.toRadians(90)))
                 .waitSeconds(1)
                 .splineToConstantHeading(new Vector2d(6, -20), Math.toRadians(90))
-//                .stopAndAdd(this::openClaw)
-//                .stopAndAdd(this::pivotMiddlePos)
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
-//                .stopAndAdd(this::resetArm)
 
-                //first sample push
-//                TrajectoryActionBuilder firstsample = clearSubmersible.endTrajectory().fresh()
-                        .splineTo(new Vector2d(24.50, -35.01), Math.toRadians(36.38))
-                        .splineToSplineHeading(new Pose2d(44.05, -12.49, Math.toRadians(53.75)), Math.toRadians(53.75))
-                        .turn(Math.toRadians(-90))
-                        .splineToSplineHeading(new Pose2d(49.16, -58.81, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                .splineTo(new Vector2d(23.96, -31.58), Math.toRadians(-12.99))
+                .splineToSplineHeading(new Pose2d(44.55, -24.61, Math.toRadians(-45.00)), Math.toRadians(-45.00))
+                .splineToSplineHeading(new Pose2d(47.55, -58, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                        .waitSeconds(0.2)
+                //score
+
+                .splineToSplineHeading(new Pose2d(39.30, -56.67, Math.toRadians(135.00)), Math.toRadians(135.00))
+                .splineToSplineHeading(new Pose2d(3.38, -32.43, Math.toRadians(90.00)), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(3, -20), Math.toRadians(90))
+                        .waitSeconds(0.2)
+                        .setReversed(true)
+                .splineToConstantHeading(new Vector2d(3.48, -38.87), Math.toRadians(-75.00))
+                .splineToSplineHeading(new Pose2d(25.47, -50.02, Math.toRadians(-22.17)), Math.toRadians(-22.17))
+                .splineToSplineHeading(new Pose2d(47.77, -58.38, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                        .waitSeconds(0.2)
+                .splineToSplineHeading(new Pose2d(39.30, -56.67, Math.toRadians(135.00)), Math.toRadians(135.00))
+                .splineToSplineHeading(new Pose2d(3.38, -32.43, Math.toRadians(90.00)), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(3, -20), Math.toRadians(90))
+                        .waitSeconds(0.3)
+                .splineToConstantHeading(new Vector2d(3.48, -38.87), Math.toRadians(-75.00))
+                .splineToSplineHeading(new Pose2d(25.47, -50.02, Math.toRadians(-22.17)), Math.toRadians(-22.17))
+                .splineToSplineHeading(new Pose2d(47.77, -58.38, Math.toRadians(90.00)), Math.toRadians(90.00))
                 .build());
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_OFFICIAL)
                 .setDarkMode(true)

@@ -120,11 +120,9 @@ public class TwoSpecimenAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(6, -40), Math.toRadians(90))
                 .stopAndAdd(this::resetArm)
 
-                //first sample push
                 .splineToConstantHeading(new Vector2d(40, -40), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(45, -0),Math.toRadians(90))
 
-                //second sample push
                 .splineToConstantHeading(new Vector2d(45, -10), Math.toRadians(90), null,
                         new ProfileAccelConstraint(-5, 8))
                 .strafeToLinearHeading(new Vector2d(55, -5), Math.toRadians(-90), null,
