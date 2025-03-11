@@ -9,14 +9,11 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.roadRunner.MecanumDrive;
 
-@Autonomous (name = "ParallelAuto")
-public class RegionalAuto extends LinearOpMode {
+@Autonomous (name = "Doesn't work")
+public class RegionalAutoNOTWORKING extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
