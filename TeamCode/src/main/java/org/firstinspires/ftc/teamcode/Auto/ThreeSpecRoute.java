@@ -141,22 +141,28 @@ public class ThreeSpecRoute extends LinearOpMode {
                 .stopAndAdd(this::closeClaw)
                 .waitSeconds(0.2)
                 .stopAndAdd(this::scoreSpecimen)
-                //score
 
+                //second score
                 .splineToSplineHeading(new Pose2d(47, -50, Math.toRadians(-90)), Math.toRadians(-90))
                 .setTangent(Math.toRadians(180))
                 .splineToSplineHeading(new Pose2d(3, -40, Math.toRadians(90)), Math.toRadians(90))
                 .splineToSplineHeading(new Pose2d(3, -24, Math.toRadians(90)), Math.toRadians(90))
                 .waitSeconds(0.2)
                 .setReversed(true)
+
+                //third grab
                 .splineToConstantHeading(new Vector2d(3.48, -38.87), Math.toRadians(-75.00))
                 .splineToSplineHeading(new Pose2d(25.47, -50.02, Math.toRadians(-22.17)), Math.toRadians(-22.17))
                 .splineToSplineHeading(new Pose2d(47.77, -58.38, Math.toRadians(-90.00)), Math.toRadians(-90.00))
                 .waitSeconds(0.2)
+
+                //third score
                 .splineToSplineHeading(new Pose2d(39.30, -56.67, Math.toRadians(135.00)), Math.toRadians(135.00))
                 .splineToSplineHeading(new Pose2d(3.38, -32.43, Math.toRadians(90.00)), Math.toRadians(90.00))
                 .splineToConstantHeading(new Vector2d(3, -24), Math.toRadians(90))
                 .waitSeconds(0.3)
+
+                //park
                 .splineToConstantHeading(new Vector2d(3.48, -38.87), Math.toRadians(-75.00))
                 .splineToSplineHeading(new Pose2d(25.47, -50.02, Math.toRadians(-22.17)), Math.toRadians(-22.17))
                 .splineToSplineHeading(new Pose2d(47.77, -58.38, Math.toRadians(90.00)), Math.toRadians(90.00))

@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.roadRunner.MecanumDrive;
 
-@Autonomous(name = "2BucketAuto")
-public class BucketAuto extends LinearOpMode {
+@Autonomous(name = "3BucketAuto")
+public class ThreeBucketAuto extends LinearOpMode {
 
     public Servo mainIntake = null;
     public DcMotor slides = null;
@@ -41,6 +41,19 @@ public class BucketAuto extends LinearOpMode {
         setArmPos(1400);
         pivot.setPosition(0.5);
         slides.setTargetPosition(1700);
+    }
+    public void grabSample() {
+        slides.setTargetPosition(100);
+        pivot.setPosition(0.9);
+        sleep(500);
+        setArmPos(300);
+        sleep(1000);
+        closeClaw();
+    }
+    public void deposit() {
+        sleep(200);
+        openClaw();
+        sleep(500);
     }
     public void openClaw () {
         mainIntake.setPosition(0.7);
@@ -84,13 +97,13 @@ public class BucketAuto extends LinearOpMode {
 
         Pose2d beginPose = new Pose2d(-45, -55, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-        TrajectoryActionBuilder scoreBasket = drive.actionBuilder(drive.pose)
+        TrajectoryActionBuilder scoreFirstBasket = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(new Vector2d(-72, -45), Math.toRadians(-135));
 
-        TrajectoryActionBuilder sampleGrab = scoreBasket.endTrajectory().fresh()
+        TrajectoryActionBuilder firstSampleGrab = scoreFirstBasket.endTrajectory().fresh()
                 .strafeToLinearHeading(new Vector2d(-62, -24), Math.toRadians(90));
 
-        TrajectoryActionBuilder scoreSecondBasket = sampleGrab.endTrajectory().fresh()
+        TrajectoryActionBuilder scoreSecondBasket = firstSampleGrab.endTrajectory().fresh()
                 .strafeToLinearHeading(new Vector2d(-72, -45), Math.toRadians(-135));
 
         TrajectoryActionBuilder secondSampleGrab = scoreSecondBasket.endTrajectory().fresh()
@@ -105,8 +118,8 @@ public class BucketAuto extends LinearOpMode {
                 .strafeTo(new Vector2d(-26, 5))
                 .build();
 
-        Action firstScore = scoreBasket.build();
-        Action firstGrab = sampleGrab.build();
+        Action firstScore = scoreFirstBasket.build();
+        Action firstGrab = firstSampleGrab.build();
         Action secondScore = scoreSecondBasket.build();
         Action secondGrab = secondSampleGrab.build();
         Action thirdScore = scoreThirdBasket.build();
@@ -126,33 +139,17 @@ public class BucketAuto extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(firstGrab);
         sleep(500);
-        slides.setTargetPosition(100);
-        pivot.setPosition(0.9);
-        sleep(500);
-        setArmPos(300);
-        sleep(1000);
-        closeClaw();
+        grabSample();
         sleep(400);
         bucketScore();
         Actions.runBlocking(secondScore);
-        sleep(200);
-        openClaw();
-        sleep(500);
+        deposit();
         Actions.runBlocking(secondGrab);
-//        sleep(500);
-        slides.setTargetPosition(100);
-        pivot.setPosition(0.9);
-        sleep(500);
-        setArmPos(300);
-        sleep(1000);
-        closeClaw();
+        grabSample();
         sleep(400);
         bucketScore();
-//        sleep(300);
         Actions.runBlocking(thirdScore);
-        sleep(500);
-        openClaw();
-        sleep(500);
+        deposit();
         pivot.setPosition(0);
         sleep(500);
         slides.setTargetPosition(0);
