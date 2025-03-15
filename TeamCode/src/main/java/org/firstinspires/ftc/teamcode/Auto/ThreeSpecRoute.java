@@ -76,10 +76,10 @@ public class ThreeSpecRoute extends LinearOpMode {
         openClaw();
     }
     public void openClaw () {
-        mainIntake.setPosition(0.7);
+        mainIntake.setPosition(0.6);
     }
     public void closeClaw () {
-        mainIntake.setPosition(0.05);
+        mainIntake.setPosition(0.5);
     }
     public void pivotMiddlePos () {
         pivot.setPosition(0.4);
@@ -136,7 +136,7 @@ public class ThreeSpecRoute extends LinearOpMode {
                 .splineTo(new Vector2d(28.96, -35.58), Math.toRadians(-12.99))
                 .splineToSplineHeading(new Pose2d(53.55, -17.61, Math.toRadians(-35.00)), Math.toRadians(-45.00))
                 .stopAndAdd(this::wallGrab)
-                .splineToSplineHeading(new Pose2d(45.55, -57, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                .splineToSplineHeading(new Pose2d(45.55, -50, Math.toRadians(-90.00)), Math.toRadians(-90.00))
                 .waitSeconds(0.2)
                 .stopAndAdd(this::closeClaw)
                 .waitSeconds(0.2)
