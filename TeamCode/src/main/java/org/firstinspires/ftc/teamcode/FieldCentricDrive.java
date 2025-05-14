@@ -45,10 +45,10 @@ public class FieldCentricDrive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeft");
-        DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeft");
-        DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRight");
-        DcMotor backRightMotor = hardwareMap.dcMotor.get("backRight");
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("leftFront");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("leftRear");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("rightFront");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("rightRear");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
         temporaryPivot = hardwareMap.get(Servo.class, "goBildaPivot");
         rightIntakeArm = hardwareMap.get(DcMotor.class, "rightIntakeArm");

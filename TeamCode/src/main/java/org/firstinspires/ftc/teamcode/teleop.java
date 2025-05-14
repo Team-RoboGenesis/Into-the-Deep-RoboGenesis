@@ -49,10 +49,10 @@ public class teleop extends OpMode {
     public void init() {
 
         //configuration
-        frontLeftWheel = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRightWheel = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeftWheel = hardwareMap.get(DcMotor.class, "backLeft");
-        backRightWheel = hardwareMap.get(DcMotor.class, "backRight");
+        frontLeftWheel = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRightWheel = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeftWheel = hardwareMap.get(DcMotor.class, "leftRear");
+        backRightWheel = hardwareMap.get(DcMotor.class, "rightRear");
         mainIntake = hardwareMap.get(Servo.class, "mainIntake");
         slides = hardwareMap.get(DcMotor.class, "slides");
         pivot = hardwareMap.get(Servo.class, "goBildaPivot");
