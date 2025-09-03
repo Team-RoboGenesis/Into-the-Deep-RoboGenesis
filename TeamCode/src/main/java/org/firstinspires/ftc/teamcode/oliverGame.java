@@ -100,5 +100,16 @@ public class oliverGame extends OpMode {
             }
             priorLevel = level;
         }
+        for(true) {
+            servoPos = 1;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            servoPos = 0;
+        }
+
+
     }
 }
