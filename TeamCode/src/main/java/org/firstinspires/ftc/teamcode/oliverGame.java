@@ -26,15 +26,6 @@ public class oliverGame extends OpMode {
     @Override
     public void loop() {
 
-        if (first) {
-            first = false;
-            caught++;
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            if(caught > 1) System.exit(1);
             int servo = 0;
             int motorI = 0;
             Thread motor1 = new Thread(() -> {// triggers for rotation
@@ -113,5 +104,4 @@ public class oliverGame extends OpMode {
                 priorLevel = level;
             }
         }
-    }
 }
