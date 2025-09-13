@@ -15,39 +15,90 @@ public class colorDetectLogic extends OpMode {
     private boolean isGreenBall = false;
     private boolean isPurpleBall = false;
     private String motif = null;
+    private int id = 22;
+    private int purpleInSlot = 0;
+    private int greenInSlot = 0;
     ColorSensor sort;
     private Servo turnTable;
+
     @Override
+
     public void init() {
         sort = hardwareMap.get(ColorSensor.class, "sort");
+
         turnTable = hardwareMap.get(Servo.class, "turnTable");
+
+        turnTable.setPosition(0.3333333);
     }
+
 
     @Override
     public void loop() {
-        if(green > red + 100) {
-            isGreenBall = true;
-            turnTable.setPosition(0.833333);
-        } else {
-            isGreenBall = false;
+        for(int run = 0; run < 3; run++) {
+            if (green > red + 100) {
+                if (run == 1) {
+                    greenInSlot = 1;
+                }
+                else if (run == 2) {
+                    greenInSlot = 2;
+                }
+                else {
+                    greenInSlot = 3;
+                }
+            }
+
+
+            if (blue > 900 && blue < 2000 && green < 1000) {
+                if (run == 1) {
+                    purpleInSlot++;
+                }
+                else if (run == 2) {
+                    purpleInSlot = purpleInSlot + 2;
+                }
+                else {
+                    purpleInSlot = 3 + purpleInSlot;
+                }
+            }
+
+            if (purpleInSlot < 10) purpleInSlot = purpleInSlot * 10;
+            if (run == 1) {
+                //move to slot 2
+            } else if (run == 2) {
+                //move to slot 3
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        if(blue > 900 && blue < 2000 && green < 1000) {
-            isPurpleBall = true;
-            turnTable.setPosition(0.5);
-        } else {
-            isPurpleBall = false;
+
+        if(id == 21) {
+            motif = "GPP";
+        } else if(id == 22) {
+            motif = "PGP";
+        } else if(id == 23) {
+            motif = "PPG";
         }
-        motif = "PGP";
+
+
         telemetry.addData("red: ", sort.red());
         telemetry.addData("blue: ", sort.blue());
         telemetry.addData("green: ", sort.green());
-        telemetry.addData("Green ball? ", isGreenBall);
-        telemetry.addData("purple ball? ", isPurpleBall);
+        telemetry.addData("Green slot ", greenInSlot);
+        telemetry.addData("purple slots ", purpleInSlot);
         telemetry.addData("motif pattern:", motif);
         telemetry.update();
+
         red = sort.red();
         blue = sort.blue();
         green = sort.green();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.exit(1);
     }
 }
