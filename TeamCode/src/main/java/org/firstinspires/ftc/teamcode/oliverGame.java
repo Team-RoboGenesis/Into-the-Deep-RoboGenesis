@@ -61,7 +61,7 @@ public class oliverGame extends OpMode {
             }
 
             if (gamepad1.x) { //insures that the code at the bottom is run when you release the button after pressing it
-                while (gamepad1.x) {
+                while (!gamepad1.x) {
                     try {
                         Thread.sleep(100); // Sleep for 100 milliseconds
                     } catch (InterruptedException e) {
@@ -78,7 +78,7 @@ public class oliverGame extends OpMode {
                 motorI = motorI - 1;
             }
             if (gamepad1.a) {
-                while (gamepad1.a) {
+                while (!gamepad1.a) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
