@@ -10,25 +10,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp
-public class FieldCentricDrive extends LinearOpMode {
+        @TeleOp
+        public class FieldCentricDrive extends LinearOpMode {
 
-    public Servo mainIntake = null;
-    public DcMotor slides = null;
-    public Servo temporaryPivot = null;
-    public DcMotor leftIntakeArm = null;
-    public DcMotor rightIntakeArm = null;
+            public Servo mainIntake = null;
+            public DcMotor slides = null;
+            public Servo temporaryPivot = null;
+            public DcMotor leftIntakeArm = null;
+            public DcMotor rightIntakeArm = null;
 
-    public void setSlidePos(int position) {
-        if (position<0) {
-            slides.setTargetPosition(0);
-        } else if (position>2830) {
-            slides.setTargetPosition(2830);
-        } else {
-            slides.setTargetPosition(position);
-        }
-    }
-    public void setArmPos(int position) {
+            public void setSlidePos(int position) {
+                if (position<0) {
+                    slides.setTargetPosition(0);
+                } else if (position>2830) {
+                    slides.setTargetPosition(2830);
+                } else {
+                    slides.setTargetPosition(position);
+                }
+            }
+            public void setArmPos(int position) {
         if (position > 0) {
             rightIntakeArm.setTargetPosition(0);
             leftIntakeArm.setTargetPosition(0);
